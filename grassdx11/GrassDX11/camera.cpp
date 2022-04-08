@@ -252,10 +252,10 @@ void MeshCamera::FrameMove(FLOAT fElapsedTime)
 
    // Get position delta
    XMVECTOR mesh_pos_and_radius;
-   XMVECTOR mesh_pos, mesh_dir;
-   float mesh_radius;//, len;
+   XMVECTOR mesh_pos;
+   float mesh_radius = 0.0f;//, len;
    
-   auto pos = m_pMesh->GetPosAndRadius();
+   const auto pos = m_pMesh->GetPosAndRadius();
    mesh_pos_and_radius = XMLoadFloat4(&pos);
    mesh_pos = mesh_pos_and_radius;
    mesh_radius = getw(mesh_pos_and_radius);
@@ -269,10 +269,10 @@ void MeshCamera::FrameMove(FLOAT fElapsedTime)
    XMVECTOR vEye = mesh_pos - ld * m_fMeshDist;
 
    // Correct camera position by landscape height
-   TerrainHeightData* pHD = m_pTerrain->HeightDataPtr();
+   TerrainHeightData const* pHD = m_pTerrain->HeightDataPtr();
    float2 vTexCoord = create(m_vEye.x / m_fGrassRadius * 0.5f + 0.5f, m_vEye.z / m_fGrassRadius * 0.5f + 0.5f);
 
-   float terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale;
+   float const terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale;
 
    sety(vEye,__max(m_fDefaultHeight + terrain_height, gety(mesh_pos) + 0.5f));
    if (m_vEye.y < terrain_height + m_pMinMaxHeight.first)
@@ -292,7 +292,7 @@ void MeshCamera::FrameMove(FLOAT fElapsedTime)
    XMStoreFloat3(&m_vLookAt, la);
 }
 
-float MeshCamera::GetMeshDist (void)
+float MeshCamera::GetMeshDist (void) const noexcept
 {
    return m_fMeshDist;
 }

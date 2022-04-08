@@ -191,6 +191,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>DXUT.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
@@ -287,6 +288,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>DXUT.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
@@ -426,6 +429,44 @@
     <ClCompile Include="AxesFanFlow.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Clouds\Clouds.cpp" />
+    <ClCompile Include="Clouds\Engine\Application\Input.cpp" />
+    <ClCompile Include="Clouds\Engine\Application\Time.cpp" />
+    <ClCompile Include="Clouds\Engine\Application\Window.cpp" />
+    <ClCompile Include="Clouds\Engine\Dev\Log.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\Camera2.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\CameraClass.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ComputeShader.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ConstantBuffer.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\CubeMap.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\DirectX11\D3DBuffer.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\MeshClass.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\MeshData.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\MeshInstancer.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\Renderer.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\Shader.cpp" />
+    <ClCompile Include="Clouds\Engine\Graphics\Texture.cpp" />
+    <ClCompile Include="Clouds\Engine\SMath.cpp" />
+    <ClCompile Include="Clouds\ErrorLogger.cpp" />
+    <ClCompile Include="Clouds\Examples\GameObjects\CameraController.cpp" />
+    <ClCompile Include="Clouds\Examples\GameObjects\Skybox.cpp" />
+    <ClCompile Include="Clouds\External\DDSTextureLoader11.cpp" />
+    <ClCompile Include="Clouds\External\WICTextureLoader11.cpp" />
+    <ClCompile Include="Clouds\pch.cpp" />
+    <ClCompile Include="Clouds\SettingsController.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\ColorShader.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\PerlinNoiseShader.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\SkyboxShader.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\TerrainShaderClass.cpp" />
+    <ClCompile Include="Clouds\ShaderHandlers\TextureShader.cpp" />
+    <ClCompile Include="Clouds\StringConverter.cpp" />
     <ClCompile Include="ConvexVolume.cpp" />
     <ClCompile Include="Copter.cpp" />
     <ClCompile Include="CopterController.cpp" />
@@ -482,6 +523,47 @@
     <ClInclude Include="AxesFanFlow.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Clouds\Clouds.h" />
+    <ClInclude Include="Clouds\Engine\Application\Input.h" />
+    <ClInclude Include="Clouds\Engine\Application\Time.h" />
+    <ClInclude Include="Clouds\Engine\Application\Window.h" />
+    <ClInclude Include="Clouds\Engine\Dev\Helpers.h" />
+    <ClInclude Include="Clouds\Engine\Dev\Log.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\Camera2.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\CameraClass.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ComputeShader.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\CubeMap.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\DirectX11\D3DBuffer.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imconfig.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imgui.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imgui_internal.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\MeshClass.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\MeshData.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\MeshInstancer.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\Renderer.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\Shader.h" />
+    <ClInclude Include="Clouds\Engine\Graphics\Texture.h" />
+    <ClInclude Include="Clouds\Engine\SMath.h" />
+    <ClInclude Include="Clouds\ErrorLogger.h" />
+    <ClInclude Include="Clouds\Examples\GameObjects\CameraController.h" />
+    <ClInclude Include="Clouds\Examples\GameObjects\Skybox.h" />
+    <ClInclude Include="Clouds\External\DDSTextureLoader11.h" />
+    <ClInclude Include="Clouds\External\WICTextureLoader11.h" />
+    <ClInclude Include="Clouds\pch.h" />
+    <ClInclude Include="Clouds\SettingsController.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\ColorShader.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\PerlinNoiseShader.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\SkyboxShader.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\TerrainShaderClass.h" />
+    <ClInclude Include="Clouds\ShaderHandlers\TextureShader.h" />
+    <ClInclude Include="Clouds\StringConverter.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="ConvexVolume.h" />
     <ClInclude Include="Copter.h" />

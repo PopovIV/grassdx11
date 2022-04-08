@@ -19,6 +19,9 @@
 #include "DebugWindow.h"
 #include "ParticleShader.h"
 #include "SnowParticleSystem.h"
+#include "Clouds\Engine\Graphics\Renderer.h"
+#include "Clouds\Examples\GameObjects\Skybox.h"
+#include "Clouds\Clouds.h"
 
 #ifdef DEBUG
 #pragma comment(lib, "Effects11d.lib")
@@ -60,10 +63,15 @@ int                                  g_fNumOfMeshes = 0;
 // Output textures to screen
 DebugWindow                         *g_dbgWin;
 
-// Snow Particle System
-int g_totalParticles = 250000;
-ParticleShader* g_ParticleShader = nullptr;
-SnowParticleSystem* g_ParticleSystem = nullptr;
+//// Snow Particle System
+//int g_totalParticles = 250000;
+//ParticleShader* g_ParticleShader = nullptr;
+//SnowParticleSystem* g_ParticleSystem = nullptr;
+
+//Sky
+AvocadoSky::Renderer* g_skyRenderer;
+AvocadoSky::Skybox* skybox;
+AvocadoSky::Clouds* clouds;
 
 
 XMFLOAT3                            g_MeshVels[MAX_NUM_MESHES];

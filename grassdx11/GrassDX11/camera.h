@@ -69,7 +69,7 @@ public:
 
    virtual void FrameMove (FLOAT fElapsedTime);
 
-   float GetMeshDist (void);
+   float GetMeshDist (void) const noexcept;
 
 private:
    Terrain* const m_pTerrain;
