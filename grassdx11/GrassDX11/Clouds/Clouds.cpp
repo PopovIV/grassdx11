@@ -4,7 +4,7 @@
 
 using namespace AvocadoSky;
 
-Clouds::Clouds(Renderer& renderer): skybox(nullptr), meshData(DefaultMesh::SKY_PLANE, 100, 100, false), mesh(renderer, this->meshData),
+Clouds::Clouds(Renderer& renderer): skybox(nullptr), meshData(DefaultMesh::SKY_PLANE, 1024, 1024, false), mesh(renderer, this->meshData),
 shader(renderer), constantBuffer(renderer, sizeof(CloudsBuffer)),renderer(renderer),
 perturbTexture(renderer, TextureFilter::BILINEAR, TextureFormat::R16G16B16A16_UNORM, TextureEdgeSampling::REPEAT),
 cloudTexture(renderer, TextureFilter::BILINEAR, TextureFormat::R8G8B8A8_UNORM, TextureEdgeSampling::REPEAT) {
@@ -17,7 +17,7 @@ cloudTexture(renderer, TextureFilter::BILINEAR, TextureFormat::R8G8B8A8_UNORM, T
 
 	cb.brightness = 0.5f;
 	cb.scale = 0.3f;
-	cb.padding = 0.0f;
+	cb.padding = 10.0f;
 	cb.translation = 0.0f;
 }
 
@@ -37,15 +37,14 @@ void Clouds::draw(XMMATRIX const& worldMatrix) {
 	cb.brightness = SettingsController::brightness;
 	cb.scale = SettingsController::scale;
 
+	this->shader.set();
 	this->constantBuffer.update(&this->cb);
 	this->cloudTexture.setPS(0);
 	this->perturbTexture.setPS(1);
-
-	XMMATRIX newMatrix = this->skybox->getWorldMatrix();
-	
+		
 
 	this->shader.update(renderer, worldMatrix /*this->mesh.getWorldMatrix()*/, true);
-	this->shader.set();
+	
 	this->mesh.draw();
 }
 

@@ -19,6 +19,7 @@
 #include "Copter.h"
 
 #include "Car.h"
+#include "Clouds\SettingsController.h"
 
 #pragma warning( disable : 4100 )
 
@@ -125,6 +126,8 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, g_windowWidth, g_windowHeight );
 
     DXUTMainLoop(); // Enter into the DXUT render loop
+
+ 
 
     return DXUTGetExitCode();
 }
@@ -619,7 +622,9 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     clouds->setSkybox(*skybox);
 
-   return S_OK;
+  
+
+    return S_OK;
 }
 
 
@@ -859,7 +864,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
    //   g_pGrassField->GetFlowManager()->fans[0].position = xpos;
    //}
 
-   g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
+   g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
    g_pGrassField->Render(copter, (Car*)g_pMeshes[0]);
 
    //for (auto* mesh : g_pMeshes) {
@@ -876,14 +881,9 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
    else
       GetGlobalStateManager().SetRasterizerState("EnableMSAACulling");
 
+    pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
 
-   pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
-
- /*  g_pSkyboxPass->Apply(0, pd3dDeviceCtx);
-   g_MeshSkybox.Render(pd3dDeviceCtx, 0);
-   g_pSkyBoxESRV->SetResource(g_MeshSkybox.GetMaterial(0)->pDiffuseRV11);
-
-    g_pSkybox->Render(mViewProj);*/
+   
 
     GetGlobalStateManager().SetRasterizerState("AvocadoSky");
 
@@ -891,11 +891,21 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 
     g_skyRenderer->EnableSecondBlendState();
 
-    g_skyRenderer->TurnOnAlphaBlending();
+    TurnOnAlphaBlending();
 
     clouds->draw(mViewProj);
 
-    g_skyRenderer->TurnOffAlphaBlending();
+    TurnOffAlphaBlending();
+
+    //AvocadoSky::SettingsController::ImGuiNewFrame();
+
+    //AvocadoSky::SettingsController::DispalyFPSMonitor();
+    //AvocadoSky::SettingsController::DisplayTimeSlider();
+    //AvocadoSky::SettingsController::DisplayTurbiditySlider();
+
+    //AvocadoSky::SettingsController::DisplayCloudsSettings();
+
+    //AvocadoSky::SettingsController::ImGuiEndFrame();
 }
 
 

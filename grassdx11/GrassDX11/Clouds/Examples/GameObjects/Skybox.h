@@ -11,8 +11,8 @@
 namespace AvocadoSky {
 	class Skybox {
 	private:
-		static const int CUBE_FACE_WIDTH = 262144;
-		static const int CUBE_FACE_HEIGHT = 262144;
+		static const int CUBE_FACE_WIDTH = 256;
+		static const int CUBE_FACE_HEIGHT = 256;
 
 		struct SkyboxBuffer {
 			XMFLOAT3 sunDir;

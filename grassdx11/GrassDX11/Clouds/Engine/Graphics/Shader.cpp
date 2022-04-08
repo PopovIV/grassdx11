@@ -216,41 +216,12 @@ void Shader::update(Renderer& renderer, XMMATRIX currentWorldMatrix, bool static
 	XMMATRIX viewMatrix = XMMatrixTranspose(renderer.getViewMatrix());
 	XMMATRIX worldMatrix = XMMatrixTranspose(currentWorldMatrix);
 
-	//XMMATRIX projectionMatrix = XMMatrixSet(
-	//	0.56295f, 0.00f, 0.00f, 0.00f,
-	//	0.00f, 1.0008f, 0.00f, 0.00f,
-	//	0.00f, 0.00f, 1.0001f, 1.00f,
-	//	0.00f, 0.00f, -0.10001f, 0.00f);
-
-	//if (staticView) {
-	//	viewMatrix = XMMatrixSet(
-	//		0.99942f, 0.00521f, -0.03359f, 0.00f,
-	//		0.00f, 0.98817f, 0.15339f, 0.3f,
-	//		0.03399f, -0.1533f, 0.98759f, 0.00f,
-	//		0.0f,0.0f, 0.0f, 1.00f
-	//	);
-	//}
-
-	//if (staticView) {
-	//	viewMatrix = XMMatrixSet(
-	//		1.0f, 0.0f, 0.0f, 0.00f,
-	//		0.00f, 1.0f, 0.0f, 0.3f,
-	//		0.0f, 0.0f, 1.0f, 0.00f,
-	//		0.0f,0.0f, 0.0f, 1.00f
-	//	);
-	//}
 
 
-	//XMMATRIX worldMatrix = XMMatrixSet(
-	//	1.00f, 0.00f, 0.00f, 0.00f,
-	//	0.00f, 1.00f, 0.00f, 0.00f,
-	//	0.00f, 0.00f, 1.00f, 0.00f,
-	//	0.00f, 0.00f, 0.00f, 1.00f
-	//);
 
 	// Update values in the structure before passing it to the shader
 	this->matrixBufferValues.projectionMatrix = projectionMatrix;
-	this->matrixBufferValues.viewMatrix = viewMatrix;
+	this->matrixBufferValues.viewMatrix = viewMatrix ;
 	this->matrixBufferValues.worldMatrix = worldMatrix;
 
 	// Pass values to the shader buffer

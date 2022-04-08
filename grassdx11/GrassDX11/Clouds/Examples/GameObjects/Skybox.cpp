@@ -7,7 +7,7 @@ using namespace AvocadoSky;
 Skybox::Skybox(Renderer& renderer) : meshData(DefaultMesh::CUBE, 0, 0, true), mesh(renderer, this->meshData),
 	shader(renderer), constantBuffer(renderer, sizeof(SkyboxBuffer)),
 	renderer(renderer), skyCubeMap(renderer), 
-	preethamCreatorShader(renderer, "CompiledShaders/PreethamSkyCreator_Comp.cso", CUBE_FACE_WIDTH/16, CUBE_FACE_HEIGHT/16 , 6 / 2){
+	preethamCreatorShader(renderer, "Clouds/CompiledShaders/PreethamSkyCreator_Comp.cso", CUBE_FACE_WIDTH/16, CUBE_FACE_HEIGHT/16 , 6 / 2){
 	
 	// Make the mesh big enough to not clip into another mesh
 	this->mesh.setWorldMatrix(XMMatrixScaling(1000.0f, 1000.0f, 1000.0f));
@@ -38,17 +38,16 @@ void Skybox::draw(XMMATRIX const& worldMatrix) {
 
 
 
-	// Set shader to render mesh with
-	this->shader.set();
+	
 
 	// Set sky box to use in pixel shader
 	this->skyCubeMap.setPS();
 
-	
 	// Update shader
-	this->shader.update(renderer, worldMatrix/*this->mesh.getWorldMatrix()*/);
+	this->shader.update(renderer, XMMatrixScaling(1000.0f, 1000.0f, 1000.0f) * worldMatrix);
 
-
+	// Set shader to render mesh with
+	this->shader.set(); 
 	// Render mesh
 	this->mesh.draw();
 }

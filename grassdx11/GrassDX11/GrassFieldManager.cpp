@@ -4,6 +4,7 @@
 #include "GrassTrack.h"
 #include "Car.h"
 
+
 #include <DDSTextureLoader.h>
 
 
@@ -88,8 +89,9 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
    /* ...and lots of variables... */
    ID3DX11EffectShaderResourceVariable* pESRV;
    ID3D11ShaderResourceView* pHeightMapSRV = m_pTerrain->HeightMapSRV();
-   XMVECTOR vLightDir = create(-0.5f, -0.5f, 0.f);
-   m_pShadowMapping->UpdateLightDir(vLightDir);
+
+   XMVECTOR tmp = create(-0.5f, -0.5f, 0.f);
+   m_pShadowMapping->UpdateLightDir(/*a_InitState.vLightDir*/tmp);
 
    for (int i = 0; i < GrassTypeNum; i++)
    {
@@ -107,7 +109,7 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
       m_pWindMapTile[i] = m_pGrassTypes[i]->GetEffect()->GetVariableByName("g_fWindTexTile")->AsScalar();
       m_pHeightScale[i] = m_pGrassTypes[i]->GetEffect()->GetVariableByName("g_fHeightScale")->AsScalar();
       m_pLightDirEVV[i] = m_pGrassTypes[i]->GetEffect()->GetVariableByName("vLightDir")->AsVector();
-      m_pLightDirEVV[i]->SetFloatVector((float*)& vLightDir);
+      m_pLightDirEVV[i]->SetFloatVector((float*)&tmp);
 
       m_pShadowMapESRV[i] = m_pGrassTypes[i]->GetEffect()->GetVariableByName("g_txShadowMap")->AsShaderResource();
       m_pVelocityMapESRV[i] = m_pGrassTypes[i]->GetEffect()->GetVariableByName("g_txVelocityMap")->AsShaderResource();
@@ -159,7 +161,7 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
 
    m_pLightViewProjEMV[GrassTypeNum] = m_pSceneEffect->GetVariableByName("g_mLightViewProj")->AsMatrix();
    m_pLightDirEVV[GrassTypeNum] = m_pSceneEffect->GetVariableByName("vLightDir")->AsVector();
-   m_pLightDirEVV[GrassTypeNum]->SetFloatVector((float*)& vLightDir);
+   m_pLightDirEVV[GrassTypeNum]->SetFloatVector((float*)&tmp);
 
    /* Seating map to terrain shader - for correct texturing of roads */
    pESRV = m_pSceneEffect->GetVariableByName("g_txSeatingT1")->AsShaderResource();
@@ -625,13 +627,14 @@ void GrassFieldManager::Render(Copter* copter, Car* car)
    m_pGrassTypes[2]->ApplyRenderPass();
 }
 
-void GrassFieldManager::Update (float3 a_vCamDir, float3 a_vCamPos, Mesh* a_pMeshes[], UINT a_uNumMeshes, float a_fElapsedTime, float a_fTime)
+void GrassFieldManager::Update(float3 a_vCamDir, float3 a_vCamPos, XMVECTOR vLightDir, Mesh* a_pMeshes[], UINT a_uNumMeshes, float a_fElapsedTime, float a_fTime)
 {
    m_vCamDir = a_vCamDir;
    m_vCamPos = a_vCamPos;
 
    m_pWind->Update(a_fElapsedTime, a_vCamDir);
    m_pTerrain->UpdateLightMap();
+   //m_pShadowMapping->UpdateLightDir(vLightDir);
 
    m_pFlowManager->Update(a_fElapsedTime, a_fTime);
    m_pMixer->MixTextures(m_pWind->GetMap(), m_pFlowManager->GetFlowSRV());
@@ -639,6 +642,14 @@ void GrassFieldManager::Update (float3 a_vCamDir, float3 a_vCamPos, Mesh* a_pMes
 
    m_pGrassTypes[0]->Update(*m_pViewProj, a_vCamPos, a_pMeshes, a_uNumMeshes, a_fElapsedTime);
    m_pGrassTypes[2]->Update(*m_pViewProj, a_vCamPos, a_pMeshes, a_uNumMeshes, a_fElapsedTime);
+
+   /*for (int i = 0; i < GrassTypeNum; i++)
+   {
+       if (i == 1)
+           continue;
+       m_pLightDirEVV[i]->SetFloatVector((float*)&vLightDir);
+
+   }*/
 }
 
 ID3DX11Effect* GrassFieldManager::SceneEffect(void)

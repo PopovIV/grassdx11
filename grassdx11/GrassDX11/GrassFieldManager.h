@@ -39,6 +39,7 @@ struct GrassFieldState
    //std::wstring   sSnowCoverMapPath;
    float          fHeightScale;
    float          fTerrRadius;
+   XMVECTOR       vLightDir;
 };
 
 class GrassFieldManager
@@ -121,6 +122,8 @@ private:
 
    void SetHeightScale       (float a_fHeightScale);
 
+   
+
 public:
    GrassFieldManager         (GrassFieldState& a_InitState);
    ~GrassFieldManager        (void);
@@ -155,7 +158,7 @@ public:
    FlowManager* const GetFlowManager (void) { return m_pFlowManager; }
 
    void Render  (Copter* copter, Car* car);
-   void Update  (float3 a_vCamDir, float3 a_vCamPos, Mesh *a_pMeshes[], UINT a_uNumMeshes, float a_fElapsedTime, float a_fTime);
+   void Update  (float3 a_vCamDir, float3 a_vCamPos, XMVECTOR vLightDir, Mesh *a_pMeshes[], UINT a_uNumMeshes, float a_fElapsedTime, float a_fTime);
     
    ID3DX11Effect *SceneEffect (void);
 };
