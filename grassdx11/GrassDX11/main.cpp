@@ -84,7 +84,7 @@ void ToggleToTerrainCamera (void);
 void ToggleToNormalCamera  (void);
 void InitCarMesh           (void);
 
-bool isDbgUiRendered = false;
+bool isDbgUiRendered = true;
 
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -125,9 +125,10 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     // Switch to D3D_FEATURE_LEVEL_9_x for 10level9 hardware
     DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, g_windowWidth, g_windowHeight );
 
+
     DXUTMainLoop(); // Enter into the DXUT render loop
 
- 
+    
 
     return DXUTGetExitCode();
 }
@@ -230,6 +231,29 @@ void InitApp()
       pComboBox->AddItem(L"Mesh    camera", IntToPtr(CAMERA_MESH));
       pComboBox->AddItem(L"Copter  camera", IntToPtr(CAMERA_COPTER));
    }
+
+   //Sky settings:
+
+   swprintf_s(sStr, MAX_PATH, L"Day time: %.1f", AvocadoSky::SettingsController::time);
+   g_HUD.AddStatic(IDC_DAY_TIME, sStr, 20, iY += iYo, 140, 22);
+   g_HUD.AddSlider(IDC_DAY_TIME, 20, iY += iYo, 185, 22, 0, 1000, (int)(AvocadoSky::SettingsController::time * 100));
+
+   swprintf_s(sStr, MAX_PATH, L"Turbidity: %.1f", AvocadoSky::SettingsController::turbidity);
+   g_HUD.AddStatic(IDC_SKY_TURBIDITY, sStr, 20, iY += iYo, 140, 22);
+   g_HUD.AddSlider(IDC_SKY_TURBIDITY, 20, iY += iYo, 185, 22, 170, 300, (int)(AvocadoSky::SettingsController::turbidity * 100));
+
+   swprintf_s(sStr, MAX_PATH, L"translation: %.1f", AvocadoSky::SettingsController::translationSpeed);
+   g_HUD.AddStatic(IDC_CLOUDS_TRANSLATION, sStr, 0, iY += iYo, 110, 22);
+   g_HUD.AddSlider(IDC_CLOUDS_TRANSLATION, 0, iY += iYo, 110, 22, 0, 300, (int)(AvocadoSky::SettingsController::translationSpeed * 100));
+
+   swprintf_s(sStr, MAX_PATH, L"brightness: %.1f", AvocadoSky::SettingsController::brightness);
+   g_HUD.AddStatic(IDC_CLOUDS_BRIGHTNESS, sStr, 130, iY- iYo, 110, 22);
+   g_HUD.AddSlider(IDC_CLOUDS_BRIGHTNESS, 120, iY, 110, 22, 0, 300, (int)(AvocadoSky::SettingsController::brightness * 100));
+
+   swprintf_s(sStr, MAX_PATH, L"Clouds scale: %.1f", AvocadoSky::SettingsController::scale);
+   g_HUD.AddStatic(IDC_CLOUDS_SCALE, sStr, 20, iY += iYo, 140, 22);
+   g_HUD.AddSlider(IDC_CLOUDS_SCALE, 20, iY += iYo, 185, 22, 0, 50, (int)(AvocadoSky::SettingsController::scale * 100));
+
 
    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
 }
@@ -622,7 +646,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     clouds->setSkybox(*skybox);
 
-  
+    
 
     return S_OK;
 }
@@ -897,15 +921,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 
     TurnOffAlphaBlending();
 
-    //AvocadoSky::SettingsController::ImGuiNewFrame();
-
-    //AvocadoSky::SettingsController::DispalyFPSMonitor();
-    //AvocadoSky::SettingsController::DisplayTimeSlider();
-    //AvocadoSky::SettingsController::DisplayTurbiditySlider();
-
-    //AvocadoSky::SettingsController::DisplayCloudsSettings();
-
-    //AvocadoSky::SettingsController::ImGuiEndFrame();
+  
 }
 
 
@@ -1411,10 +1427,39 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
          setw(vTerrRGB, 1);
          g_pGrassField->SetTerrRGB(vTerrRGB);
          //vTerrRGB *= 2;
-         //g_pGrassField->SetLowGrassDiffuse(vTerrRGB);
+         g_pGrassField->SetLowGrassDiffuse(vTerrRGB);
          break;
       }
+      case IDC_DAY_TIME: {
+          AvocadoSky::SettingsController::time = (float)g_HUD.GetSlider(IDC_DAY_TIME)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Day time: %.1f", AvocadoSky::SettingsController::time);
+          g_HUD.GetStatic(IDC_DAY_TIME)->SetText(sStr);
+      }
+
+      case IDC_SKY_TURBIDITY: {
+          AvocadoSky::SettingsController::turbidity = (float)g_HUD.GetSlider(IDC_SKY_TURBIDITY)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Turbidity: %.1f", AvocadoSky::SettingsController::turbidity);
+          g_HUD.GetStatic(IDC_SKY_TURBIDITY)->SetText(sStr);
+      }
       
+      case IDC_CLOUDS_BRIGHTNESS: {
+          AvocadoSky::SettingsController::brightness = (float)g_HUD.GetSlider(IDC_CLOUDS_BRIGHTNESS)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Brightness: %.1f", AvocadoSky::SettingsController::brightness);
+          g_HUD.GetStatic(IDC_CLOUDS_BRIGHTNESS)->SetText(sStr);
+      }
+
+      case IDC_CLOUDS_TRANSLATION: {
+          AvocadoSky::SettingsController::translationSpeed = (float)g_HUD.GetSlider(IDC_CLOUDS_TRANSLATION)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Translation: %.1f", AvocadoSky::SettingsController::translationSpeed);
+          g_HUD.GetStatic(IDC_CLOUDS_TRANSLATION)->SetText(sStr);
+      }
+
+      case IDC_CLOUDS_SCALE: {
+          AvocadoSky::SettingsController::scale = (float)g_HUD.GetSlider(IDC_CLOUDS_SCALE)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Clouds scale: %.1f", AvocadoSky::SettingsController::scale);
+          g_HUD.GetStatic(IDC_CLOUDS_SCALE)->SetText(sStr);
+      }
+
       //case IDC_FLOW_DIR_X_SLYDER:
       //case IDC_FLOW_DIR_Y_SLYDER:
       //case IDC_FLOW_DIR_Z_SLYDER:

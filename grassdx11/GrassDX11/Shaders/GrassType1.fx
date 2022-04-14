@@ -469,7 +469,7 @@ float4 InstPSMain( PSIn Input ) : SV_Target
     float3 blendColor = alphaValue * float3(1, 1, 1) + (1.0 - alphaValue) * color.xyz;
     color.xyz = blendColor;*/
 
-    return color;
+    return color *  float4(g_vTerrRGB.xyz, 1);
 }
 
 

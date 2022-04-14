@@ -11,7 +11,7 @@ cbuffer cRarely
     float g_fMaxQuality;// = 0.7;
     float3 vLightDir;
     float4 g_vFogColor;
-    float3 g_vTerrRGB;
+   
 }
 
 cbuffer cEveryFrame
@@ -42,6 +42,7 @@ cbuffer cUserControlled
     float g_fHeightScale;
     float g_fQuality;// in range 0..1
     float g_fHardness;
+    float3 g_vTerrRGB;
 };
 
 cbuffer cImmutable
@@ -647,7 +648,7 @@ float4 InstPSMain( PSIn Input ) : SV_Target
         color.xyz = color.xyz * fShadowCoef;
     }
 
-    return color;
+    return color * float4(g_vTerrRGB.x, g_vTerrRGB.y, g_vTerrRGB.z, 1);
 }
 
 

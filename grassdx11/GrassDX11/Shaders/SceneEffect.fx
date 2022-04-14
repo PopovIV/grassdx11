@@ -27,6 +27,7 @@ cbuffer cUserControlled
     float3 g_vTerrRGB;
     float4 g_vFogColor;// = float4(0.0, 0.3, 0.8, 1.0);
     float  g_fTerrTile;
+
     float  g_fHeightScale;
     float3 g_vTerrSpec = float3(202.0/255.0, 218.0/255.0, 50.0/255.0);
     
@@ -516,7 +517,7 @@ float ShadowCalc(float2 inTexCoords, float3 inLightDir, float inLastDepth)
 		float _maxLayers = 32.;
 		float _numLayers = lerp(_maxLayers, _minLayers, abs(alignFactor));
 		float _dDepth = inLastDepth/_numLayers;
-		float2 _dtex = 0.3 * inLightDir.xy / (inLightDir.z * _numLayers);
+		float2 _dtex = 0.3 * inLightDir.xy  / (inLightDir.z * _numLayers) ;
 
 // счетчик точек, оказавшихся под поверхностью
 		int numSamplesUnderSurface = 0;
@@ -555,32 +556,32 @@ float ShadowCalc(float2 inTexCoords, float3 inLightDir, float inLastDepth)
     }
 
 	return shadowMultiplier;
- /*   if ( lightDir.z >= 0.0 )
-        return 0.0;
+    //if ( lightDir.z >= 0.0 )
+    //    return 0.0;
 
-    float shadow = 0.0;
-    float minLayers = 0;
-    float maxLayers = 32;
-    float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), lightDir)));
+    //float shadow = 0.0;
+    //float minLayers = 0;
+    //float maxLayers = 32;
+    //float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), lightDir)));
 
-    float2 currentTexCoords = texCoord;
-    float currentDepthMapValue = 1 - g_txTerrHeight.Sample(g_samLinear, currentTexCoords).r;
-    float currentLayerDepth = currentDepthMapValue;
+    //float2 currentTexCoords = texCoord;
+    //float currentDepthMapValue = 1 - g_txTerrHeight.Sample(g_samLinear, currentTexCoords).r;
+    //float currentLayerDepth = currentDepthMapValue;
 
-    float layerDepth = 1.0 / numLayers;
-    float2 P = lightDir.xy / lightDir.z * g_vTerrRGB.x;
-    float2 deltaTexCoords = P / numLayers;
+    //float layerDepth = 1.0 / numLayers;
+    //float2 P = lightDir.xy / lightDir.z * g_vTerrRGB.x;
+    //float2 deltaTexCoords = P / numLayers;
 
-    [unroll(32)]
-    while (currentLayerDepth <= currentDepthMapValue && currentLayerDepth > 0.0)
-    {
-        currentTexCoords += deltaTexCoords;
-        currentDepthMapValue = 1 - g_txTerrHeight.Sample(g_samLinear, currentTexCoords).r;
-        currentLayerDepth -= layerDepth;
-    }
+    //[unroll(32)]
+    //while (currentLayerDepth <= currentDepthMapValue && currentLayerDepth > 0.0)
+    //{
+    //    currentTexCoords += deltaTexCoords;
+    //    currentDepthMapValue = 1 - g_txTerrHeight.Sample(g_samLinear, currentTexCoords).r;
+    //    currentLayerDepth -= layerDepth;
+    //}
 
-    float r = currentLayerDepth > currentDepthMapValue ? 0.0 : 1.0;
-    return r;*/
+    //float r = currentLayerDepth > currentDepthMapValue ? 0.0 : 1.0;
+    //return r;
 }
 
 
@@ -638,7 +639,7 @@ float4 TerrainPSMain( TerrPSIn Input ): SV_Target
 
     float4 color = lerp(float4(fDot.x * fLimDist * g_vTerrSpec + (1.0 - fDot.x * fLimDist) * vL, 1.0), g_vFogColor, Input.vTexCoord.z);
     
-    color.xyz = color.xyz * shadowCoef * selfShadow;
+    color.xyz = color.xyz * shadowCoef * selfShadow * g_vTerrRGB.xyz;
     return color;
 }
 

@@ -208,7 +208,15 @@ enum IDC_HUD
    
    IDC_CAMERA_TYPE,
 
-   IDC_SAMPLE_COUNT
+   IDC_SAMPLE_COUNT,
+
+
+   //Sky
+   IDC_DAY_TIME,
+   IDC_SKY_TURBIDITY,
+   IDC_CLOUDS_TRANSLATION,
+   IDC_CLOUDS_BRIGHTNESS,
+   IDC_CLOUDS_SCALE,
 };
                       
 //--------------------------------------------------------------------------------------
