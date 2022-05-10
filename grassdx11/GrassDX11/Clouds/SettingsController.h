@@ -10,13 +10,16 @@ namespace AvocadoSky {
     class SettingsController {
 
     public:
-
+        static bool changeDayTime;
+        
         static float turbidity;
         static float time;
 
         static float brightness;
         static float scale;
         static float translationSpeed;
+
+        static XMFLOAT3 diffuse;
 
         static std::string fpsStr;
 
@@ -30,6 +33,30 @@ namespace AvocadoSky {
         static void DisplayCloudsSettings();
 
         static void ImGuiEndFrame();
+
+        static void Init();
+        static void Update();
+
+    private:
+        static bool currentTimeiSDay;
+
+        static float nightTime;// = 3.0f;
+        static float dayTime;// = 6.0f;
+        static float timeSpeed;
+
+        static float dayBrightness;
+        static float nightBrightness;
+        static float brightnessSpeed;
+
+        static float usualTranslationSpeed;
+        static float animationTranslationSpeed;
+
+        static XMFLOAT3 dayDiffuse;
+        static XMFLOAT3 nightDiffuse;
+        static XMFLOAT3 diffuseSpeed;
+
+        static float animationSteps;
+
     };
 }
 

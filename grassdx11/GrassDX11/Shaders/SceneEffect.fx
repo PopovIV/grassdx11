@@ -45,7 +45,7 @@ cbuffer cRarely
 
 cbuffer cImmutable
 {
-    float3 vLightDir;// = float3( 0.0, 0.9174, -0.2752 ); 
+    float3 vLightDir;// = float3(0.0, 0.9174, -0.2752);
 };
 
 //--------------------------------------------------------------------------------------
@@ -395,7 +395,7 @@ TerrPSIn TerrainVSMain( TerrVSIn Input )
     Output.tanLightPos;
     Output.tanViewPos;
 */
-    return Output;
+    return Output;    
 }
 
 float GetAlphaCoef(float2 vTexCoord)

@@ -90,7 +90,7 @@ LiSPSM::~LiSPSM()
    SAFE_RELEASE(m_pTexture);
 }
 
-void LiSPSM::UpdatePointSet(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj, const XMVECTOR& cam)
+void LiSPSM::UpdatePointSet(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj, const XMVECTOR& cam, XMFLOAT3& g_vLightDir)
 {
    //int i;
    //XMVECTOR vIsect;
@@ -122,6 +122,8 @@ void LiSPSM::UpdatePointSet(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj
    sceneBox.max[2] = 100 + getz(cam);
 
    Vector3 lightDir;
+
+   m_vLightDir = g_vLightDir;
    lightDir[0] = m_vLightDir.x;
    lightDir[1] = m_vLightDir.y;
    lightDir[2] = m_vLightDir.z;
@@ -283,7 +285,7 @@ void LiSPSM::UpdateLightDir(const XMVECTOR& a_vLightDir)
 }
 
 void LiSPSM::UpdateMtx(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj,
-   const XMVECTOR& a_vCamPos, const XMVECTOR& a_vCamDir)
+   const XMVECTOR& a_vCamPos, const XMVECTOR& a_vCamDir, XMFLOAT3& g_vLightDir)
 {
    m_bUseUniformSM = true;
 
@@ -302,7 +304,7 @@ void LiSPSM::UpdateMtx(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj,
    setz(mProj.r[2], fProjElement33);
    setz(mProj.r[3], fProjElement43);
    
-   UpdatePointSet(a_mCamMV, mProj, cpos);
+   UpdatePointSet(a_mCamMV, mProj, cpos, g_vLightDir);
    //m_bUseUniformSM = (D3DXVec3Dot(&m_vCamDir, &m_vLightDir) > 0.9f) ? true : false;
 
    XMStoreFloat3(&m_vCamDir, cdir);

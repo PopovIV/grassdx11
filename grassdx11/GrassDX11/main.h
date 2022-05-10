@@ -113,6 +113,8 @@ float                               g_fFanRadius = 20;
 float                               g_fAngleSpeed = 100;
 float                               g_fCopterScale = 1.0f;
 XMFLOAT3                            g_vDir = XMFLOAT3(0.0f, -1.0f, 0.0f);
+XMFLOAT3                            g_vLightDir = XMFLOAT3(-0.7f, -0.7f, 0.0f);
+XMFLOAT3                            g_vSunLightDir = XMFLOAT3(0.0f, 0.0f, 0.0f);
 //phys
 
 
@@ -197,6 +199,11 @@ enum IDC_HUD
    IDC_FLOW_DIR_X_SLYDER,
    IDC_FLOW_DIR_Y_SLYDER,
    IDC_FLOW_DIR_Z_SLYDER,
+
+   IDC_FLOW_SUNDIR_LABEL,
+   IDC_FLOW_SUNDIR_X_SLYDER,
+   IDC_FLOW_SUNDIR_Y_SLYDER,
+   IDC_FLOW_SUNDIR_Z_SLYDER,
 
    IDC_FAN_ANGLE_SPEED_LABEL,
    IDC_FAN_ANGLE_SPEED_SLYDER,

@@ -582,6 +582,15 @@
     <FxCompile Include="Shaders\SceneEffect.fx">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Clouds\Resources\Shaders\PixelShaders\SkyboxShader_Pix.hlsl">
+      <Filter>main</Filter>
+    </FxCompile>
+    <FxCompile Include="Clouds\Resources\Shaders\PixelShaders\CloudsShader_Pix.hlsl">
+      <Filter>main</Filter>
+    </FxCompile>
+    <FxCompile Include="Clouds\Resources\Shaders\VertexShaders\CloudsShader_Vert.hlsl">
+      <Filter>main</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shaders\SnowParticleGS.hlsl">

@@ -17,8 +17,9 @@ cloudTexture(renderer, TextureFilter::BILINEAR, TextureFormat::R8G8B8A8_UNORM, T
 
 	cb.brightness = 0.5f;
 	cb.scale = 0.3f;
-	cb.padding = 10.0f;
+	//cb.padding = 10.0f;
 	cb.translation = 0.0f;
+	cb.gray = 0.9f;
 }
 
 Clouds::~Clouds(){}
@@ -43,7 +44,7 @@ void Clouds::draw(XMMATRIX const& worldMatrix) {
 	this->perturbTexture.setPS(1);
 		
 
-	this->shader.update(renderer, worldMatrix /*this->mesh.getWorldMatrix()*/, true);
+	this->shader.update(renderer, worldMatrix, true);
 	
 	this->mesh.draw();
 }

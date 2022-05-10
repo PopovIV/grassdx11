@@ -13,7 +13,8 @@ namespace AvocadoSky {
 			float translation;
 			float scale;
 			float brightness;
-			float padding;
+			//float padding;
+			float gray;
 		} cb{};
 
 		Renderer& renderer;

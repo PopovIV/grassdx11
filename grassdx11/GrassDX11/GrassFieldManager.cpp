@@ -90,8 +90,8 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
    ID3DX11EffectShaderResourceVariable* pESRV;
    ID3D11ShaderResourceView* pHeightMapSRV = m_pTerrain->HeightMapSRV();
 
-   XMVECTOR tmp = create(-0.5f, -0.5f, 0.f);
-   m_pShadowMapping->UpdateLightDir(/*a_InitState.vLightDir*/tmp);
+   XMVECTOR tmp = create(-0.7f, -0.7f, 0.f);
+   m_pShadowMapping->UpdateLightDir(tmp);
 
    for (int i = 0; i < GrassTypeNum; i++)
    {
@@ -499,7 +499,7 @@ Terrain* const GrassFieldManager::GetTerrain(float* a_fHeightScale, float* a_fGr
    return m_pTerrain;
 }
 
-void GrassFieldManager::Render(Copter* copter, Car* car)
+void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir)
 {
    bool shadows = true;
 
@@ -522,7 +522,7 @@ void GrassFieldManager::Render(Copter* copter, Car* car)
 
    if (shadows) {
       //m_pShadowMapping->m_bUseUniformSM = true;
-      m_pShadowMapping->UpdateMtx(*m_pView, *m_pProj, m_vCamPos, m_vCamDir );
+      m_pShadowMapping->UpdateMtx(*m_pView, *m_pProj, m_vCamPos, m_vCamDir, g_vLightDir);
       XMMATRIX m = m_pShadowMapping->GetViewProjMtx();
       pLightVP = (float*)& m;
 
@@ -634,6 +634,11 @@ void GrassFieldManager::Update(float3 a_vCamDir, float3 a_vCamPos, XMVECTOR vLig
 
    m_pWind->Update(a_fElapsedTime, a_vCamDir);
    m_pTerrain->UpdateLightMap();
+   
+   XMFLOAT4 v4;
+   XMStoreFloat4(&v4, vLightDir);
+   XMVECTOR tmp = create(-0.7,-0.7, 0);
+   m_pShadowMapping->UpdateLightDir(tmp);
    //m_pShadowMapping->UpdateLightDir(vLightDir);
 
    m_pFlowManager->Update(a_fElapsedTime, a_fTime);

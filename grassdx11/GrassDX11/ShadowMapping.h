@@ -3,6 +3,9 @@
 #include "includes.h"
 #include "maths.h"
 
+
+
+
 class LiSPSM
 {
 public:
@@ -33,7 +36,7 @@ public:
     maths::PointArray         m_ShadowOcclAndCasters;
 
     /* constructs m_ShadowOcclAndCasters */
-    void UpdatePointSet                         (const XMMATRIX&a_mCamMV, const XMMATRIX&a_mCamProj, const XMVECTOR& cpos);
+    void UpdatePointSet                         (const XMMATRIX&a_mCamMV, const XMMATRIX&a_mCamProj, const XMVECTOR& cpos, XMFLOAT3& g_vLightDir);
     void GenLiSPSMMtx                           (void);
     void GenUniformMtx                          (void);
 
@@ -45,7 +48,7 @@ public:
     //void SwitchToLiSPSM                         ( );
     
     void                      UpdateLightDir     (const XMVECTOR& a_vLightDir );
-    void                      UpdateMtx          (const XMMATRIX&a_mCamMV, const XMMATRIX&a_mCamProj, const XMVECTOR& a_vCamPos, const XMVECTOR& a_vCamDir);
+    void                      UpdateMtx          (const XMMATRIX&a_mCamMV, const XMMATRIX&a_mCamProj, const XMVECTOR& a_vCamPos, const XMVECTOR& a_vCamDir, XMFLOAT3& g_vLightDir);
     void                      BeginShadowMapPass (void);
     ID3D11ShaderResourceView* EndShadowMapPass   (void);
     const XMMATRIX           GetViewMtx         (void);

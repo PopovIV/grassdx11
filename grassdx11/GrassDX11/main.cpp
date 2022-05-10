@@ -200,12 +200,12 @@ void InitApp()
    g_HUD.AddStatic(IDC_FAN_ANGLE_SPEED_LABEL, sStr, 20, iY += iYo, 180, 22);
    g_HUD.AddSlider(IDC_FAN_ANGLE_SPEED_SLYDER, 20, iY += iYo, 185, 22, 0, 100, (int)(g_fAngleSpeed * 100));
 
-   g_HUD.AddButton(IDC_TOGGLE_WIREFRAME, L"Toggle wire-frame (F4)", 25, iY += iYo, 125, 22, VK_F4);
+  /* g_HUD.AddButton(IDC_TOGGLE_WIREFRAME, L"Toggle wire-frame (F4)", 25, iY += iYo, 125, 22, VK_F4);
    g_HUD.AddButton(IDC_TOGGLE_RENDERING_GRASS, L"Toggle rendering-grass (F5)", 25, iY += iYo, 125, 22, VK_F5);
    
    g_HUD.AddButton(IDC_TOGGLE_RENDERING_DBG_WIN, L"Toggle rendering-dbg win (F6)", 25, iY += iYo, 125, 22, VK_F6);
    g_HUD.AddButton(IDC_TOGGLE_DBG_WIN_SLICE, L"Toggle dbg win slice (F7)", 25, iY += iYo, 125, 22, VK_F7);
-   g_HUD.AddButton(IDC_FIX_CAMERA, L"Fix cam (F8)", 25, iY += iYo, 125, 22, VK_F8);
+   g_HUD.AddButton(IDC_FIX_CAMERA, L"Fix cam (F8)", 25, iY += iYo, 125, 22, VK_F8);*/
 
    
    swprintf_s(sStr, MAX_PATH, L"Diffuse: (%.2f,%.2f,%.2f)", g_vTerrRGB.x, g_vTerrRGB.y, g_vTerrRGB.z);
@@ -214,11 +214,17 @@ void InitApp()
    g_HUD.AddSlider(IDC_TERR_G_SLYDER, 20, iY += iYo, 135, 22, 0, 100, (int)(g_vTerrRGB.y * 100));
    g_HUD.AddSlider(IDC_TERR_B_SLYDER, 20, iY += iYo, 135, 22, 0, 100, (int)(g_vTerrRGB.z * 100));
 
-   swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vDir.x, g_vDir.y, g_vDir.z);
-   g_HUD.AddStatic(IDC_FLOW_DIR_LABEL, sStr, 20, iY += iYo, 140, 22);
-   g_HUD.AddSlider(IDC_FLOW_DIR_X_SLYDER, 20, iY += iYo, 135, 22, -100, 100, (int)(g_vDir.x * 100));
-   g_HUD.AddSlider(IDC_FLOW_DIR_Y_SLYDER, 20, iY += iYo, 135, 22, -100, 100, (int)(g_vDir.y * 100));
-   g_HUD.AddSlider(IDC_FLOW_DIR_Z_SLYDER, 20, iY += iYo, 135, 22, -100, 100, (int)(g_vDir.z * 100));
+   //swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vLightDir.x, g_vLightDir.y, g_vLightDir.z);
+   //g_HUD.AddStatic(IDC_FLOW_DIR_LABEL, sStr, 20, iY += iYo, 140, 22);
+   //g_HUD.AddSlider(IDC_FLOW_DIR_X_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vLightDir.x * 100));
+   //g_HUD.AddSlider(IDC_FLOW_DIR_Y_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vLightDir.y * 100));
+   //g_HUD.AddSlider(IDC_FLOW_DIR_Z_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vLightDir.z * 100));
+
+   //swprintf_s(sStr, MAX_PATH, L"SunDir: (%.2f,%.2f,%.2f)", g_vSunLightDir.x, g_vSunLightDir.y, g_vSunLightDir.z);
+   //g_HUD.AddStatic(IDC_FLOW_SUNDIR_LABEL, sStr, 20, iY += iYo, 140, 22);
+   //g_HUD.AddSlider(IDC_FLOW_SUNDIR_X_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vSunLightDir.x * 100));
+   //g_HUD.AddSlider(IDC_FLOW_SUNDIR_Y_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vSunLightDir.y * 100));
+   //g_HUD.AddSlider(IDC_FLOW_SUNDIR_Z_SLYDER, 20, iY += iYo, 135, 22, -500, 500, (int)(g_vSunLightDir.z * 100));
 
    CDXUTComboBox* pComboBox = NULL;
    g_HUD.AddStatic(IDC_STATIC, L"Camera Type", 20, iY += iYo, 105, 25);
@@ -352,7 +358,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
    blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
    blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-   blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+   blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE; 
    blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
    blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
    blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
@@ -586,7 +592,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    copter = new Copter(pd3dDevice, pd3dImmediateContext, g_pGrassField->m_pSceneEffect, g_pGrassField->GetFlowManager());
    copterController.SetOwner(copter);
 
-   InitCarMesh();
+   //InitCarMesh();
 
    //g_dbgWin = new DebugWindow(pd3dDevice, g_windowWidth, g_windowHeight, g_pGrassField->GetWind()->GetMap(), 10);
    //g_dbgWin = new DebugWindow(pd3dDevice, g_windowWidth, g_windowHeight, g_pGrassField->m_pShadowMapping->m_pSRV, 0.1 / 4);
@@ -646,7 +652,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     clouds->setSkybox(*skybox);
 
-    
+    AvocadoSky::SettingsController::Init();
 
     return S_OK;
 }
@@ -862,6 +868,22 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
     return S_OK;
 }
 
+//--------------------------------------------------------------------------------------
+// Render the scene using the D3D11 device
+//--------------------------------------------------------------------------------------
+
+void TurnZBufferOn(ID3D11DeviceContext* pd3dImmediateContext)
+{
+    pd3dImmediateContext->OMSetDepthStencilState(g_depthStencilStateEnabled, 1);
+    return;
+}
+
+
+void TurnZBufferOff(ID3D11DeviceContext* pd3dImmediateContext)
+{
+    pd3dImmediateContext->OMSetDepthStencilState(g_depthStencilStateDisabled, 1);
+    return;
+}
 
 void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, XMMATRIX& mView, XMMATRIX& mProj, float a_fElapsedTime)
 {
@@ -878,8 +900,8 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
    g_pGrassField->SetViewMtx(mView);
    g_pGrassField->SetProjMtx(mProj);
 
-
-   UpdateMeshes(a_fElapsedTime);
+   //Draw car
+   //UpdateMeshes(a_fElapsedTime);
    // Draw Grass
    XMVECTOR vCamDir = g_Camera->GetLookAtPt() - g_Camera->GetEyePt();
    //if (g_RotCamController.isFixed) {
@@ -889,7 +911,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
    //}
 
    g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
-   g_pGrassField->Render(copter, (Car*)g_pMeshes[0]);
+   g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir);
 
    //for (auto* mesh : g_pMeshes) {
    //   if (mesh != nullptr) {
@@ -907,40 +929,39 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 
     pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
 
-   
+    AvocadoSky::SettingsController::Update();
+
+    g_vLightDir.x = (float)skybox->getSunDir().x;
+    g_vLightDir.y = -(float)skybox->getSunDir().y;
+    g_vLightDir.z = -(float)skybox->getSunDir().z;
+
+    g_vTerrRGB = AvocadoSky::SettingsController::diffuse;
+
+    XM_TO_V(g_vTerrRGB, vTerrRGB, 3);
+    setw(vTerrRGB, 1);
+    g_pGrassField->SetTerrRGB(vTerrRGB);
+    //vTerrRGB *= 2;
+    g_pGrassField->SetLowGrassDiffuse(vTerrRGB);
 
     GetGlobalStateManager().SetRasterizerState("AvocadoSky");
+    /*auto pd3dImmediateContext = DXUTGetD3D11DeviceContext();
+    TurnZBufferOff(pd3dImmediateContext);*/
 
     skybox->draw(mViewProj);
 
+    //TurnOffAlphaBlending();
+
     g_skyRenderer->EnableSecondBlendState();
 
+    //TurnOffAlphaBlending();
     TurnOnAlphaBlending();
 
     clouds->draw(mViewProj);
 
-    TurnOffAlphaBlending();
+    //TurnOffAlphaBlending();
 
-  
 }
 
-
-//--------------------------------------------------------------------------------------
-// Render the scene using the D3D11 device
-//--------------------------------------------------------------------------------------
-
-void TurnZBufferOn(ID3D11DeviceContext* pd3dImmediateContext)
-{
-   pd3dImmediateContext->OMSetDepthStencilState(g_depthStencilStateEnabled, 1);
-   return;
-}
-
-
-void TurnZBufferOff(ID3D11DeviceContext* pd3dImmediateContext)
-{
-   pd3dImmediateContext->OMSetDepthStencilState(g_depthStencilStateDisabled, 1);
-   return;
-}
 
 
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -1192,6 +1213,10 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
    {
       switch (nChar)
       {
+      case 81://Q
+          AvocadoSky::SettingsController::changeDayTime = true;
+          break;
+
       case 74: //j
          copterController.OnLeft();
          break;
@@ -1430,10 +1455,26 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
          g_pGrassField->SetLowGrassDiffuse(vTerrRGB);
          break;
       }
+
+   
+
       case IDC_DAY_TIME: {
           AvocadoSky::SettingsController::time = (float)g_HUD.GetSlider(IDC_DAY_TIME)->GetValue() / 100.0f;
           swprintf_s(sStr, MAX_PATH, L"Day time: %.1f", AvocadoSky::SettingsController::time);
           g_HUD.GetStatic(IDC_DAY_TIME)->SetText(sStr);
+
+          g_vLightDir.x = (float)skybox->getSunDir().x;
+          g_vLightDir.y = -(float)skybox->getSunDir().y;
+          g_vLightDir.z = -(float)skybox->getSunDir().z;
+          /*swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vLightDir.x, g_vLightDir.y, g_vLightDir.z);
+          g_HUD.GetStatic(IDC_FLOW_DIR_LABEL)->SetText(sStr);
+
+          g_vSunLightDir.x = (float)skybox->getSunDir().x;
+          g_vSunLightDir.y = (float)skybox->getSunDir().y;
+          g_vSunLightDir.z = (float)skybox->getSunDir().z;
+          swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vSunLightDir.x, g_vSunLightDir.y, g_vSunLightDir.z);
+          g_HUD.GetStatic(IDC_FLOW_SUNDIR_LABEL)->SetText(sStr);*/
+          break;
       }
 
       case IDC_SKY_TURBIDITY: {
@@ -1460,18 +1501,30 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
           g_HUD.GetStatic(IDC_CLOUDS_SCALE)->SetText(sStr);
       }
 
-      //case IDC_FLOW_DIR_X_SLYDER:
-      //case IDC_FLOW_DIR_Y_SLYDER:
-      //case IDC_FLOW_DIR_Z_SLYDER:
-      //{
-      //   g_vDir.x = (float)g_HUD.GetSlider(IDC_FLOW_DIR_X_SLYDER)->GetValue() / 100.0f;
-      //   g_vDir.y = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Y_SLYDER)->GetValue() / 100.0f;
-      //   g_vDir.z = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Z_SLYDER)->GetValue() / 100.0f;
-      //   swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vDir.x, g_vDir.y, g_vDir.z);
-      //   g_HUD.GetStatic(IDC_FLOW_DIR_LABEL)->SetText(sStr);
-      //   g_pGrassField->m_pFlowManager->fans[0].direction = g_vDir;
-      //   break;
-      //}
+      /*case IDC_FLOW_DIR_X_SLYDER:
+      case IDC_FLOW_DIR_Y_SLYDER:
+      case IDC_FLOW_DIR_Z_SLYDER:
+      {
+         g_vDir.x = (float)g_HUD.GetSlider(IDC_FLOW_DIR_X_SLYDER)->GetValue() / 100.0f;
+         g_vDir.y = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Y_SLYDER)->GetValue() / 100.0f;
+         g_vDir.z = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Z_SLYDER)->GetValue() / 100.0f;
+         swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vDir.x, g_vDir.y, g_vDir.z);
+         g_HUD.GetStatic(IDC_FLOW_DIR_LABEL)->SetText(sStr);
+         g_pGrassField->m_pFlowManager->fans[0].direction = g_vDir;
+         break;
+      }*/
+
+     /* case IDC_FLOW_DIR_X_SLYDER:
+      case IDC_FLOW_DIR_Y_SLYDER:
+      case IDC_FLOW_DIR_Z_SLYDER:
+      {
+          g_vLightDir.x = (float)g_HUD.GetSlider(IDC_FLOW_DIR_X_SLYDER)->GetValue() / 100.0f;
+          g_vLightDir.y = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Y_SLYDER)->GetValue() / 100.0f;
+          g_vLightDir.z = (float)g_HUD.GetSlider(IDC_FLOW_DIR_Z_SLYDER)->GetValue() / 100.0f;
+          swprintf_s(sStr, MAX_PATH, L"Dir: (%.2f,%.2f,%.2f)", g_vLightDir.x, g_vLightDir.y, g_vLightDir.z);
+          g_HUD.GetStatic(IDC_FLOW_DIR_LABEL)->SetText(sStr);
+          break;
+      }*/
    }
 }
 
