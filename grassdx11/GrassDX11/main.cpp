@@ -887,45 +887,45 @@ void TurnZBufferOff(ID3D11DeviceContext* pd3dImmediateContext)
 
 void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, XMMATRIX& mView, XMMATRIX& mProj, float a_fElapsedTime)
 {
-   copterController.UpdatePhysics();
-   copterController.UpdateCamera();
-   copter->UpdateFromTransform(copterController.transform);
+    copterController.UpdatePhysics();
+    copterController.UpdateCamera();
+    copter->UpdateFromTransform(copterController.transform);
    
-   XMMATRIX mViewProj;
-   mViewProj = mul(mView, mProj);
+    XMMATRIX mViewProj;
+    mViewProj = mul(mView, mProj);
 
-   g_pGrassField->SetTime(g_fTime);
+    g_pGrassField->SetTime(g_fTime);
 
-   g_pGrassField->SetViewProjMtx(mViewProj);
-   g_pGrassField->SetViewMtx(mView);
-   g_pGrassField->SetProjMtx(mProj);
+    g_pGrassField->SetViewProjMtx(mViewProj);
+    g_pGrassField->SetViewMtx(mView);
+    g_pGrassField->SetProjMtx(mProj);
 
-   //Draw car
-   //UpdateMeshes(a_fElapsedTime);
-   // Draw Grass
-   XMVECTOR vCamDir = g_Camera->GetLookAtPt() - g_Camera->GetEyePt();
-   //if (g_RotCamController.isFixed) {
-   //   XMVECTOR pos = (g_Camera->GetEyePt() + g_RotCamController.delta);
-   //   V_TO_XM(pos, xpos, 3);
-   //   g_pGrassField->GetFlowManager()->fans[0].position = xpos;
-   //}
+    //Draw car
+    //UpdateMeshes(a_fElapsedTime);
+    // Draw Grass
+    XMVECTOR vCamDir = g_Camera->GetLookAtPt() - g_Camera->GetEyePt();
+    //if (g_RotCamController.isFixed) {
+    //   XMVECTOR pos = (g_Camera->GetEyePt() + g_RotCamController.delta);
+    //   V_TO_XM(pos, xpos, 3);
+    //   g_pGrassField->GetFlowManager()->fans[0].position = xpos;
+    //}
 
-   g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
-   g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir);
+    g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
+    g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir);
 
-   //for (auto* mesh : g_pMeshes) {
-   //   if (mesh != nullptr) {
-   //      mesh->Render();
-   //   }
-   //}
+    //for (auto* mesh : g_pMeshes) {
+    //   if (mesh != nullptr) {
+    //      mesh->Render();
+    //   }
+    //}
    
-   pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
-   g_pSkyViewProjEMV->SetMatrix((float*)& mViewProj);
+    pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
+    g_pSkyViewProjEMV->SetMatrix((float*)& mViewProj);
 
-   if (GetGlobalStateManager().UseWireframe())
-      GetGlobalStateManager().SetRasterizerState("EnableMSAACulling_Wire");
-   else
-      GetGlobalStateManager().SetRasterizerState("EnableMSAACulling");
+    if (GetGlobalStateManager().UseWireframe())
+        GetGlobalStateManager().SetRasterizerState("EnableMSAACulling_Wire");
+    else
+        GetGlobalStateManager().SetRasterizerState("EnableMSAACulling");
 
     pd3dDeviceCtx->IASetInputLayout(g_pSkyVertexLayout);
 
@@ -936,30 +936,23 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
     g_vLightDir.z = -(float)skybox->getSunDir().z;
 
     g_vTerrRGB = AvocadoSky::SettingsController::diffuse;
-
     XM_TO_V(g_vTerrRGB, vTerrRGB, 3);
     setw(vTerrRGB, 1);
     g_pGrassField->SetTerrRGB(vTerrRGB);
-    //vTerrRGB *= 2;
+
     g_pGrassField->SetLowGrassDiffuse(vTerrRGB);
 
     GetGlobalStateManager().SetRasterizerState("AvocadoSky");
-    /*auto pd3dImmediateContext = DXUTGetD3D11DeviceContext();
-    TurnZBufferOff(pd3dImmediateContext);*/
 
     skybox->draw(mViewProj);
 
-    //TurnOffAlphaBlending();
-
     g_skyRenderer->EnableSecondBlendState();
 
-    //TurnOffAlphaBlending();
     TurnOnAlphaBlending();
 
     clouds->draw(mViewProj);
 
-    //TurnOffAlphaBlending();
-
+    TurnOffAlphaBlending();
 }
 
 
@@ -1213,7 +1206,7 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
    {
       switch (nChar)
       {
-      case 81://Q
+      case 90: //z
           AvocadoSky::SettingsController::changeDayTime = true;
           break;
 

@@ -54,7 +54,7 @@ cbuffer cImmutable
     float3 g_vSubScatter = float3(1.0, 1.0, 0.0);
     /* alpha borders for lods */
     float g_fLod0Offset = 0.0;
-    float g_fLod2Offset = 0.67;
+    float g_fLod2Offset = 5.0;//0.67;
 };
 
 struct GrassSubType
@@ -463,7 +463,7 @@ float4 InstPSMain( PSIn Input ) : SV_Target
     fDd = 1.0 - 3.0*fDd2 +2.0*fDd2*fDd;
    //vC = fDd*vC + (1.0-fDd)*vT;
     float4 color = lerp(float4(vC, fAlpha) , g_vFogColor, Input.vTexCoord.z);
-    color = color * shadowCoef;
+    color.xyz = color.xyz * shadowCoef;
 
     /*float alphaValue = clamp(length(g_txSnowCover.Sample(g_samLinear, Input.vWorldTC).r), 0.0, 1.0);
     float3 blendColor = alphaValue * float3(1, 1, 1) + (1.0 - alphaValue) * color.xyz;

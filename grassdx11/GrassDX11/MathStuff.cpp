@@ -728,6 +728,8 @@ void includeObjectLightVolume(struct VecPoint* points, const struct Object obj,
 			if(intersectionLineAABox(pt,points->points[i],ld,sceneAABox) ) {
 				append2VecPoint(points,pt);
 			}
+			/*intersectionLineAABox(pt, points->points[i], ld, sceneAABox);
+			append2VecPoint(points, pt);*/
 		}
 	}
 }

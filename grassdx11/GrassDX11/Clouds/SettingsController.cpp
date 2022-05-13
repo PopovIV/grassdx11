@@ -16,15 +16,15 @@ float SettingsController::dayTime = 6.0f;
 float SettingsController::timeSpeed = 0.0f;
 
 float SettingsController::dayBrightness = 1.0f;
-float SettingsController::nightBrightness = 0.5f;
+float SettingsController::nightBrightness = 0.4f;
 float SettingsController::brightnessSpeed = 0.0f;
 
 XMFLOAT3 SettingsController::dayDiffuse = XMFLOAT3(0.5f, 0.5f, 0.5f);
 XMFLOAT3 SettingsController::nightDiffuse = XMFLOAT3(0.2f, 0.2f, 0.2f);
 XMFLOAT3 SettingsController::diffuseSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-float SettingsController::usualTranslationSpeed = 0.2f;
-float SettingsController::animationTranslationSpeed = 2.0f;
+float SettingsController::usualTranslationSpeed = 0.4f;
+float SettingsController::animationTranslationSpeed = 4.0f;
 float SettingsController::animationSteps = 1000.0f;
 
 bool SettingsController::changeDayTime = false;

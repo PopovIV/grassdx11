@@ -295,8 +295,10 @@ void LiSPSM::UpdateMtx(const XMMATRIX& a_mCamMV, const XMMATRIX& a_mCamProj,
    cdir = a_vCamDir;
    cdir = XMVector3Normalize(cdir);
    cpos = a_vCamPos;
+   
 
-   float f = 50.0, n = 0.1;
+   // shadow radius
+   float f = 100.0, n = 0.1;
    static const float fProjElement33 = (f + n) / (f - n);
    static const float fProjElement43 = -2 * f * n / (f - n);
    XMMATRIX mProj = a_mCamProj;
