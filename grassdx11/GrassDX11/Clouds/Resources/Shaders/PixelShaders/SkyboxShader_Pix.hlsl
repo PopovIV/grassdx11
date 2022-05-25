@@ -22,5 +22,5 @@ float4 main(Input input) : SV_TARGET {
     float3 col = cubeMapTexture.Sample(MeshTextureSampler, viewDir).rgb;
 
 	//return float4(col, 0.1f);
-	return float4(col, 1.0f);
+	return  float4(pow(col.x, 2.2), pow(col.y, 2.2), pow(col.z, 2.2), 1.0f);
 }

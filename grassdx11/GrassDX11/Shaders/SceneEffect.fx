@@ -608,14 +608,14 @@ float4 TerrainPSMain( TerrPSIn Input ): SV_Target
   
     float3 normal  = g_txTerrNormal.Sample(g_samLinear, Input.vTexCoord * 64);
   
-    float selfShadow = 1;
-    if (alphaValue < 0.5 && length(g_mInvCamView[3].xyz - Input.worldPos) < 75) {
+    float selfShadow = 1.0;
+   /* if (alphaValue < 0.5 && length(g_mInvCamView[3].xyz - Input.worldPos) < 75) {
         texCoords = ParallaxMapping(Input.vTexCoord * 64, viewDir, viewDir1, g_txTerrHeight, lastDepthValue);
         selfShadow = ShadowCalc(texCoords, -Input.tanLightDir, lastDepthValue);
     } else {
         if (alphaValue < 0.5)
             selfShadow = dot(-vLightDir * 2 * 0.88, normal);
-    }
+    }*/
   
     float shadowCoef = ShadowCoef(Input.vShadowPos);
     

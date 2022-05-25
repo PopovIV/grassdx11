@@ -6,7 +6,7 @@ using namespace AvocadoSky;
 
 float SettingsController::turbidity = 2.0f;
 float SettingsController::time = 0.0f;
-float SettingsController::brightness = 1.0f;
+float SettingsController::brightness = 0.8f;
 float SettingsController::scale = 0.3f;
 float SettingsController::translationSpeed = 0.0f;
 XMFLOAT3 SettingsController::diffuse = XMFLOAT3(0.5f, 0.5f, 0.5f);
@@ -15,7 +15,7 @@ float SettingsController::nightTime = 3.0f;
 float SettingsController::dayTime = 6.0f;
 float SettingsController::timeSpeed = 0.0f;
 
-float SettingsController::dayBrightness = 1.0f;
+float SettingsController::dayBrightness = 0.8f;
 float SettingsController::nightBrightness = 0.4f;
 float SettingsController::brightnessSpeed = 0.0f;
 
