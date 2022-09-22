@@ -10,11 +10,21 @@ void Log::warning(std::string warningMessage) {
 }
 
 void Log::error(std::string errorMessage) {
-	//MessageBox(	NULL, errorMessage.c_str(), "ERROR", MB_OK);
+	LPWSTR tmp = new wchar_t[errorMessage.size() + 1];
+	copy(errorMessage.begin(), errorMessage.end(), tmp);
+	tmp[errorMessage.size()] = 0;
+
+	MessageBox(	NULL, tmp, L"ERROR", MB_OK);
+
+	delete[] tmp;
 }
 
 void Log::resultFailed(std::string errorMessage, HRESULT& result) {
 	_com_error err(result);
 	LPCTSTR errMsg = err.ErrorMessage();
-	//Log::error(errorMessage + "\nHRESULT: " + std::string(errMsg));
+
+	std::wstring w;
+	w = errMsg;
+
+	Log::error(errorMessage + "\nHRESULT: " + std::string(w.begin(), w.end()));
 }

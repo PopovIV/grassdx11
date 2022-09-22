@@ -50,9 +50,6 @@
     <Filter Include="Clouds\Engine">
       <UniqueIdentifier>{3f58f97f-59cc-46db-b38b-45995c8b5dd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Clouds\Engine\App">
-      <UniqueIdentifier>{bb888729-827a-41d1-80b5-b4f15a638b6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Clouds\Engine\Graphics">
       <UniqueIdentifier>{d1af25f0-eea4-4194-a269-c815d4dc8136}</UniqueIdentifier>
     </Filter>
@@ -193,15 +190,6 @@
     <ClCompile Include="Clouds\SettingsController.cpp">
       <Filter>Clouds\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Clouds\Engine\Application\Input.cpp">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\Application\Time.cpp">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\Application\Window.cpp">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClCompile>
     <ClCompile Include="Clouds\Engine\Graphics\ComputeShader.cpp">
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClCompile>
@@ -215,9 +203,6 @@
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Graphics\MeshData.cpp">
-      <Filter>Clouds\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\Graphics\MeshInstancer.cpp">
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Graphics\Renderer.cpp">
@@ -256,16 +241,10 @@
     <ClCompile Include="Clouds\External\WICTextureLoader11.cpp">
       <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
     </ClCompile>
-    <ClCompile Include="Clouds\ErrorLogger.cpp">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="Clouds\pch.cpp">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\StringConverter.cpp">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\SMath.cpp">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Dev\Log.cpp">
@@ -430,15 +409,6 @@
     <ClInclude Include="Clouds\SettingsController.h">
       <Filter>Clouds\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Clouds\Engine\Application\Input.h">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\Application\Time.h">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\Application\Window.h">
-      <Filter>Clouds\Engine\App</Filter>
-    </ClInclude>
     <ClInclude Include="Clouds\Engine\Graphics\ComputeShader.h">
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClInclude>
@@ -452,9 +422,6 @@
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Graphics\MeshData.h">
-      <Filter>Clouds\Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\Graphics\MeshInstancer.h">
       <Filter>Clouds\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Graphics\Renderer.h">
@@ -499,16 +466,10 @@
     <ClInclude Include="Clouds\External\WICTextureLoader11.h">
       <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
     </ClInclude>
-    <ClInclude Include="Clouds\ErrorLogger.h">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClInclude>
     <ClInclude Include="Clouds\pch.h">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\StringConverter.h">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\SMath.h">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Dev\Helpers.h">

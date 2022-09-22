@@ -1,5 +1,5 @@
 #include "Skybox.h"
-#include "../../Engine/Application/Time.h"
+//#include "../../Engine/Application/Time.h"
 #include "..\..\SettingsController.h"
 
 using namespace AvocadoSky;

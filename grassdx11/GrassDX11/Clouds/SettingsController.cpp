@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SettingsController.h"
-#include "Engine\Application\Time.h"
 
 using namespace AvocadoSky;
 
@@ -50,16 +49,16 @@ void SettingsController::ImGuiInit(const HWND hwnd, const Renderer &renderer) {
 	ImGui::StyleColorsDark();
 }
 
-void SettingsController::DispalyFPSMonitor() {
-	ImGui::Begin("FPS Monitor");
-
-	if (Time::hasOneSecondPassed()) {
-		int fps = Time::getFramesPerSecond();
-		fpsStr = "FPS: " + std::to_string(fps) + " (" + std::to_string(1000.0f / fps) + " ms)";
-	}
-
-	ImGui::Text(fpsStr.c_str());
-}
+//void SettingsController::DispalyFPSMonitor() {
+//	ImGui::Begin("FPS Monitor");
+//
+//	if (Time::hasOneSecondPassed()) {
+//		int fps = Time::getFramesPerSecond();
+//		fpsStr = "FPS: " + std::to_string(fps) + " (" + std::to_string(1000.0f / fps) + " ms)";
+//	}
+//
+//	ImGui::Text(fpsStr.c_str());
+//}
 
 void SettingsController::DisplayTurbiditySlider() {
 	ImGui::SliderFloat("Turbidity", &SettingsController::turbidity, 0.5f, 5.0f);

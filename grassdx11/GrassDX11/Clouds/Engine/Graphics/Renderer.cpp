@@ -1,63 +1,9 @@
 #include "Renderer.h"
 #include "../Dev/Log.h"
 #include <wrl\client.h>
+#include "../../pch.h"
 
 using namespace AvocadoSky;
-
-bool Renderer::createDevice(RenderWindow& window, bool vsyncEnabled) {
-
-	HRESULT result;
-
-	// Swap chain desc
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-	swapChainDesc.BufferCount = 1; // One back buffer, (and one front buffer)
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	
-	swapChainDesc.BufferDesc.Width = window.getWidth(); // window width
-	swapChainDesc.BufferDesc.Height = window.getHeight(); // window hight
-	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
-	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	swapChainDesc.OutputWindow = window.GetHWND(); //hwnd
-	swapChainDesc.SampleDesc.Count = 1; // Number of samples for AA
-	swapChainDesc.SampleDesc.Quality = 0;
-	swapChainDesc.Windowed = true;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-	swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
-	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-
-	// Set feature level of DirectX 11
-	D3D_FEATURE_LEVEL featureLevel;
-	featureLevel = D3D_FEATURE_LEVEL_11_0;
-
-	// Create the swap chain, device and device context
-	//result = D3D11CreateDeviceAndSwapChain(
-	//	nullptr,  //IDXGI Adapter
-	//	D3D_DRIVER_TYPE_HARDWARE,  
-	//	nullptr,  //FOR SOFTWARE DRIVER TYPE
-	//	D3D11_CREATE_DEVICE_DEBUG, //FLAGS FOR RUNTIME LAYERS
-	//	nullptr,//&featureLevel,  //FEATURE LEVELS ARRAY
-	//	0,//1, //# OF FEATURE LEVELS IN ARRAY
-	//	D3D11_SDK_VERSION, 
-	//	&swapChainDesc, //SWAPCHAIN DESCRIPTION
-	//	&this->_swapChain,  //SWAPCHAIN ADDRESS
-	//	&this->_device, //DEVICE ADDRESS
-	//	nullptr, //SUPPORTED FEATURE LEVEL
-	//	&this->_deviceContext //DEVICE CONTEXT ADDRESS
-	//);
-
-	// Check for errors
-	if (FAILED(result)) {
-		Log::error("Failed to create device and swapchain");
-		return false;
-	}
-
-	return true;
-}
 
 bool Renderer::createRenderTarget() {
 	HRESULT hr;
@@ -82,6 +28,7 @@ bool Renderer::createRenderTarget() {
 
 	return true;
 }
+
 
 bool Renderer::createDepthStencilBuffers()
 {
@@ -285,24 +232,6 @@ Renderer::Renderer(int screenWidth, int screenHeight,
 }
 
 
-//Renderer::Renderer(RenderWindow& window): _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr) /*_camera(nullptr)*/ {
-//	this->_projectionMatrix = XMMatrixIdentity();
-//	this->_viewMatrix = XMMatrixIdentity();
-//
-//	//this->_viewMatrix = XMMatrixSet(
-//	//	0.99942f, 0.00521f, -0.03359f, 0.00f,
-//	//	0.00f, 0.98817f, 0.15339f, 1.0f,
-//	//	0.03399f, -0.1533f, 0.98759f, 0.00f,
-//	//	0.10198f, -1.44808f, 2.80939f, 1.00f
-//	//);
-//	this->screenH = window.getHeight();
-//	this->screenW = window.getWidth();
-//
-//	this->createDevice(window, vsyncEnabled);
-//	this->createRenderTarget();
-//	this->createDepthStencilBuffers();
-//	this->createBlendState();
-//}
 
 Renderer::~Renderer() {
 	// Set to windowed mode or the swap chain will throw an exception

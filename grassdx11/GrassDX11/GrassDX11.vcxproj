@@ -430,9 +430,6 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Clouds\Clouds.cpp" />
-    <ClCompile Include="Clouds\Engine\Application\Input.cpp" />
-    <ClCompile Include="Clouds\Engine\Application\Time.cpp" />
-    <ClCompile Include="Clouds\Engine\Application\Window.cpp" />
     <ClCompile Include="Clouds\Engine\Dev\Log.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\ConstantBuffer.cpp" />
@@ -446,12 +443,9 @@
     <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\MeshClass.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\MeshData.cpp" />
-    <ClCompile Include="Clouds\Engine\Graphics\MeshInstancer.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\Renderer.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\Shader.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\Texture.cpp" />
-    <ClCompile Include="Clouds\Engine\SMath.cpp" />
-    <ClCompile Include="Clouds\ErrorLogger.cpp" />
     <ClCompile Include="Clouds\Examples\GameObjects\Skybox.cpp" />
     <ClCompile Include="Clouds\External\DDSTextureLoader11.cpp" />
     <ClCompile Include="Clouds\External\WICTextureLoader11.cpp" />
@@ -517,9 +511,6 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Clouds\Clouds.h" />
-    <ClInclude Include="Clouds\Engine\Application\Input.h" />
-    <ClInclude Include="Clouds\Engine\Application\Time.h" />
-    <ClInclude Include="Clouds\Engine\Application\Window.h" />
     <ClInclude Include="Clouds\Engine\Dev\Helpers.h" />
     <ClInclude Include="Clouds\Engine\Dev\Log.h" />
     <ClInclude Include="Clouds\Engine\Graphics\ComputeShader.h" />
@@ -536,12 +527,9 @@
     <ClInclude Include="Clouds\Engine\Graphics\ImGui\imstb_truetype.h" />
     <ClInclude Include="Clouds\Engine\Graphics\MeshClass.h" />
     <ClInclude Include="Clouds\Engine\Graphics\MeshData.h" />
-    <ClInclude Include="Clouds\Engine\Graphics\MeshInstancer.h" />
     <ClInclude Include="Clouds\Engine\Graphics\Renderer.h" />
     <ClInclude Include="Clouds\Engine\Graphics\Shader.h" />
     <ClInclude Include="Clouds\Engine\Graphics\Texture.h" />
-    <ClInclude Include="Clouds\Engine\SMath.h" />
-    <ClInclude Include="Clouds\ErrorLogger.h" />
     <ClInclude Include="Clouds\Examples\GameObjects\Skybox.h" />
     <ClInclude Include="Clouds\External\DDSTextureLoader11.h" />
     <ClInclude Include="Clouds\External\WICTextureLoader11.h" />
