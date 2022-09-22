@@ -20,6 +20,10 @@
 
 #include "Car.h"
 #include "Clouds\SettingsController.h"
+//#include "NewDel.h"
+
+
+//#include "memdebug.h"
 
 #pragma warning( disable : 4100 )
 
@@ -1113,12 +1117,12 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
   /* SAFE_DELETE(g_ParticleShader);
    SAFE_DELETE(g_ParticleSystem);*/
    SAFE_DELETE(copter);
-
+   SAFE_DELETE(g_skyRenderer);
 
    SAFE_RELEASE(g_pSkyVertexLayout);
    g_MeshSkybox.Destroy();
 
-   for (int i = 0; i < g_fNumOfMeshes; i++) {
+   for (int i = 0; i < g_fNumOfMeshes; i++) {                                                                                                                          
       SAFE_DELETE(g_pMeshes[i]);
    }
    g_fNumOfMeshes = 0;

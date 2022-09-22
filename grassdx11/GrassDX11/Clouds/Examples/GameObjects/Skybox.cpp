@@ -36,10 +36,6 @@ void Skybox::draw(XMMATRIX const& worldMatrix) {
 
 	this->preethamCreatorShader.run();
 
-
-
-	
-
 	// Set sky box to use in pixel shader
 	this->skyCubeMap.setPS();
 

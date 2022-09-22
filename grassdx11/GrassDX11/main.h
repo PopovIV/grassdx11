@@ -12,6 +12,7 @@
 #include <d3dx11effect.h>
 
 #include "mesh.h"
+
 #include "plane.h"
 #include "Terrain.h"
 #include "GrassFieldManager.h"

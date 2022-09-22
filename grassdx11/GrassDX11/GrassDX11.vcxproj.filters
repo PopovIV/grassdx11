@@ -193,9 +193,6 @@
     <ClCompile Include="Clouds\SettingsController.cpp">
       <Filter>Clouds\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Clouds\Examples\GameObjects\CameraController.cpp">
-      <Filter>Clouds\Controllers</Filter>
-    </ClCompile>
     <ClCompile Include="Clouds\Engine\Application\Input.cpp">
       <Filter>Clouds\Engine\App</Filter>
     </ClCompile>
@@ -204,12 +201,6 @@
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Application\Window.cpp">
       <Filter>Clouds\Engine\App</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\Graphics\Camera2.cpp">
-      <Filter>Clouds\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\Engine\Graphics\CameraClass.cpp">
-      <Filter>Clouds\Engine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Graphics\ComputeShader.cpp">
       <Filter>Clouds\Engine\Graphics</Filter>
@@ -286,22 +277,10 @@
     <ClCompile Include="Clouds\Clouds.cpp">
       <Filter>Clouds\GraphicsObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Clouds\ShaderHandlers\ColorShader.cpp">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\ShaderHandlers\PerlinNoiseShader.cpp">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClCompile>
     <ClCompile Include="Clouds\ShaderHandlers\SkyboxShader.cpp">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.cpp">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\ShaderHandlers\TerrainShaderClass.cpp">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\ShaderHandlers\TextureShader.cpp">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -451,9 +430,6 @@
     <ClInclude Include="Clouds\SettingsController.h">
       <Filter>Clouds\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Clouds\Examples\GameObjects\CameraController.h">
-      <Filter>Clouds\Controllers</Filter>
-    </ClInclude>
     <ClInclude Include="Clouds\Engine\Application\Input.h">
       <Filter>Clouds\Engine\App</Filter>
     </ClInclude>
@@ -462,12 +438,6 @@
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Application\Window.h">
       <Filter>Clouds\Engine\App</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\Graphics\Camera2.h">
-      <Filter>Clouds\Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\Engine\Graphics\CameraClass.h">
-      <Filter>Clouds\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Graphics\ComputeShader.h">
       <Filter>Clouds\Engine\Graphics</Filter>
@@ -553,22 +523,10 @@
     <ClInclude Include="Clouds\Clouds.h">
       <Filter>Clouds\GraphicsObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Clouds\ShaderHandlers\ColorShader.h">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\ShaderHandlers\PerlinNoiseShader.h">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClInclude>
     <ClInclude Include="Clouds\ShaderHandlers\SkyboxShader.h">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.h">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\ShaderHandlers\TerrainShaderClass.h">
-      <Filter>Clouds\ShaderHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\ShaderHandlers\TextureShader.h">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClInclude>
   </ItemGroup>

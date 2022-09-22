@@ -3,8 +3,6 @@
 #include <d3d11.h>
 #include "../Application/Window.h"
 #include "../Dev/Helpers.h"
-#include "Camera2.h"
-#include "CameraClass.h"
 
 namespace AvocadoSky {
 
@@ -27,7 +25,7 @@ namespace AvocadoSky {
 		ID3D11BlendState* m_alphaDisableBlendingState;
 		ID3D11BlendState* m_alphaBlendState2;
 
-		Camera* _camera;
+		//Camera* _camera;
 		//CameraClass* _camera2;
 
 		XMMATRIX _projectionMatrix;
@@ -62,14 +60,14 @@ namespace AvocadoSky {
 			ID3D11DepthStencilState* _depthStencilStateEnabled
 		);
 
-		Renderer(RenderWindow& window);
+		//Renderer(RenderWindow& window);
 		~Renderer();
 
 		void beginFrame();
 		void clear();
 		void endFrame();
 
-		void setCamera(Camera& cam);
+		//void setCamera(Camera& cam);
 
 		//void setCamera(CameraClass& cam);
 

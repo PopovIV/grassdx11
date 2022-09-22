@@ -285,28 +285,28 @@ Renderer::Renderer(int screenWidth, int screenHeight,
 }
 
 
-Renderer::Renderer(RenderWindow& window): _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr), _camera(nullptr) {
-	this->_projectionMatrix = XMMatrixIdentity();
-	this->_viewMatrix = XMMatrixIdentity();
-
-	//this->_viewMatrix = XMMatrixSet(
-	//	0.99942f, 0.00521f, -0.03359f, 0.00f,
-	//	0.00f, 0.98817f, 0.15339f, 1.0f,
-	//	0.03399f, -0.1533f, 0.98759f, 0.00f,
-	//	0.10198f, -1.44808f, 2.80939f, 1.00f
-	//);
-	this->screenH = window.getHeight();
-	this->screenW = window.getWidth();
-
-	this->createDevice(window, vsyncEnabled);
-	this->createRenderTarget();
-	this->createDepthStencilBuffers();
-	this->createBlendState();
-}
+//Renderer::Renderer(RenderWindow& window): _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr) /*_camera(nullptr)*/ {
+//	this->_projectionMatrix = XMMatrixIdentity();
+//	this->_viewMatrix = XMMatrixIdentity();
+//
+//	//this->_viewMatrix = XMMatrixSet(
+//	//	0.99942f, 0.00521f, -0.03359f, 0.00f,
+//	//	0.00f, 0.98817f, 0.15339f, 1.0f,
+//	//	0.03399f, -0.1533f, 0.98759f, 0.00f,
+//	//	0.10198f, -1.44808f, 2.80939f, 1.00f
+//	//);
+//	this->screenH = window.getHeight();
+//	this->screenW = window.getWidth();
+//
+//	this->createDevice(window, vsyncEnabled);
+//	this->createRenderTarget();
+//	this->createDepthStencilBuffers();
+//	this->createBlendState();
+//}
 
 Renderer::~Renderer() {
 	// Set to windowed mode or the swap chain will throw an exception
-	if (this->_swapChain) {
+	/*if (this->_swapChain) {
 		this->_swapChain->SetFullscreenState(false, NULL);
 	}
 
@@ -317,7 +317,7 @@ Renderer::~Renderer() {
 	S_RELEASE(this->_renderTargetView);
 	S_RELEASE(this->_deviceContext);
 	S_RELEASE(this->_device);
-	S_RELEASE(this->_swapChain);
+	S_RELEASE(this->_swapChain);*/
 	S_RELEASE(this->m_alphaBlendState2);
 	S_RELEASE(this->m_alphaEnableBlendingState);
 	S_RELEASE(this->m_alphaDisableBlendingState);
@@ -326,9 +326,9 @@ Renderer::~Renderer() {
 
 void Renderer::beginFrame() {
 	// Update view matrix
-	if (this->_camera != nullptr) {
+	/*if (this->_camera != nullptr) {
 		this->_viewMatrix = this->_camera->getViewMatrix();
-	}
+	}*/
 
 	//if (this->_camera2 != nullptr) {
 	//	this->_viewMatrix = this->_camera2->GetViewMatrix();
@@ -358,18 +358,6 @@ ID3D11DeviceContext* Renderer::getDeviceContext() const {
 	return this->_deviceContext;
 }
 
-void Renderer::setCamera(Camera& cam) {
-	this->_camera = &cam;
-	this->_projectionMatrix = this->_camera->getProjectionMatrix();
-	this->_viewMatrix = this->_camera->getViewMatrix();
-}
-
-//void Renderer::setCamera(CameraClass& cam)
-//{
-//	this->_camera2 = &cam;
-//	this->_projectionMatrix = this->_camera2->GetProjectionMatrix();
-//	this->_viewMatrix = this->_camera2->GetViewMatrix();
-//}
 
 XMMATRIX Renderer::getProjectionMatrix() {
 	return this->_projectionMatrix;
@@ -378,12 +366,6 @@ XMMATRIX Renderer::getProjectionMatrix() {
 XMMATRIX Renderer::getViewMatrix() {
 	return this->_viewMatrix;
 }
-
-XMFLOAT3 Renderer::getCameraPosition() const {
-	return this->_camera->getPosition();
-	//return this->_camera2->GetPositionFloat3();
-}
-
 
 
 void Renderer::TurnOnAlphaBlending()
