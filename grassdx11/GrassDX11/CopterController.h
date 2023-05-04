@@ -26,7 +26,7 @@ public:
 public:
    CopterController (void);
 
-   void InitHeightCtrl (Terrain* const terr, float grassRadius, float heightScale);
+   void InitHeightCtrl (Zone* const terr, float grassRadius, float heightScale);
    void SetupCamera    (CFirstPersonCamera *cam_) { cam = cam_; };
    void SetOwner       (Copter* copter_) { copter = copter_; }
 
@@ -95,7 +95,7 @@ public:
 public:
    float4x4            transform;
    CFirstPersonCamera *cam;
-   Terrain*            terrain;
+   Zone*            terrain;
    float               grassRadius;
    float               heightScale;
    Copter*             copter;

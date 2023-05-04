@@ -5,7 +5,7 @@
 
 #include "GrassManager.h"
 #include "GrassProperties.h"
-#include "Terrain.h"
+#include "../Terrain/GraphicsObjects/zone.h"
 #include "PhysMath.h"
 
 #include "FlowManager.h"
@@ -47,7 +47,7 @@ class GrassFieldManager
 public:
    bool                   isGrassRendering = true;
 
-   Terrain                    *m_pTerrain;
+   Zone                    *m_pTerrain;
    float                       m_fHeightScale;
    float                       m_fTerrRadius;
 
@@ -152,7 +152,7 @@ public:
 
    void ClearGrassPools      (void);
 
-   Terrain *    const GetTerrain     (float *a_fHeightScale, float *a_fGrassRadius);
+   Zone *    const GetTerrain     (float *a_fHeightScale, float *a_fGrassRadius);
    Wind*        const GetWind        (void) { return m_pWind; }
 
    FlowManager* const GetFlowManager (void) { return m_pFlowManager; }

@@ -1,6 +1,6 @@
 #include "Texture.h"
-#include "../../External/DDSTextureLoader11.h"
-#include "../../External/WICTextureLoader11.h"
+#include "../TextureLoaders/DDSTextureLoader11.h"
+#include "../TextureLoaders/WICTextureLoader11.h"
 #include "../Dev/Log.h"
 #include "../Dev/Helpers.h"
 

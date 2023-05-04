@@ -331,7 +331,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
    
    // Create an orthographic projection matrix for 2D rendering.
-   m_orthoMatrix = DirectX::XMMatrixOrthographicLH((float)g_windowWidth, (float)g_windowHeight, 0.1, 1000.0);
+   m_orthoMatrix = DirectX::XMMatrixOrthographicLH((float)g_windowWidth, (float)g_windowHeight, 0.1, 2000.0);
    
    // Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
    // that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
@@ -577,7 +577,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    
    // Setup the camera's view parameters
    float height_scale, grass_radius;
-   Terrain* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
+   Zone* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
    
    // Setup global flow parameters (some of them unused, just for debug)
    g_pGrassField->GetFlowManager()->SetMaxHorizFlow(g_fMaxFlowStrength);
@@ -849,7 +849,7 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
 
     // Setup the camera's projection parameters
     float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT )pBackBufferSurfaceDesc->Height;
-    g_Camera->SetProjParams( 70.4f * ( 3.14159f / 180.0f ), fAspectRatio, 0.1f, 1000.0f );
+    g_Camera->SetProjParams( 70.4f * ( 3.14159f / 180.0f ), fAspectRatio, 0.1f, 2000.0f );
     
 
    //g_Camera->SetWindow( pBackBufferSurfaceDesc->Width, pBackBufferSurfaceDesc->Height );
@@ -1530,7 +1530,7 @@ void InitCarMesh (void)
 {
    float height_scale;
    float grass_radius;
-   Terrain* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
+   Zone* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
 
    if (g_fNumOfMeshes == 0)
    {
@@ -1558,7 +1558,7 @@ void BeforeCameraChange(void)
 void AfterCameraChange (void)
 {
    copterController.SetupCamera(g_Camera);
-   g_Camera->SetProjParams(60.4f * (3.14159f / 180.0f), 1.33f, 0.1f, 1000.0f /*g_fMeter*/);
+   g_Camera->SetProjParams(60.4f * (3.14159f / 180.0f), 1.33f, 0.1f, 2000.0f /*g_fMeter*/);
    g_Camera->SetViewParams(XMLoadFloat3(&g_vCameraEyeStart), XMLoadFloat3(&g_vCameraAtStart));
    g_Camera->SetScalers(0.01f, g_fCameraSpeed);
 }
@@ -1570,7 +1570,7 @@ void ToggleToNormalCamera (void)
 
    float height_scale;
    float grass_radius;
-   Terrain* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
+   Zone* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
 
    g_Camera = new LandscapeCamera(g_fCameraHeight, terr, height_scale, grass_radius);
    AfterCameraChange();
@@ -1583,7 +1583,7 @@ void ToggleToTerrainCamera (void)
 
    float height_scale;
    float grass_radius;
-   Terrain* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
+   Zone* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
 
    g_Camera = new HeightCamera(g_fCameraHeight,
       std::pair<float, float>(g_fCameraHeightMin, g_fCameraHeightMax),
@@ -1597,7 +1597,7 @@ void ToggleToMeshCamera (void) {
 
    float height_scale;
    float grass_radius;
-   Terrain* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
+   Zone* const terr = g_pGrassField->GetTerrain(&height_scale, &grass_radius);
 
    g_Camera = new MeshCamera(g_fCameraMeshDist,
       std::pair<float, float>(g_fCameraMeshDistMin, g_fCameraMeshDistMax),

@@ -86,7 +86,7 @@ GrassManager::GrassManager(GrassInitState& a_pInitState, GrassTracker* a_pGrassT
    m_pDiffuseTex = NULL;
    m_pTopDiffuseTexSRV = NULL;
    m_pTopDiffuseTex = NULL;
-   m_pHeightData = NULL;
+   //m_pHeightData = NULL;
    m_pWindData = NULL;
    m_pRotatePattern = NULL;
    m_pLowGrassTexSRV = NULL;
@@ -288,11 +288,11 @@ void GrassManager::SetLowGrassDiffuse(float4& a_vValue)
       m_pLowGrassDiffuseEVV->SetFloatVector((float*)& a_vValue);
 }
 
-void GrassManager::SetHeightDataPtr(const TerrainHeightData* a_pHeightData)
-{
-   m_pHeightData = a_pHeightData;
-   PhysPatch::pHeightData = a_pHeightData;
-}
+//void GrassManager::SetHeightDataPtr(const TerrainHeightData* a_pHeightData)
+//{
+//   m_pHeightData = a_pHeightData;
+//   PhysPatch::pHeightData = a_pHeightData;
+//}
 
 void GrassManager::SetWindDataPtr(const WindData* a_pWindData)
 {
@@ -369,22 +369,22 @@ bool GrassManager::IsPatchVisible(ConvexVolume& a_cvFrustum, XMVECTOR& a_vPatchP
    return a_cvFrustum.IntersectBox(AABbox);
 }
 
-float GrassManager::GetPatchHeight(UINT a_uX, UINT a_uY)
-{
-   if (m_pHeightData == NULL)
-      return 0.0f;
+//float GrassManager::GetPatchHeight(UINT a_uX, UINT a_uY)
+//{
+//   if (m_pHeightData == NULL)
+//      return 0.0f;
 
    /* Getting UV-coordinates of patch mid-point (a_vPatchPos) */
-   return m_pHeightData->pData[m_pHeightData->uWidth * a_uY + a_uX] * m_fHeightScale;
-}
+//   return m_pHeightData->pData[m_pHeightData->uWidth * a_uY + a_uX] * m_fHeightScale;
+//}
 
 float GrassManager::LodAlphaOffset(const XMVECTOR& a_vCamPos, const XMVECTOR& a_vPatchPos, const float a_fDist, const float a_fIsCorner)
 {
    float fLerpCoef1 = (a_fDist + 0.1f) / m_GrassState.fGrassRadius;
    fLerpCoef1 *= fLerpCoef1;
-   UINT uX = (UINT)(((getx(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fWidth);
-   UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fHeight);
-   XMFLOAT3 vNormal = m_pHeightData->pNormals[m_pHeightData->uWidth * uY + uX];
+   //UINT uX = (UINT)(((getx(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fWidth);
+   //UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fHeight);
+   XMFLOAT3 vNormal = XMFLOAT3(0, 0,0);
 
    XM_TO_V(vNormal, normal, 3);
 
@@ -499,10 +499,10 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
          /* Height map coords */
          fX = (getx(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
          fY = (getz(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
-         uX = (UINT)((fX)* m_pHeightData->fWidth);
-         uY = (UINT)((fY)* m_pHeightData->fHeight);
-
-         sety(vPatchPos, m_pHeightData->pData[m_pHeightData->uWidth * uY + uX] * m_fHeightScale);
+         //uX = (UINT)((fX)* m_pHeightData->fWidth);
+         //uY = (UINT)((fY)* m_pHeightData->fHeight);
+         
+         //sety(vPatchPos, m_pHeightData->pData[m_pHeightData->uWidth * uY + uX] * m_fHeightScale);
          vDist = a_vCamPos - vPatchPos;
          fDist = length(vDist);
 

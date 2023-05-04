@@ -20,7 +20,7 @@ struct VERTEX {
    XMFLOAT3 normal;
 };
 
-struct Texture {
+struct TextureStruct {
 	string type;
 	string path;
 	ID3D11ShaderResourceView *texture;
@@ -30,10 +30,10 @@ class MeshAssimp {
 public:
 	vector<VERTEX>  vertices;
 	vector<UINT>    indices;
-	vector<Texture> textures;
+	vector<TextureStruct> textures;
 	ID3D11Device   *dev;
 
-   MeshAssimp(ID3D11Device *dev, vector<VERTEX> vertices, vector<UINT> indices, vector<Texture> textures)
+   MeshAssimp(ID3D11Device *dev, vector<VERTEX> vertices, vector<UINT> indices, vector<TextureStruct> textures)
 	{
 		this->vertices = vertices;
 		this->indices = indices;

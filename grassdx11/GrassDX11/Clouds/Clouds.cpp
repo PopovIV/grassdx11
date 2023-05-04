@@ -42,9 +42,8 @@ void Clouds::draw(XMMATRIX const& worldMatrix) {
 	this->constantBuffer.update(&this->cb);
 	this->cloudTexture.setPS(0);
 	this->perturbTexture.setPS(1);
-		
 
-	this->shader.update(renderer, worldMatrix, true);
+	this->shader.update(renderer, XMMatrixTranslation(500.0f, 350.0f, 500.0f) * worldMatrix, true);
 	
 	this->mesh.draw();
 }

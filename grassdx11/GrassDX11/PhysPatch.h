@@ -6,7 +6,7 @@
 #include "Wind.h"
 #include "PhysMath.h"
 #include "GrassProperties.h"
-#include "Terrain.h"
+#include  "../Terrain/GraphicsObjects/zone.h"
 #include "AirData.h"
 
 #include <omp.h>

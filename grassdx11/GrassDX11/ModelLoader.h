@@ -34,12 +34,12 @@ private:
 	std::vector<MeshAssimp> meshes;
 	std::string             directory;
    std::vector<AABB>       boundBoxes;
-	vector<Texture>         textures_loaded;
+	vector<TextureStruct>         textures_loaded;
 	HWND                    hwnd;
 
 	void                      processNode          (aiNode* node, const aiScene* scene);
    MeshAssimp                processMesh          (aiMesh* mesh, const aiScene* scene);
-	vector<Texture>           loadMaterialTextures (aiMaterial* mat, aiTextureType type, string typeName, const aiScene* scene);
+	vector<TextureStruct>           loadMaterialTextures (aiMaterial* mat, aiTextureType type, string typeName, const aiScene* scene);
    std::string               determineTextureType (const aiScene* scene, aiMaterial* mat);
 	int                       getTextureIndex      (aiString* str);
 	ID3D11ShaderResourceView* getTextureFromModel  (const aiScene* scene, int textureindex);

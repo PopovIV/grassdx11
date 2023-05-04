@@ -10,7 +10,7 @@ Skybox::Skybox(Renderer& renderer) : meshData(DefaultMesh::CUBE, 0, 0, true), me
 	preethamCreatorShader(renderer, "Clouds/CompiledShaders/PreethamSkyCreator_Comp.cso", CUBE_FACE_WIDTH/16, CUBE_FACE_HEIGHT/16 , 6 / 2){
 	
 	// Make the mesh big enough to not clip into another mesh
-	this->mesh.setWorldMatrix(XMMatrixScaling(1000.0f, 1000.0f, 1000.0f));
+	this->mesh.setWorldMatrix(XMMatrixScaling(2000.0f, 2000.0f, 2000.0f));
 	// Create cube map as render texture
 	this->skyCubeMap.createAsRenderTexture(CUBE_FACE_WIDTH, CUBE_FACE_HEIGHT);
 	// Preetham creator shader
@@ -40,7 +40,7 @@ void Skybox::draw(XMMATRIX const& worldMatrix) {
 	this->skyCubeMap.setPS();
 
 	// Update shader
-	this->shader.update(renderer, XMMatrixScaling(1000.0f, 1000.0f, 1000.0f) * worldMatrix);
+	this->shader.update(renderer, XMMatrixScaling(1000.0f, 1000.0f, 1000.0f) * XMMatrixTranslation(500.0f, 600.0f, 500.0f) * worldMatrix);
 
 	// Set shader to render mesh with
 	this->shader.set(); 

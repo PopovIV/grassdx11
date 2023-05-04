@@ -239,5 +239,7 @@ void Shader::set() {
 	// Set current vertex and pixel shaders
 	this->deviceContext->VSSetShader(this->vertexShader, nullptr, 0);
 	this->deviceContext->PSSetShader(this->pixelShader, nullptr, 0);
+	this->deviceContext->HSSetShader(nullptr, nullptr, 0);
+	this->deviceContext->DSSetShader(nullptr, nullptr, 0);
 	this->deviceContext->GSSetShader(nullptr, nullptr, 0);
 }

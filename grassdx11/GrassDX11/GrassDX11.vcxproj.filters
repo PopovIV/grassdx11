@@ -62,14 +62,32 @@
     <Filter Include="Clouds\Engine\Graphics\ImGui">
       <UniqueIdentifier>{d9a4d7fb-e745-4136-857f-3f79f2a5ba10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Clouds\Engine\Graphics\TextureLoaders">
-      <UniqueIdentifier>{52da3a79-e34b-4b05-8f7d-f9c51cc0f96e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Clouds\GraphicsObjects">
       <UniqueIdentifier>{b136eae4-8a73-4f12-b68b-7377cb4c0e0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Clouds\ShaderHandlers">
       <UniqueIdentifier>{5fea5e53-7cd9-453d-b9d5-fb78dabdad56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{b96b27fc-998a-425c-bdb0-833bc5554a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\Engine">
+      <UniqueIdentifier>{f3f0fb8b-e07e-4d6d-971c-978c6db8dffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\GraphicsObjects">
+      <UniqueIdentifier>{78e93e28-8f44-4064-acf3-c6d242eb2319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TextureLoaders">
+      <UniqueIdentifier>{d8eee6fe-59cc-4a27-948b-16e7466f7450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\Shaders">
+      <UniqueIdentifier>{7128530e-b15e-467f-80a7-3f6a2afb15a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\Engine\Textures">
+      <UniqueIdentifier>{71a64169-07be-4cb8-bbdc-5bb00ae8e425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\Engine\Utility">
+      <UniqueIdentifier>{7d2ef4b8-eab6-4b7e-8799-60221b7f637a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +99,6 @@
     </ClCompile>
     <ClCompile Include="plane.cpp">
       <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Grass\Render\C++</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>Grass\Render\System</Filter>
@@ -235,16 +250,7 @@
     <ClCompile Include="Clouds\Engine\Graphics\ImGui\imgui_widgets.cpp">
       <Filter>Clouds\Engine\Graphics\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Clouds\External\DDSTextureLoader11.cpp">
-      <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\External\WICTextureLoader11.cpp">
-      <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
-    </ClCompile>
     <ClCompile Include="Clouds\pch.cpp">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="Clouds\StringConverter.cpp">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClCompile>
     <ClCompile Include="Clouds\Engine\Dev\Log.cpp">
@@ -262,6 +268,39 @@
     <ClCompile Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.cpp">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClCompile>
+    <ClCompile Include="TextureLoaders\DDSTextureLoader11.cpp">
+      <Filter>TextureLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoaders\WICTextureLoader11.cpp">
+      <Filter>TextureLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\Engine\Textures\textureTerrain.cpp">
+      <Filter>Terrain\Engine\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\Engine\Textures\renderTexture.cpp">
+      <Filter>Terrain\Engine\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\Engine\Utility\stringConverter.cpp">
+      <Filter>Terrain\Engine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\Engine\Utility\D3DInclude.cpp">
+      <Filter>Terrain\Engine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GraphicsObjects\terrain.cpp">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GraphicsObjects\zone.cpp">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GraphicsObjects\frustum.cpp">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\Shaders\terrainShader.cpp">
+      <Filter>Terrain\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain\GraphicsObjects\terrainHeightData.cpp">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.h" />
@@ -270,9 +309,6 @@
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Grass\Render\C++</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Grass\Render\System</Filter>
@@ -460,16 +496,7 @@
     <ClInclude Include="Clouds\Engine\Graphics\ImGui\imstb_truetype.h">
       <Filter>Clouds\Engine\Graphics\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Clouds\External\DDSTextureLoader11.h">
-      <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\External\WICTextureLoader11.h">
-      <Filter>Clouds\Engine\Graphics\TextureLoaders</Filter>
-    </ClInclude>
     <ClInclude Include="Clouds\pch.h">
-      <Filter>Clouds\Engine\Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Clouds\StringConverter.h">
       <Filter>Clouds\Engine\Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Clouds\Engine\Dev\Helpers.h">
@@ -490,6 +517,45 @@
     <ClInclude Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.h">
       <Filter>Clouds\ShaderHandlers</Filter>
     </ClInclude>
+    <ClInclude Include="TextureLoaders\DDSTextureLoader11.h">
+      <Filter>TextureLoaders</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoaders\WICTextureLoader11.h">
+      <Filter>TextureLoaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Engine\Textures\renderTexture.h">
+      <Filter>Terrain\Engine\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Engine\Textures\textureTerrain.h">
+      <Filter>Terrain\Engine\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Engine\Utility\stringConverter.h">
+      <Filter>Terrain\Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Engine\Utility\D3DInclude.h">
+      <Filter>Terrain\Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GraphicsObjects\frustum.h">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GraphicsObjects\terrain.h">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GraphicsObjects\zone.h">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Shaders\CBScene.h">
+      <Filter>Terrain\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\defines.h">
+      <Filter>Terrain\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Shaders\terrainShader.h">
+      <Filter>Terrain\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\GraphicsObjects\terrainHeightData.h">
+      <Filter>Terrain\GraphicsObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\GrassType1.fx">
@@ -509,6 +575,21 @@
     </FxCompile>
     <FxCompile Include="Clouds\Resources\Shaders\VertexShaders\CloudsShader_Vert.hlsl">
       <Filter>main</Filter>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\TerrainDomainShader.hlsl">
+      <Filter>Terrain\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\TerrainHullShader.hlsl">
+      <Filter>Terrain\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\TerrainPixelShader.hlsl">
+      <Filter>Terrain\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\TerrainVertexShader.hlsl">
+      <Filter>Terrain\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\CullShader.hlsl">
+      <Filter>Terrain\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -156,7 +156,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
-      <AdditionalLibraryDirectories>..\..\..\..\..\..\Program Files\Assimp\lib\x64;..\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug;..\DXUT\Optional\Bin\Desktop_2017_Win10\Win32\Debug;..\DirectXTK\Bin\Desktop_2019_Win10\Win32\Debug;..\Effects11\Bin\Desktop_2019_Win10\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug;..\DXUT\Optional\Bin\Desktop_2017_Win10\Win32\Debug;..\DirectXTK\Bin\Desktop_2019_Win10\Win32\Debug;..\Effects11\Bin\Desktop_2019_Win10\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableDPIAwareness>PerMonitorHighDPIAware</EnableDPIAwareness>
@@ -447,13 +447,10 @@
     <ClCompile Include="Clouds\Engine\Graphics\Shader.cpp" />
     <ClCompile Include="Clouds\Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Clouds\Examples\GameObjects\Skybox.cpp" />
-    <ClCompile Include="Clouds\External\DDSTextureLoader11.cpp" />
-    <ClCompile Include="Clouds\External\WICTextureLoader11.cpp" />
     <ClCompile Include="Clouds\pch.cpp" />
     <ClCompile Include="Clouds\SettingsController.cpp" />
     <ClCompile Include="Clouds\ShaderHandlers\SkyboxShader.cpp" />
     <ClCompile Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.cpp" />
-    <ClCompile Include="Clouds\StringConverter.cpp" />
     <ClCompile Include="ConvexVolume.cpp" />
     <ClCompile Include="Copter.cpp" />
     <ClCompile Include="CopterController.cpp" />
@@ -489,8 +486,18 @@
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="SnowParticleSystem.cpp" />
     <ClCompile Include="StateManager.cpp" />
-    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Terrain\Engine\Textures\renderTexture.cpp" />
+    <ClCompile Include="Terrain\Engine\Textures\textureTerrain.cpp" />
+    <ClCompile Include="Terrain\Engine\Utility\D3DInclude.cpp" />
+    <ClCompile Include="Terrain\Engine\Utility\stringConverter.cpp" />
+    <ClCompile Include="Terrain\GraphicsObjects\frustum.cpp" />
+    <ClCompile Include="Terrain\GraphicsObjects\terrain.cpp" />
+    <ClCompile Include="Terrain\GraphicsObjects\terrainHeightData.cpp" />
+    <ClCompile Include="Terrain\GraphicsObjects\zone.cpp" />
+    <ClCompile Include="Terrain\Shaders\terrainShader.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="TextureLoaders\DDSTextureLoader11.cpp" />
+    <ClCompile Include="TextureLoaders\WICTextureLoader11.cpp" />
     <ClCompile Include="TexturesMixer.cpp" />
     <ClCompile Include="VelocityMap.cpp" />
     <ClCompile Include="Wind.cpp" />
@@ -531,13 +538,10 @@
     <ClInclude Include="Clouds\Engine\Graphics\Shader.h" />
     <ClInclude Include="Clouds\Engine\Graphics\Texture.h" />
     <ClInclude Include="Clouds\Examples\GameObjects\Skybox.h" />
-    <ClInclude Include="Clouds\External\DDSTextureLoader11.h" />
-    <ClInclude Include="Clouds\External\WICTextureLoader11.h" />
     <ClInclude Include="Clouds\pch.h" />
     <ClInclude Include="Clouds\SettingsController.h" />
     <ClInclude Include="Clouds\ShaderHandlers\SkyboxShader.h" />
     <ClInclude Include="Clouds\ShaderHandlers\SkyPlaneShaderClass.h" />
-    <ClInclude Include="Clouds\StringConverter.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="ConvexVolume.h" />
     <ClInclude Include="Copter.h" />
@@ -574,8 +578,20 @@
     <ClInclude Include="SnowParticleSystem.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="SnowParticleTypes.h" />
-    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="Terrain\defines.h" />
+    <ClInclude Include="Terrain\Engine\Textures\renderTexture.h" />
+    <ClInclude Include="Terrain\Engine\Textures\textureTerrain.h" />
+    <ClInclude Include="Terrain\Engine\Utility\D3DInclude.h" />
+    <ClInclude Include="Terrain\Engine\Utility\stringConverter.h" />
+    <ClInclude Include="Terrain\GraphicsObjects\frustum.h" />
+    <ClInclude Include="Terrain\GraphicsObjects\terrain.h" />
+    <ClInclude Include="Terrain\GraphicsObjects\terrainHeightData.h" />
+    <ClInclude Include="Terrain\GraphicsObjects\zone.h" />
+    <ClInclude Include="Terrain\Shaders\CBScene.h" />
+    <ClInclude Include="Terrain\Shaders\terrainShader.h" />
     <ClInclude Include="TextureLoader.h" />
+    <ClInclude Include="TextureLoaders\DDSTextureLoader11.h" />
+    <ClInclude Include="TextureLoaders\WICTextureLoader11.h" />
     <ClInclude Include="TexturesMixer.h" />
     <ClInclude Include="VelocityMap.h" />
     <ClInclude Include="Wind.h" />
@@ -596,7 +612,16 @@
     <FxCompile Include="Shaders\GrassType1.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shaders\SceneEffect.fx" />
+    <FxCompile Include="Shaders\SceneEffect.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Terrain\Shaders\CullShader.hlsl" />
+    <FxCompile Include="Terrain\Shaders\TerrainDomainShader.hlsl" />
+    <FxCompile Include="Terrain\Shaders\TerrainHullShader.hlsl" />
+    <FxCompile Include="Terrain\Shaders\TerrainPixelShader.hlsl" />
+    <FxCompile Include="Terrain\Shaders\TerrainVertexShader.hlsl" />
     <Text Include="Shaders\SnowParticleGS.hlsl">
       <FileType>Document</FileType>
     </Text>

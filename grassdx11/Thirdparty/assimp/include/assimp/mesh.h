@@ -3,7 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-Copyright (c) 2006-2021, assimp team
+Copyright (c) 2006-2022, assimp team
 
 All rights reserved.
 
@@ -120,7 +120,7 @@ extern "C" {
  * primitive are actually present in a mesh. The #aiProcess_SortByPType flag
  * executes a special post-processing algorithm which splits meshes with
  * *different* primitive types mixed up (e.g. lines and triangles) in several
- * 'clean' submeshes. Furthermore there is a configuration option (
+ * 'clean' sub-meshes. Furthermore there is a configuration option (
  * #AI_CONFIG_PP_SBP_REMOVE) to force #aiProcess_SortByPType to remove
  * specific kinds of primitives from the imported scene, completely and forever.
  * In many cases you'll probably want to set this setting to
@@ -269,19 +269,19 @@ struct aiBone {
     unsigned int mNumWeights;
 
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
-    // The bone armature node - used for skeleton conversion
-    // you must enable aiProcess_PopulateArmatureData to populate this
+    /// The bone armature node - used for skeleton conversion
+    /// you must enable aiProcess_PopulateArmatureData to populate this
     C_STRUCT aiNode *mArmature;
 
-    // The bone node in the scene - used for skeleton conversion
-    // you must enable aiProcess_PopulateArmatureData to populate this
+    /// The bone node in the scene - used for skeleton conversion
+    /// you must enable aiProcess_PopulateArmatureData to populate this
     C_STRUCT aiNode *mNode;
 
 #endif
     //! The influence weights of this bone, by vertex index.
     C_STRUCT aiVertexWeight *mWeights;
 
-    /** Matrix that transforms from bone space to mesh space in bind pose.
+    /** Matrix that transforms from mesh space to bone space in bind pose.
      *
      * This matrix describes the position of the mesh
      * in the local space of this bone when the skeleton was bound.
@@ -296,29 +296,50 @@ struct aiBone {
 
 #ifdef __cplusplus
 
-    //! Default constructor
+    ///	@brief  Default constructor
     aiBone() AI_NO_EXCEPT
             : mName(),
               mNumWeights(0),
+#ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
+              mArmature(nullptr),
+              mNode(nullptr),
+#endif
               mWeights(nullptr),
               mOffsetMatrix() {
         // empty
     }
 
-    //! Copy constructor
+    /// @brief  Copy constructor
     aiBone(const aiBone &other) :
             mName(other.mName),
             mNumWeights(other.mNumWeights),
+#ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
+              mArmature(nullptr),
+              mNode(nullptr),
+#endif
             mWeights(nullptr),
             mOffsetMatrix(other.mOffsetMatrix) {
-        if (other.mWeights && other.mNumWeights) {
-            mWeights = new aiVertexWeight[mNumWeights];
-            ::memcpy(mWeights, other.mWeights, mNumWeights * sizeof(aiVertexWeight));
+        copyVertexWeights(other);
+    }
+
+    void copyVertexWeights( const aiBone &other ) {
+        if (other.mWeights == nullptr || other.mNumWeights == 0) {
+            mWeights = nullptr;
+            mNumWeights = 0;
+            return;
         }
+
+        mNumWeights = other.mNumWeights;
+        if (mWeights) {
+            delete[] mWeights;
+        }
+
+        mWeights = new aiVertexWeight[mNumWeights];
+        ::memcpy(mWeights, other.mWeights, mNumWeights * sizeof(aiVertexWeight));
     }
 
     //! Assignment operator
-    aiBone &operator=(const aiBone &other) {
+    aiBone &operator = (const aiBone &other) {
         if (this == &other) {
             return *this;
         }
@@ -326,21 +347,13 @@ struct aiBone {
         mName = other.mName;
         mNumWeights = other.mNumWeights;
         mOffsetMatrix = other.mOffsetMatrix;
-
-        if (other.mWeights && other.mNumWeights) {
-            if (mWeights) {
-                delete[] mWeights;
-            }
-
-            mWeights = new aiVertexWeight[mNumWeights];
-            ::memcpy(mWeights, other.mWeights, mNumWeights * sizeof(aiVertexWeight));
-        }
+        copyVertexWeights(other);
 
         return *this;
     }
 
     bool operator==(const aiBone &rhs) const {
-        if (mName != rhs.mName || mNumWeights != rhs.mNumWeights) {
+        if (mName != rhs.mName || mNumWeights != rhs.mNumWeights ) {
             return false;
         }
 
@@ -673,10 +686,6 @@ struct aiMesh {
     */
     C_STRUCT aiVector3D *mTextureCoords[AI_MAX_NUMBER_OF_TEXTURECOORDS];
 
-    /** Vertex stream names.
-     */
-    C_STRUCT aiString mTextureCoordsNames[AI_MAX_NUMBER_OF_TEXTURECOORDS];
-
     /** Specifies the number of components for a given UV channel.
     * Up to three channels are supported (UVW, for accessing volume
     * or cube maps). If the value is 2 for a given channel n, the
@@ -736,6 +745,7 @@ struct aiMesh {
 
     /**
      *  Method of morphing when anim-meshes are specified.
+     *  @see aiMorphingMethod to learn more about the provided morphing targets.
      */
     unsigned int mMethod;
 
@@ -743,6 +753,10 @@ struct aiMesh {
      *  The bounding box.
      */
     C_STRUCT aiAABB mAABB;
+
+    /** Vertex UV stream names. Pointer to array of size AI_MAX_NUMBER_OF_TEXTURECOORDS
+     */
+    C_STRUCT aiString **mTextureCoordsNames;
 
 #ifdef __cplusplus
 
@@ -765,7 +779,8 @@ struct aiMesh {
               mNumAnimMeshes(0),
               mAnimMeshes(nullptr),
               mMethod(0),
-              mAABB() {
+              mAABB(),
+              mTextureCoordsNames(nullptr) {
         for (unsigned int a = 0; a < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++a) {
             mNumUVComponents[a] = 0;
             mTextureCoords[a] = nullptr;
@@ -785,6 +800,14 @@ struct aiMesh {
         for (unsigned int a = 0; a < AI_MAX_NUMBER_OF_TEXTURECOORDS; a++) {
             delete[] mTextureCoords[a];
         }
+
+        if (mTextureCoordsNames) {
+            for (unsigned int a = 0; a < AI_MAX_NUMBER_OF_TEXTURECOORDS; a++) {
+                delete mTextureCoordsNames[a];
+            }
+            delete[] mTextureCoordsNames;
+        }
+
         for (unsigned int a = 0; a < AI_MAX_NUMBER_OF_COLOR_SETS; a++) {
             delete[] mColors[a];
         }
@@ -870,9 +893,149 @@ struct aiMesh {
         return mBones != nullptr && mNumBones > 0;
     }
 
+    //! Check whether the mesh contains a texture coordinate set name
+    //! \param pIndex Index of the texture coordinates set
+    bool HasTextureCoordsName(unsigned int pIndex) const {
+        if (mTextureCoordsNames == nullptr || pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS) {
+            return false;
+        }
+        return mTextureCoordsNames[pIndex] != nullptr;
+    }
+
+    //! Set a texture coordinate set name
+    //! \param pIndex Index of the texture coordinates set
+    //! \param texCoordsName name of the texture coordinate set
+    void SetTextureCoordsName(unsigned int pIndex, const aiString &texCoordsName) {
+        if (pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS) {
+            return;
+        }
+
+        if (mTextureCoordsNames == nullptr) {
+            // Construct and null-init array
+            mTextureCoordsNames = new aiString *[AI_MAX_NUMBER_OF_TEXTURECOORDS] {};
+        }
+
+        if (texCoordsName.length == 0) {
+            delete mTextureCoordsNames[pIndex];
+            mTextureCoordsNames[pIndex] = nullptr;
+            return;
+        }
+
+        if (mTextureCoordsNames[pIndex] == nullptr) {
+            mTextureCoordsNames[pIndex] = new aiString(texCoordsName);
+            return;
+        }
+
+        *mTextureCoordsNames[pIndex] = texCoordsName;
+    }
+
+    //! Get a texture coordinate set name
+    //! \param pIndex Index of the texture coordinates set
+    const aiString *GetTextureCoordsName(unsigned int pIndex) const {
+        if (mTextureCoordsNames == nullptr || pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS) {
+            return nullptr;
+        }
+
+        return mTextureCoordsNames[pIndex];
+    }
+
 #endif // __cplusplus
 };
 
+struct aiSkeletonBone {
+    /// The parent bone index, is -1 one if this bone represents the root bone.
+    int mParent;
+
+
+#ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
+    /// The bone armature node - used for skeleton conversion
+    /// you must enable aiProcess_PopulateArmatureData to populate this
+    C_STRUCT aiNode *mArmature;
+
+    /// The bone node in the scene - used for skeleton conversion
+    /// you must enable aiProcess_PopulateArmatureData to populate this
+    C_STRUCT aiNode *mNode;
+
+#endif
+    /// @brief The number of weights
+    unsigned int mNumnWeights;
+
+    /// The mesh index, which will get influenced by the weight.
+    C_STRUCT aiMesh *mMeshId;
+
+    /// The influence weights of this bone, by vertex index.
+    C_STRUCT aiVertexWeight *mWeights;
+
+    /** Matrix that transforms from bone space to mesh space in bind pose.
+     *
+     * This matrix describes the position of the mesh
+     * in the local space of this bone when the skeleton was bound.
+     * Thus it can be used directly to determine a desired vertex position,
+     * given the world-space transform of the bone when animated,
+     * and the position of the vertex in mesh space.
+     *
+     * It is sometimes called an inverse-bind matrix,
+     * or inverse bind pose matrix.
+     */
+    C_STRUCT aiMatrix4x4 mOffsetMatrix;
+
+    /// Matrix that transforms the locale bone in bind pose.
+    C_STRUCT aiMatrix4x4 mLocalMatrix;
+
+#ifdef __cplusplus
+    aiSkeletonBone() :
+            mParent(-1),
+            mArmature(nullptr),
+            mNode(nullptr),
+            mNumnWeights(0),
+            mMeshId(nullptr),
+            mWeights(nullptr),
+            mOffsetMatrix(),
+            mLocalMatrix() {
+        // empty
+    }
+
+    ~aiSkeletonBone() {
+        delete[] mWeights;
+        mWeights = nullptr;
+    }
+#endif // __cplusplus
+};
+/**
+ *  @brief  
+ */
+struct aiSkeleton {
+    /**
+     *
+     */
+    C_STRUCT aiString mName;
+
+    /**
+     *
+     */
+    unsigned int mNumBones;
+
+    /**
+     *
+     */
+    C_STRUCT aiSkeletonBone **mBones;
+
+#ifdef __cplusplus
+    /**
+     *
+     */
+    aiSkeleton() AI_NO_EXCEPT : mName(), mNumBones(0), mBones(nullptr) {
+        // empty
+    }
+
+    /**
+     *
+     */
+    ~aiSkeleton() {
+        delete[] mBones;
+    }
+#endif // __cplusplus
+};
 #ifdef __cplusplus
 }
 #endif //! extern "C"

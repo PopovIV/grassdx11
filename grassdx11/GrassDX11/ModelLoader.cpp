@@ -49,7 +49,7 @@ MeshAssimp ModelLoader::processMesh(aiMesh * mesh, const aiScene * scene)
    vector<XMFLOAT3> points;
 	vector<VERTEX> vertices;
 	vector<UINT> indices;
-	vector<Texture> textures;
+	vector<TextureStruct> textures;
 
 	if (mesh->mMaterialIndex >= 0)
 	{
@@ -94,7 +94,7 @@ MeshAssimp ModelLoader::processMesh(aiMesh * mesh, const aiScene * scene)
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
+		vector<TextureStruct> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
       //material->Get();
@@ -106,9 +106,9 @@ MeshAssimp ModelLoader::processMesh(aiMesh * mesh, const aiScene * scene)
 	return MeshAssimp(dev, vertices, indices, textures);
 }
 
-vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName, const aiScene * scene)
+vector<TextureStruct> ModelLoader::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName, const aiScene * scene)
 {
-	vector<Texture> textures;
+	vector<TextureStruct> textures;
 	for (UINT i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
@@ -127,7 +127,7 @@ vector<Texture> ModelLoader::loadMaterialTextures(aiMaterial * mat, aiTextureTyp
 		if (!skip)
 		{   // If texture hasn't been loaded already, load it
 			HRESULT hr;
-			Texture texture;
+			TextureStruct texture;
 			if (textype == "embedded compressed texture")
 			{
 				int textureindex = getTextureIndex(&str);
