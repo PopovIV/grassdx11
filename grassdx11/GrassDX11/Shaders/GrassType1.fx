@@ -488,6 +488,8 @@ technique10 RenderGrass
     pass RenderLod0
     {        
         SetVertexShader( CompileShader( vs_4_0, InstVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, InstPSMain() ) );
         
@@ -499,6 +501,8 @@ technique10 RenderGrass
     pass RenderPhysPass
     {
         SetVertexShader( CompileShader( vs_4_0, PhysVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, InstPSMain() ) );
         
@@ -510,6 +514,8 @@ technique10 RenderGrass
     pass RenderAnimPass
     {
         SetVertexShader( CompileShader( vs_4_0, AnimVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, InstPSMain() ) );
         
@@ -521,6 +527,8 @@ technique10 RenderGrass
     pass ShadowPass
     {        
         SetVertexShader( CompileShader( vs_4_0, InstVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, ShadowPSMain() ) );
     }  
@@ -528,6 +536,8 @@ technique10 RenderGrass
     pass ShadowPhysicsPass
     {
         SetVertexShader( CompileShader( vs_4_0, PhysVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, ShadowPSMain() ) );
     }
@@ -535,6 +545,8 @@ technique10 RenderGrass
     pass ShadowAnimPass
     {
         SetVertexShader( CompileShader( vs_4_0, AnimVSMain() ) );
+        SetHullShader( NULL );
+        SetDomainShader( NULL );
         SetGeometryShader( CompileShader( gs_4_0, GSGrassMain() ) );
         SetPixelShader( CompileShader( ps_4_0, ShadowPSMain() ) );
     }

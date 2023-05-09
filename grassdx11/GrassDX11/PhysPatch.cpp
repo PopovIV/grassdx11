@@ -565,7 +565,7 @@ void PhysPatch::UpdatePhysics(const float3& viewPos, float physLodDst, bool coll
    float a[3] = { (float)M_PI / 2.5f, (float)M_PI / 10.0f, (float)M_PI / 10.0f };
    float3 g = create(0.0f, -9.8f, 0.0f);
    float AnimOrPhys = physLodDst;
-   //      TerrainHeightData *pHD = m_pTerrain->HeightDataPtr();
+   //TerrainHeightData *pHD = m_pTerrain->HeightDataPtr();
 
    gTime += dTime;
    if (dTime >= 0.1f)
@@ -632,8 +632,8 @@ void PhysPatch::UpdatePhysics(const float3& viewPos, float physLodDst, bool coll
          bp->brokenFlag = a_pMeshes[0]->IsBottom(bp->position[0], vDist);
 
          //TODO: getNormal -> XMVECTOR
-         XMFLOAT3 v3 = pHeightData->GetNormal(getx(vTexCoord), gety(vTexCoord));
-         vNormal = XMLoadFloat3(&v3);
+         //XMFLOAT3 v3 = pHeightData->GetNormal(getx(vTexCoord), gety(vTexCoord));
+         //vNormal = XMLoadFloat3(&v3);
          if (bp->brokenFlag > 0)
          {
             float3 dir = a_pMeshes[0]->GetMoveDir();

@@ -2,7 +2,7 @@
 
 #include "mesh.h"
 #include "plane.h"
-#include "terrain.h"
+#include  "../Terrain/GraphicsObjects/zone.h"
 #include "ModelLoader.h"
 
 class Car : public Mesh
@@ -11,7 +11,7 @@ public:
    float param = 0;
 
    Car (ID3D11Device* dev, ID3D11DeviceContext* devcon, ID3DX11Effect* a_pEffect, XMVECTOR a_vPosAndRadius,
-      Terrain* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius,
+      Zone* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius,
       float a_fCarWidth, float a_fCarHeight, float a_fCarLength, float a_fAmplAngle);
 
    virtual ~Car (void);
@@ -69,7 +69,7 @@ private:
    ModelLoader* carModel;
 
    // Terrain height data
-   Terrain* m_pTerrain;
+   Zone* m_pTerrain;
    float m_fHeightScale, m_fGrassRadius;
 
    ID3DX11EffectShaderResourceVariable* m_pTexESRV;

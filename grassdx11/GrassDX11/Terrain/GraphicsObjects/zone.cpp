@@ -182,13 +182,13 @@ bool Zone::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, float 
         return false;
     }
 
-    //m_HeightData = new TerrainHeightData();
-    //if (!m_HeightData) {
-    //    return false;
-    //}
+    m_HeightData = new TerrainHeightData();
+    if (!m_HeightData) {
+        return false;
+    }
 
     /* Calculating terrain heights */
-    //result = m_HeightData->ConvertFrom(L"Terrain/Engine/Textures/data/HM.r32");
+    result = m_HeightData->ConvertFrom(L"Terrain/Engine/Textures/data/HM.r32");
     if (!result) {
         return false;
     }
@@ -218,9 +218,9 @@ void Zone::Shutdown() {
         f.Shutdown();
     }
 
-    //if (m_HeightData) {
-    //    delete m_HeightData;
-    //}
+    if (m_HeightData) {
+        delete m_HeightData;
+    }
 }
 
 // Render function

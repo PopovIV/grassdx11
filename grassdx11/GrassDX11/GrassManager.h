@@ -3,7 +3,7 @@
 #include "GrassLod.h"
 #include "GrassPool.h"
 //#include "GrassCollideStatic.h"
-#include "Terrain.h"
+#include  "../Terrain/GraphicsObjects/zone.h"
 #include "Wind.h"
 #include "mesh.h"
 #include "ConvexVolume.h"

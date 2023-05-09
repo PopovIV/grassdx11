@@ -22,9 +22,9 @@ class Zone {
     void Shutdown();
     // Function to return HM
     ID3D11ShaderResourceView* HeightMapSRV() { return m_textureArray[22].GetTexture(); };
-    //TerrainHeightData* HeightDataPtr(void) { return m_HeightData; };
+    TerrainHeightData* HeightDataPtr(void) { return m_HeightData; };
   private:
-    //TerrainHeightData* m_HeightData = nullptr;
+    TerrainHeightData* m_HeightData = nullptr;
     ID3D11Device* m_Device = nullptr;
     ID3D11DeviceContext *m_Context = nullptr;
     float m_terrainRadius = 0.0f;

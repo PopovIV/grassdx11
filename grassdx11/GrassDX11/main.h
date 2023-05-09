@@ -138,7 +138,7 @@ float                               g_fCameraMeshDistMax;
 float                               g_fCameraHeight = 5.0f;
 float                               g_fCameraHeightMax;
 float                               g_fCameraHeightMin;
-XMFLOAT3                            g_vCameraEyeStart(487.1, 202.23, 447.72);
+XMFLOAT3                            g_vCameraEyeStart(0.1, 302.23, 0.72);
 XMFLOAT3                            g_vCameraAtStart(-0.24 - 1.52, -0.18+ 12.73, -0.954+ 46.10);
 
 

@@ -14,7 +14,6 @@ struct TerrainHeightData
 
     bool     ConvertFrom(const wchar_t* filename);
     float    GetHeight(float a_fX, float a_fY) const;
-    float    GetHeight2x2(float a_fX, float a_fY) const;
 
     TerrainHeightData(void);
     ~TerrainHeightData(void);

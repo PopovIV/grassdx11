@@ -6,7 +6,7 @@
 XMMATRIX GetNormalizedMt (AABB vBBox);
 
 Car::Car (ID3D11Device* a_pD3DDevice, ID3D11DeviceContext* a_pD3DDeviceCtx, ID3DX11Effect* a_pEffect, XMVECTOR a_vPosAndRadius,
-   Terrain* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius,
+   Zone* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius,
    float a_fCarWidth, float a_fCarHeight, float a_fCarLength, float a_fAmplAngle)
 {
    m_pD3DDevice    = a_pD3DDevice;
@@ -180,8 +180,7 @@ void Car::SetPosAndRadius (XMFLOAT4& a_vPosAndRadius)
    p2 = p0 - norm_dir;
    p3 = cur_pos + dir;
 
-   vTexCoord = create(getx(p0) / m_fGrassRadius * 0.5f + 0.5f,
-      getz(p0) / m_fGrassRadius * 0.5f + 0.5f);
+   vTexCoord = create(getx(p0) / pHD->fWidth, getz(p0) / pHD->fHeight);
    sety(p0, pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale + fHeightOffset);
 
    vTexCoord = create(getx(p1) / m_fGrassRadius * 0.5f + 0.5f,
@@ -389,7 +388,7 @@ int Car::IsBottom(XMVECTOR& Pnt, XMVECTOR& vNormal)
 {
    XMVECTOR loc_coord;
    float2 vTexCoord;
-   TerrainHeightData* pHD = m_pTerrain->HeightDataPtr();
+   //TerrainHeightData* pHD = m_pTerrain->HeightDataPtr();
 
    XM_TO_M(m_mInvBottom, invB);
    loc_coord = XMVector3Transform(Pnt, invB);

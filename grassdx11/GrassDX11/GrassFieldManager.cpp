@@ -66,7 +66,9 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
    }
 
    /* Terrain and wind */
-   m_pTerrain = new Terrain(a_InitState.InitState[0].pD3DDevice, a_InitState.InitState[0].pD3DDeviceCtx, m_pSceneEffect, a_InitState.fTerrRadius, a_InitState.fHeightScale);
+   m_pTerrain = new Zone();
+   m_pTerrain->Initialize(a_InitState.InitState[0].pD3DDevice, a_InitState.InitState[0].pD3DDeviceCtx, 1000.0f, a_InitState.fTerrRadius, a_InitState.fHeightScale);
+   //m_pTerrain = new Terrain(a_InitState.InitState[0].pD3DDevice, a_InitState.InitState[0].pD3DDeviceCtx, m_pSceneEffect, a_InitState.fTerrRadius, a_InitState.fHeightScale);
    m_fTerrRadius = a_InitState.fTerrRadius;
 
    m_pWind = new Wind(a_InitState.InitState[0].pD3DDevice, a_InitState.InitState[0].pD3DDeviceCtx);
@@ -175,8 +177,8 @@ GrassFieldManager::GrassFieldManager (GrassFieldState& a_InitState)
    pESV->SetFloat(a_InitState.InitState[0].fGrassRadius);
 
    pESRV = m_pGrassTypes[0]->GetEffect()->GetVariableByName("g_txTerrainLightMap")->AsShaderResource();
-   if (pESRV)
-      pESRV->SetResource(m_pTerrain->LightMapSRV());
+   //if (pESRV)
+   //   pESRV->SetResource(m_pTerrain->LightMapSRV());
    /* Noise maps for alpha dissolve */
    pESRV = m_pGrassTypes[0]->GetEffect()->GetVariableByName("g_txNoise")->AsShaderResource();
    if (pESRV)
@@ -250,6 +252,7 @@ GrassFieldManager::~GrassFieldManager(void)
 
    delete m_pFlowManager;
 
+   m_pTerrain->Shutdown();
    delete m_pTerrain;
    delete m_pWind;
    delete m_pShadowMapping;
@@ -274,12 +277,12 @@ void GrassFieldManager::Reinit(GrassFieldState& a_InitState)
    }
 
    /* Reinit terrain */
-   delete m_pTerrain;
+   m_pTerrain->Shutdown();
 
-   m_pTerrain = new Terrain(
+   m_pTerrain->Initialize(
       a_InitState.InitState[0].pD3DDevice,
       a_InitState.InitState[0].pD3DDeviceCtx,
-      m_pSceneEffect,
+      2000.0f,
       a_InitState.fTerrRadius,
       a_InitState.fHeightScale
    );
@@ -492,7 +495,7 @@ void GrassFieldManager::SetLowGrassDiffuse(float4& a_vValue)
    }
 }
 
-Terrain* const GrassFieldManager::GetTerrain(float* a_fHeightScale, float* a_fGrassRadius)
+Zone* const GrassFieldManager::GetTerrain(float* a_fHeightScale, float* a_fGrassRadius)
 {
    *a_fHeightScale = m_fHeightScale;
    *a_fGrassRadius = m_fTerrRadius;
@@ -539,7 +542,7 @@ void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir)
            if (i == 0 && i == 2)
               m_pGrassTypes[i]->ApplyRenderPass();
        }
-       m_pTerrain->ApplyPass();
+       //m_pTerrain->ApplyPass();
 
        /* Shadow map pass */
        m_pShadowMapping->BeginShadowMapPass( );
@@ -561,7 +564,9 @@ void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir)
 
        SetViewMtx(tmp);
 
-       m_pTerrain->Render();
+       //XMFLOAT3 tmpCamPos;
+       //XMStoreFloat3(&tmpCamPos, m_vCamPos);
+       //m_pTerrain->Render(*m_pView, *m_pProj, tmpCamPos, g_vLightDir);
        pSRV = m_pShadowMapping->EndShadowMapPass( );
    }
 
@@ -583,7 +588,9 @@ void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir)
     }
 
 
-    m_pTerrain->Render();
+    XMFLOAT3 tmpCamPos;
+    XMStoreFloat3(&tmpCamPos, m_vCamPos);
+    m_pTerrain->Render(*m_pView, *m_pProj, tmpCamPos, g_vLightDir);
 
    if (isGrassRendering) {
       m_pGrassTypes[0]->Render(false);
@@ -633,7 +640,7 @@ void GrassFieldManager::Update(float3 a_vCamDir, float3 a_vCamPos, XMVECTOR vLig
    m_vCamPos = a_vCamPos;
 
    m_pWind->Update(a_fElapsedTime, a_vCamDir);
-   m_pTerrain->UpdateLightMap();
+   //m_pTerrain->UpdateLightMap();
    
    XMFLOAT4 v4;
    XMStoreFloat4(&v4, vLightDir);

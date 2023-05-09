@@ -5,7 +5,7 @@ CopterController::CopterController (void)
 {
    transform = XMMatrixIdentity();
 
-   position = create(-20, 20, 200);
+   position = create(480.1, 202.23, 447.72);
    //position = create(-500, 20, -500);
    //position = create(0, 20, 0);
    velocity = create(0, 0, 0);
@@ -15,7 +15,7 @@ CopterController::CopterController (void)
 }
 
 
-void CopterController::InitHeightCtrl (Terrain* terr, float grassR, float heightSc)
+void CopterController::InitHeightCtrl (Zone* terr, float grassR, float heightSc)
 {
    terrain = terr;
    grassRadius = grassR;
@@ -51,8 +51,8 @@ void CopterController::UpdatePhysics(void)
 
    // correct height
    TerrainHeightData* pHD = terrain->HeightDataPtr();
-   float2 vTexCoord = create(getx(position) / grassRadius * 0.5f + 0.5f, getz(position) / grassRadius * 0.5f + 0.5f);
 
+   float2 vTexCoord = create(getx(position) / pHD->fWidth, getz(position) / pHD->fHeight);
    float terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * heightScale;
 
    if (gety(position) < terrain_height + copter->scale * 2.5) {

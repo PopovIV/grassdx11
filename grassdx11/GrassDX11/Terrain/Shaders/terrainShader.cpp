@@ -556,4 +556,7 @@ void TerrainShader::RenderShader(ID3D11DeviceContext* deviceContext, bool normal
 
     // Render the triangle
     deviceContext->DrawIndexedInstancedIndirect(m_pInderectArgs, 0);
+
+    deviceContext->HSSetShader(NULL, NULL, 0);
+    deviceContext->DSSetShader(NULL, NULL, 0);
 }

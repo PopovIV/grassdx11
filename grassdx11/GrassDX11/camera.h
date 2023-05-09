@@ -2,13 +2,13 @@
 
 #include "DXUT.h"
 #include "DXUTcamera.h"
-#include "Terrain.h"
+#include "../Terrain/GraphicsObjects/zone.h"
 #include "Mesh.h"
 
 class LandscapeCamera : public CFirstPersonCamera
 {
 public:
-   LandscapeCamera (float a_fHeight, Terrain* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius)
+   LandscapeCamera (float a_fHeight, Zone* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius)
       :
       m_fDefaultHeight(a_fHeight), m_pTerrain(a_pTerrain),
       m_fHeightScale(a_fHeightScale), m_fGrassRadius(a_fGrassRadius)
@@ -17,7 +17,7 @@ public:
    virtual void FrameMove (FLOAT fElapsedTime);
 
 private:
-   Terrain* const m_pTerrain;
+   Zone* const m_pTerrain;
    float m_fHeightScale;
    float m_fGrassRadius;
 
@@ -29,7 +29,7 @@ class HeightCamera : public CFirstPersonCamera
 {
 public:
    HeightCamera (float a_fHeight, std::pair<float, float> a_pMinMaxHeight,
-      Terrain* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius) :
+      Zone* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius) :
       m_fDefaultHeight(a_fHeight), m_pTerrain(a_pTerrain),
       m_fHeightScale(a_fHeightScale), m_fGrassRadius(a_fGrassRadius),
       m_pMinMaxHeight(a_pMinMaxHeight)
@@ -40,7 +40,7 @@ public:
    virtual void FrameMove (FLOAT fElapsedTime);
 
 private:
-   Terrain* const m_pTerrain;
+   Zone* const m_pTerrain;
    float m_fHeightScale;
    float m_fGrassRadius;
 
@@ -55,7 +55,7 @@ public:
    MeshCamera(float a_fMeshDist, std::pair<float, float> a_pMinMaxMeshDist,
       float a_fHeight, std::pair<float, float> a_pMinMaxHeight,
       Mesh* a_pMesh,
-      Terrain* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius) :
+      Zone* const a_pTerrain, float a_fHeightScale, float a_fGrassRadius) :
       m_pMesh(a_pMesh), m_fMeshDist(a_fMeshDist),
       m_fDefaultHeight(a_fHeight), m_pTerrain(a_pTerrain),
       m_fHeightScale(a_fHeightScale), m_fGrassRadius(a_fGrassRadius),
@@ -72,7 +72,7 @@ public:
    float GetMeshDist (void) const noexcept;
 
 private:
-   Terrain* const m_pTerrain;
+   Zone* const m_pTerrain;
    float m_fHeightScale;
    float m_fGrassRadius;
 
