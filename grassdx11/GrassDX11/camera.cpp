@@ -83,7 +83,7 @@ void LandscapeCamera::FrameMove(FLOAT fElapsedTime)
 
    // Correct camera position by landscape height
    TerrainHeightData* pHD = m_pTerrain->HeightDataPtr();
-   XMFLOAT2 vTexCoord = XMFLOAT2(m_vEye.x / pHD->fWidth, m_vEye.z / pHD->fHeight);
+   XMFLOAT2 vTexCoord = XMFLOAT2(m_vEye.x / m_fGrassRadius * 0.5f + 0.5f, m_vEye.z / m_fGrassRadius * 0.5f + 0.5f);
 
    float terrain_height = pHD->GetHeight(vTexCoord.x, vTexCoord.y) * m_fHeightScale;
    if (m_vEye.y < terrain_height + 1)
@@ -191,8 +191,7 @@ void HeightCamera::FrameMove (FLOAT fElapsedTime)
 
    // Correct camera position by landscape height
    TerrainHeightData* pHD = m_pTerrain->HeightDataPtr();
-   float2 vTexCoord = create(getx(eye) / pHD->fWidth, getz(eye) / pHD->fHeight);
-
+   float2 vTexCoord = create(getx(eye) / m_fGrassRadius * 0.5f + 0.5f, getz(eye) / m_fGrassRadius * 0.5f + 0.5f);
 
    float terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale;
    sety(eye, m_fDefaultHeight + terrain_height);
@@ -271,7 +270,7 @@ void MeshCamera::FrameMove(FLOAT fElapsedTime)
 
    // Correct camera position by landscape height
    TerrainHeightData const* pHD = m_pTerrain->HeightDataPtr();
-   float2 vTexCoord = create(m_vEye.x / pHD->fWidth, m_vEye.z / pHD->fHeight);
+   float2 vTexCoord = create(m_vEye.x / m_fGrassRadius * 0.5f + 0.5f, m_vEye.z / m_fGrassRadius * 0.5f + 0.5f);
 
    float const terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale;
 

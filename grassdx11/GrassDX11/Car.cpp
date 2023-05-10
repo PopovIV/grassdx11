@@ -180,7 +180,8 @@ void Car::SetPosAndRadius (XMFLOAT4& a_vPosAndRadius)
    p2 = p0 - norm_dir;
    p3 = cur_pos + dir;
 
-   vTexCoord = create(getx(p0) / pHD->fWidth, getz(p0) / pHD->fHeight);
+   vTexCoord = create(getx(p0) / m_fGrassRadius * 0.5f + 0.5f,
+       getz(p0) / m_fGrassRadius * 0.5f + 0.5f);
    sety(p0, pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * m_fHeightScale + fHeightOffset);
 
    vTexCoord = create(getx(p1) / m_fGrassRadius * 0.5f + 0.5f,

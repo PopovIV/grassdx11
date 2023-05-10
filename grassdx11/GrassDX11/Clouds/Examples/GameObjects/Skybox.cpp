@@ -45,7 +45,7 @@ void Skybox::draw(XMMATRIX const& worldMatrix) {
 	// Set shader to render mesh with
 	this->shader.set(); 
 	// Render mesh
-	this->mesh.draw();
+	//this->mesh.draw();
 }
 
 CubeMap& Skybox::getCubeMap()

@@ -547,14 +547,14 @@
     <ClInclude Include="Terrain\Shaders\CBScene.h">
       <Filter>Terrain\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain\defines.h">
-      <Filter>Terrain\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="Terrain\Shaders\terrainShader.h">
       <Filter>Terrain\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Terrain\GraphicsObjects\terrainHeightData.h">
       <Filter>Terrain\GraphicsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain\Shaders\defines.h">
+      <Filter>Terrain\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

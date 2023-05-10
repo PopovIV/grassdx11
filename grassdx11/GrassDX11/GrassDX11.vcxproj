@@ -578,7 +578,6 @@
     <ClInclude Include="SnowParticleSystem.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="SnowParticleTypes.h" />
-    <ClInclude Include="Terrain\defines.h" />
     <ClInclude Include="Terrain\Engine\Textures\renderTexture.h" />
     <ClInclude Include="Terrain\Engine\Textures\textureTerrain.h" />
     <ClInclude Include="Terrain\Engine\Utility\D3DInclude.h" />
@@ -588,6 +587,7 @@
     <ClInclude Include="Terrain\GraphicsObjects\terrainHeightData.h" />
     <ClInclude Include="Terrain\GraphicsObjects\zone.h" />
     <ClInclude Include="Terrain\Shaders\CBScene.h" />
+    <ClInclude Include="Terrain\Shaders\defines.h" />
     <ClInclude Include="Terrain\Shaders\terrainShader.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureLoaders\DDSTextureLoader11.h" />

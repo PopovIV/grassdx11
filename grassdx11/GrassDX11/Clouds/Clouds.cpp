@@ -45,7 +45,7 @@ void Clouds::draw(XMMATRIX const& worldMatrix) {
 
 	this->shader.update(renderer, XMMatrixTranslation(500.0f, 350.0f, 500.0f) * worldMatrix, true);
 	
-	this->mesh.draw();
+	//this->mesh.draw();
 }
 
 void Clouds::setSkybox(Skybox& skybox) {

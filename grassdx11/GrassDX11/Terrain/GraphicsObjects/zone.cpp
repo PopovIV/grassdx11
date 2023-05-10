@@ -193,6 +193,8 @@ bool Zone::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, float 
         return false;
     }
 
+    m_HeightData->CalcNormals(terrainHeight, 1);
+
     return true;
 }
 // Function to clear all stuff that was created in initialize function

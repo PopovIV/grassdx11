@@ -469,10 +469,10 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    // Create grass field
    g_GrassInitState.InitState[0].fMaxQuality = 0.0f;//0.7f;
    g_GrassInitState.InitState[0].dwBladesPerPatchSide = 20;
-   g_GrassInitState.InitState[0].dwPatchesPerSide = 37;//40;//43;//45;//32;//50;
+   g_GrassInitState.InitState[0].dwPatchesPerSide = 50;//40;//43;//45;//32;//50;
    g_GrassInitState.InitState[0].fMostDetailedDist = 2.0f;//* g_fMeter;
-   g_GrassInitState.InitState[0].fLastDetailedDist = 85;//85;//150.0f;// * g_fMeter;
-   g_GrassInitState.InitState[0].fGrassRadius = 5;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fLastDetailedDist = 140.0f;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fGrassRadius = 140;//85;//150.0f;// * g_fMeter;
    g_GrassInitState.InitState[0].pD3DDevice = pd3dDevice;
    g_GrassInitState.InitState[0].pD3DDeviceCtx = pd3dImmediateContext;
    
@@ -519,7 +519,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    g_GrassInitState.sGrassSnowedOnTerrainTexturePath = L"resources/gSnowed.dds";
    //g_GrassInitState.sSnowCoverMapPath = L"resources/SnowCover.dds";
    g_GrassInitState.fHeightScale = g_fHeightScale;
-   g_GrassInitState.fTerrRadius = 400;
+   g_GrassInitState.fTerrRadius = 128;
    g_pGrassField = new GrassFieldManager(g_GrassInitState);
    g_pTerrTile = g_pGrassField->SceneEffect()->GetVariableByName("g_fTerrTile")->AsScalar();
    

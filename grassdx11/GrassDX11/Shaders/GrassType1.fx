@@ -268,7 +268,7 @@ GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe 
     Output.vPos3 = a_vBladePos;
 //    if (Output.vPos3.y < Output.vPos0.y) Output.vPos3.y += 1.5; 
     
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (Output.vPos3.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, (Output.vPos3.xz / g_fTerrRadius) * 0.5 + 0.5, 0).r * g_fHeightScale;    
     if (Output.vPos3.y <= fY)
       Output.vPos3.y = fY + 0.01;
     
@@ -285,7 +285,8 @@ GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe 
 GSIn InstVSMain( InstVSIn Input )
 {
     float4 vPos = mul(float4(Input.vPos, 1.0), Input.mTransform);
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, 1.0f - (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;    
     vPos.y = fY;
      
     GSIn Output = CalcWindAnimation(vPos.xyz, Input.vRotAxe * 0.01745, Input.vYRotAxe * 0.01745);
@@ -299,9 +300,9 @@ GSIn InstVSMain( InstVSIn Input )
 
 
 GSIn AnimVSMain ( InstVSIn Input )
-{                               
-   
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (Input.vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+{
+    float2 UV = float2(Input.vPos.x / g_fTerrRadius * 0.5 + 0.5, 1.0f - (Input.vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     Input.vPos.y = fY;
     
     GSIn Output = CalcWindAnimation(Input.vPos.xyz, Input.vRotAxe * 0.01745, Input.vYRotAxe * 0.01745);
@@ -318,7 +319,8 @@ GSIn PhysVSMain ( PhysVSIn Input )
 {
     //float4 vPos = mul(float4(Input.vPos, 1.0), g_mWorld);
     float4 vPos = float4(Input.vPos, 1.0); //mul(float4(Input.vPos, 1.0), g_mWorld);
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, 1.0f - (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     vPos.y = fY;
        
     
@@ -357,7 +359,8 @@ GSIn PhysVSMain ( PhysVSIn Input )
   //  Output.vPos2 = vPos.xyz; vPos += transpose(Input.mR2)[1] * Input.fSegmentHeight;
     Output.vPos3 = vPos.xyz;
     
-    fY = g_txHeightMap.SampleLevel(g_samLinear, (Output.vPos3.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, 1.0f - (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     if (Output.vPos3.y <= fY)
       Output.vPos3.y = fY + 0.01;
    

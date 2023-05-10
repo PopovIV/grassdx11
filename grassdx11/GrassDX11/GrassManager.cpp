@@ -383,9 +383,9 @@ float GrassManager::LodAlphaOffset(const XMVECTOR& a_vCamPos, const XMVECTOR& a_
 {
    float fLerpCoef1 = (a_fDist + 0.1f) / m_GrassState.fGrassRadius;
    fLerpCoef1 *= fLerpCoef1;
-   //UINT uX = (UINT)(((getx(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fWidth);
-   //UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fHeight);
-   XMFLOAT3 vNormal = XMFLOAT3(0, 0,0);
+   UINT uX = (UINT)(((getx(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fWidth);
+   UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius * 0.5f + 0.5f)) * m_pHeightData->fHeight);
+   XMFLOAT3 vNormal = m_pHeightData->pNormals[m_pHeightData->uWidth * uY + uX];
 
    XM_TO_V(vNormal, normal, 3);
 
@@ -427,9 +427,6 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
    UINT uX = 0, uY = 0;
    float fX, fY;
 
-   float fDX, fDY;
-   fDX = (m_fPatchSize / m_GrassState.fTerrRadius) * 0.25f;
-   fDY = (m_fPatchSize / m_GrassState.fTerrRadius) * 0.25f;
    int iDotSign[2] = { -1, 1 };
    bool bOnEdge = false;
    XMVECTOR vDist;
@@ -499,7 +496,7 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
          }
          /* Height map coords */
          fX = (getx(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
-         fY = (getz(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
+         fY = ((getz(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f);
          uX = (UINT)((fX)* m_pHeightData->fWidth);
          uY = (UINT)((fY)* m_pHeightData->fHeight);
          

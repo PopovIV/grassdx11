@@ -52,7 +52,7 @@ void CopterController::UpdatePhysics(void)
    // correct height
    TerrainHeightData* pHD = terrain->HeightDataPtr();
 
-   float2 vTexCoord = create(getx(position) / pHD->fWidth, getz(position) / pHD->fHeight);
+   float2 vTexCoord = create(getx(position) / grassRadius * 0.5f + 0.5f, getz(position) / grassRadius * 0.5f + 0.5f);
    float terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * heightScale;
 
    if (gety(position) < terrain_height + copter->scale * 2.5) {
