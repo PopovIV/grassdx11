@@ -172,7 +172,7 @@ float3x3 MakeRotateMtx( float3 a_vAxe )
 GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe )
 {
     GSIn Output;
-    float2 vUV              = (a_vBladePos.xz / g_fTerrRadius) * 0.5 + 0.5;
+    float2 vUV              = float2((a_vBladePos.x / g_fTerrRadius) * 0.5 + 0.5,  ((a_vBladePos.z / g_fTerrRadius) * 0.5 + 0.5));
     uint uIndex             = GetTypeIndex(vUV);
     Output.uTypeIndex       = uIndex;
     Output.fTransparency    = GetSeatingInfo(vUV);
@@ -317,7 +317,8 @@ GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe 
     a_vBladePos += transpose(mM_T[3])[1] * fScale*fSegLength;
     Output.vPos3 = a_vBladePos;
 
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (Output.vPos3.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(Output.vPos3.x / g_fTerrRadius * 0.5 + 0.5, (Output.vPos3.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     if (Output.vPos3.y <= fY)
       Output.vPos3.y = fY + 0.01;
     
@@ -333,7 +334,8 @@ GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe 
 GSIn InstVSMain( InstVSIn Input )
 {
     float4 vPos = mul(float4(Input.vPos, 1.0), Input.mTransform);
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     vPos.y = fY;
     
     GSIn Output = CalcWindAnimation(vPos.xyz, Input.vRotAxe * 0.01745, Input.vYRotAxe * 0.01745);
@@ -347,7 +349,8 @@ GSIn InstVSMain( InstVSIn Input )
 
 GSIn AnimVSMain ( InstVSIn Input )
 {                               
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (Input.vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(Input.vPos.x / g_fTerrRadius * 0.5 + 0.5, (Input.vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     Input.vPos.y = fY;
     
     GSIn Output = CalcWindAnimation(Input.vPos.xyz, Input.vRotAxe * 0.01745, Input.vYRotAxe * 0.01745);
@@ -361,13 +364,14 @@ GSIn AnimVSMain ( InstVSIn Input )
 GSIn PhysVSMain( PhysVSIn Input )
 {
     float4 vPos = float4(Input.vPos, 1.0); //mul(float4(Input.vPos, 1.0), g_mWorld);
-    float fY = g_txHeightMap.SampleLevel(g_samLinear, (vPos.xz / g_fTerrRadius) * 0.5 + 0.5, 0).a * g_fHeightScale;    
+    float2 UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    float fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     vPos.y = fY;
     
     GSIn Output;
     
-    float2 vUV              = (vPos.xz / g_fTerrRadius) * 0.5 + 0.5;
-    uint uIndex             = GetTypeIndex(vUV);
+    float2 vUV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5,  (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    uint uIndex = GetTypeIndex(vUV);
     Output.uTypeIndex       = uIndex;
     float fSeating		    = GetSeatingInfo(vUV);
     float  fSegLength       = SubTypes[uIndex].vSizes.y;
@@ -449,7 +453,7 @@ inline void Make4Pts( GSIn In, inout TriangleStream< PSIn > TriStream )
 	float3 vOffs = normalize(cross(vCamDir, vDir)) * SubTypes[In.uTypeIndex].vSizes.x;
 	//float fNormalY = normalize(cross(vDir, vOffs)).y;	
 	float fNormalY = vDir.y;
-	float2 vWorldTC = (In.vPos0.xz) / g_fTerrRadius * 0.5 + 0.5;
+	float2 vWorldTC = float2((In.vPos0.x) / g_fTerrRadius * 0.5 + 0.5, ((In.vPos0.z) / g_fTerrRadius * 0.5 + 0.5));
     PtTo2Vertex(In.vPos3, vOffs, 1.0, fNormalY, In.uTypeIndex, vWorldTC, In.fDissolve, TriStream);
     /* Update offset */
     vDir = (In.vPos2 - In.vPos1);
@@ -513,7 +517,7 @@ inline void Make7Pts( GSIn In, inout TriangleStream< PSIn > TriStream )
     vPts[6] = vPos[3];
 
     float fInvNum = 0.166;  
-    float2 vWorldTC = (In.vPos0.xz) / g_fTerrRadius * 0.5 + 0.5;
+    float2 vWorldTC = float2((In.vPos0.x) / g_fTerrRadius * 0.5 + 0.5, ((In.vPos0.z) / g_fTerrRadius * 0.5 + 0.5));
     PSIn Vertex;  
     /* Building vertices */
     [unroll]for (i = 0; i < 7; i++)

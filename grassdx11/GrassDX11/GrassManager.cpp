@@ -361,7 +361,6 @@ void GrassManager::Render(bool a_bShadowPass)
 
 bool GrassManager::IsPatchVisible(ConvexVolume& a_cvFrustum, XMVECTOR& a_vPatchPos)
 {
-    return true;
    static AABB AABbox;
 
    AABbox.Set(getx(a_vPatchPos) - m_fPatchSize, getx(a_vPatchPos) + m_fPatchSize,
@@ -496,7 +495,7 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
          }
          /* Height map coords */
          fX = (getx(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
-         fY = ((getz(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f);
+         fY = (getz(vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f;
          uX = (UINT)((fX)* m_pHeightData->fWidth);
          uY = (UINT)((fY)* m_pHeightData->fHeight);
          

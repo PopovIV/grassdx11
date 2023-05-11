@@ -24,6 +24,9 @@
 #include "Clouds\Examples\GameObjects\Skybox.h"
 #include "Clouds\Clouds.h"
 
+#include "PostEffect/renderTexture.h"
+#include "PostEffect/toneMap.h"
+
 #ifdef DEBUG
 #pragma comment(lib, "Effects11d.lib")
 #else
@@ -123,7 +126,7 @@ float                               g_fWindTexSpeed = 2.5f;//3.78f;
 float                               g_fWindTexTile = 4.f;//4.f;//5.2f;
 float                               g_fCameraSpeed = 30.0f;
 float                               g_fTime = 0.0f;
-float                               g_fHeightScale = 100.0f;//40;//120;//0;//40.0f;
+float                               g_fHeightScale = 500.0f;//40;//120;//0;//40.0f;
 float                               g_fQuality = 1.0f;
 XMFLOAT4                            g_vFogColor = XMFLOAT4(0.2f, 0.3f, 0.25f, 1.0f);
 XMFLOAT3                            g_vTerrRGB = XMFLOAT3(0.5f, 0.5f, 0.0f);
@@ -141,6 +144,8 @@ float                               g_fCameraHeightMin;
 XMFLOAT3                            g_vCameraEyeStart(0.1, 100.23, 0.72);
 XMFLOAT3                            g_vCameraAtStart(-0.24 - 1.52, -0.18+ 12.73, -0.954+ 46.10);
 
+RenderTexture* m_RenderTexture = nullptr;
+ToneMap* m_ToneMap = nullptr;
 
 ID3D11Texture2D*                    g_pRenderTarget = NULL;
 ID3D11RenderTargetView*             g_pRTRV = NULL;

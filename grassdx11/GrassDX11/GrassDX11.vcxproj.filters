@@ -89,6 +89,9 @@
     <Filter Include="Terrain\Engine\Utility">
       <UniqueIdentifier>{7d2ef4b8-eab6-4b7e-8799-60221b7f637a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{696083ce-d7c0-4973-8f4d-30e7b9ffac3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -277,9 +280,6 @@
     <ClCompile Include="Terrain\Engine\Textures\textureTerrain.cpp">
       <Filter>Terrain\Engine\Textures</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain\Engine\Textures\renderTexture.cpp">
-      <Filter>Terrain\Engine\Textures</Filter>
-    </ClCompile>
     <ClCompile Include="Terrain\Engine\Utility\stringConverter.cpp">
       <Filter>Terrain\Engine\Utility</Filter>
     </ClCompile>
@@ -300,6 +300,15 @@
     </ClCompile>
     <ClCompile Include="Terrain\GraphicsObjects\terrainHeightData.cpp">
       <Filter>Terrain\GraphicsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PostEffect\toneMap.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="PostEffect\averageLuminance.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="PostEffect\renderTexture.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -523,9 +532,6 @@
     <ClInclude Include="TextureLoaders\WICTextureLoader11.h">
       <Filter>TextureLoaders</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain\Engine\Textures\renderTexture.h">
-      <Filter>Terrain\Engine\Textures</Filter>
-    </ClInclude>
     <ClInclude Include="Terrain\Engine\Textures\textureTerrain.h">
       <Filter>Terrain\Engine\Textures</Filter>
     </ClInclude>
@@ -555,6 +561,15 @@
     </ClInclude>
     <ClInclude Include="Terrain\Shaders\defines.h">
       <Filter>Terrain\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect\renderTexture.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect\toneMap.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect\averageLuminance.h">
+      <Filter>PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -590,6 +605,21 @@
     </FxCompile>
     <FxCompile Include="Terrain\Shaders\CullShader.hlsl">
       <Filter>Terrain\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\GrassType3.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffect\ToneMapPixelShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffect\ToneMapVertexShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffect\CopyPixelShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffect\LuminancePixelShader.hlsl">
+      <Filter>PostEffect</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

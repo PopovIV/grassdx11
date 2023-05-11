@@ -482,11 +482,13 @@
     <ClCompile Include="PhysMath.cpp" />
     <ClCompile Include="PhysPatch.cpp" />
     <ClCompile Include="plane.cpp" />
+    <ClCompile Include="PostEffect\averageLuminance.cpp" />
+    <ClCompile Include="PostEffect\renderTexture.cpp" />
+    <ClCompile Include="PostEffect\toneMap.cpp" />
     <ClCompile Include="ShadowMapping.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="SnowParticleSystem.cpp" />
     <ClCompile Include="StateManager.cpp" />
-    <ClCompile Include="Terrain\Engine\Textures\renderTexture.cpp" />
     <ClCompile Include="Terrain\Engine\Textures\textureTerrain.cpp" />
     <ClCompile Include="Terrain\Engine\Utility\D3DInclude.cpp" />
     <ClCompile Include="Terrain\Engine\Utility\stringConverter.cpp" />
@@ -573,12 +575,14 @@
     <ClInclude Include="PhysMath.h" />
     <ClInclude Include="PhysPatch.h" />
     <ClInclude Include="plane.h" />
+    <ClInclude Include="PostEffect\averageLuminance.h" />
+    <ClInclude Include="PostEffect\renderTexture.h" />
+    <ClInclude Include="PostEffect\toneMap.h" />
     <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="SnowParticleSystem.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="SnowParticleTypes.h" />
-    <ClInclude Include="Terrain\Engine\Textures\renderTexture.h" />
     <ClInclude Include="Terrain\Engine\Textures\textureTerrain.h" />
     <ClInclude Include="Terrain\Engine\Utility\D3DInclude.h" />
     <ClInclude Include="Terrain\Engine\Utility\stringConverter.h" />
@@ -609,12 +613,17 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
     </FxCompile>
     <FxCompile Include="Clouds\Resources\Shaders\VertexShaders\CloudsShader_Vert.hlsl" />
+    <FxCompile Include="PostEffect\CopyPixelShader.hlsl" />
+    <FxCompile Include="PostEffect\LuminancePixelShader.hlsl" />
+    <FxCompile Include="PostEffect\ToneMapPixelShader.hlsl" />
+    <FxCompile Include="PostEffect\ToneMapVertexShader.hlsl" />
     <FxCompile Include="Shaders\GrassType1.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shaders\GrassType3.fx" />
     <FxCompile Include="Shaders\SceneEffect.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>

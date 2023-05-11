@@ -264,7 +264,6 @@ void InitApp()
    g_HUD.AddStatic(IDC_CLOUDS_SCALE, sStr, 20, iY += iYo, 140, 22);
    g_HUD.AddSlider(IDC_CLOUDS_SCALE, 20, iY += iYo, 185, 22, 0, 50, (int)(AvocadoSky::SettingsController::scale * 100));
 
-
    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
 }
 
@@ -468,11 +467,11 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    
    // Create grass field
    g_GrassInitState.InitState[0].fMaxQuality = 0.0f;//0.7f;
-   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 20;
+   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 30;
    g_GrassInitState.InitState[0].dwPatchesPerSide = 50;//40;//43;//45;//32;//50;
-   g_GrassInitState.InitState[0].fMostDetailedDist = 2.0f;//* g_fMeter;
-   g_GrassInitState.InitState[0].fLastDetailedDist = 140.0f;//85;//150.0f;// * g_fMeter;
-   g_GrassInitState.InitState[0].fGrassRadius = 140;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fMostDetailedDist = 50.0f;//* g_fMeter;
+   g_GrassInitState.InitState[0].fLastDetailedDist = 240.0f;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fGrassRadius = 240;//85;//150.0f;// * g_fMeter;
    g_GrassInitState.InitState[0].pD3DDevice = pd3dDevice;
    g_GrassInitState.InitState[0].pD3DDeviceCtx = pd3dImmediateContext;
    
@@ -519,7 +518,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    g_GrassInitState.sGrassSnowedOnTerrainTexturePath = L"resources/gSnowed.dds";
    //g_GrassInitState.sSnowCoverMapPath = L"resources/SnowCover.dds";
    g_GrassInitState.fHeightScale = g_fHeightScale;
-   g_GrassInitState.fTerrRadius = 128;
+   g_GrassInitState.fTerrRadius = 512;
    g_pGrassField = new GrassFieldManager(g_GrassInitState);
    g_pTerrTile = g_pGrassField->SceneEffect()->GetVariableByName("g_fTerrTile")->AsScalar();
    
@@ -657,6 +656,12 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     clouds->setSkybox(*skybox);
 
     AvocadoSky::SettingsController::Init();
+
+    m_RenderTexture = new RenderTexture(pd3dDevice, g_windowWidth, g_windowHeight, DXGI_FORMAT_R32G32B32A32_FLOAT);
+
+    // Initialize toneMap object.
+    m_ToneMap = new ToneMap;
+    m_ToneMap->Initialize(pd3dDevice, g_windowWidth, g_windowHeight);
 
     return S_OK;
 }
@@ -869,6 +874,9 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
    g_BackBufferHeight = pBackBufferSurfaceDesc->Height;
    V_RETURN(CreateRenderTarget(pd3dDevice, pd3dImmediateContext, g_BackBufferWidth, g_BackBufferHeight, g_MSAASampleCount, 0));
 
+   m_ToneMap->Resize(pd3dDevice, g_BackBufferWidth, g_BackBufferHeight);
+   m_RenderTexture->Resize(pd3dDevice, g_BackBufferWidth, g_BackBufferHeight);
+
     return S_OK;
 }
 
@@ -964,39 +972,42 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
                                  float fElapsedTime, void* pUserContext )
 {   
-   HRESULT hr;
-   // If the settings dialog is being shown, then render it instead of rendering the app's scene
-   if( g_SettingsDlg.IsActive() )
-   {
-       g_SettingsDlg.OnRender( fElapsedTime );
-       return;
-   }       
+    HRESULT hr;
+    // If the settings dialog is being shown, then render it instead of rendering the app's scene
+    if( g_SettingsDlg.IsActive() )
+    {
+        g_SettingsDlg.OnRender( fElapsedTime );
+        return;
+    }       
 
     /*float ClearColor[4] = { 0.0, 0.3f, 0.8f, 0.0 };*/
     float ClearColor[4] = { 0.0, 0.0f, 0.0f, 1.0 };
-   ID3D11DepthStencilView* pDSV = DXUTGetD3D11DepthStencilView();
-   pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D10_CLEAR_DEPTH, 1.0, 0);
-
-   // Set our render target since we can't present multisampled ref
-   ID3D11RenderTargetView* pOrigRT;
-   ID3D11DepthStencilView* pOrigDS;
-   pd3dImmediateContext->OMGetRenderTargets(1, &pOrigRT, &pOrigDS);
-
-   ID3D11RenderTargetView* aRTViews[1] = { g_pRTRV };
-   pd3dImmediateContext->OMSetRenderTargets(1, aRTViews, g_pDSRV);
-
-   // Clear the render target and DSV
-   pd3dImmediateContext->ClearRenderTargetView(g_pRTRV, ClearColor);
-   pd3dImmediateContext->ClearDepthStencilView(g_pDSRV, D3D11_CLEAR_DEPTH, 1.0, 0);
-
-   g_fTime += fElapsedTime;
-   // Get the projection & view matrix from the camera class
-   XMMATRIX mView = g_Camera->GetViewMatrix();
-   XMMATRIX mProj = g_Camera->GetProjMatrix();
-   XMMATRIX mWorld = g_Camera->GetWorldMatrix();
+    ID3D11DepthStencilView* pDSV = DXUTGetD3D11DepthStencilView();
+    pd3dImmediateContext->ClearDepthStencilView(pDSV, D3D10_CLEAR_DEPTH, 1.0, 0);
+    // Set our render target since we can't present multisampled ref
+    ID3D11RenderTargetView* pOrigRT;
+    ID3D11DepthStencilView* pOrigDS;
+    pd3dImmediateContext->OMGetRenderTargets(1, &pOrigRT, &pOrigDS);
+    ID3D11RenderTargetView* aRTViews[1] = { g_pRTRV };
+    pd3dImmediateContext->OMSetRenderTargets(1, aRTViews, g_pDSRV);
+    // Clear the render target and DSV
+    pd3dImmediateContext->ClearRenderTargetView(g_pRTRV, ClearColor);
+    pd3dImmediateContext->ClearDepthStencilView(g_pDSRV, D3D11_CLEAR_DEPTH, 1.0, 0);
+    g_fTime += fElapsedTime;
+    // Get the projection & view matrix from the camera class
+    XMMATRIX mView = g_Camera->GetViewMatrix();
+    XMMATRIX mProj = g_Camera->GetProjMatrix();
+    XMMATRIX mWorld = g_Camera->GetWorldMatrix();
    
-   // Render grass
-   RenderGrass(pd3dDevice, pd3dImmediateContext, mView, mProj, fElapsedTime);
+    // Render grass
+    //m_RenderTexture->SetRenderTarget(pd3dImmediateContext, g_pDSRV);
+    //m_RenderTexture->ClearRenderTarget(pd3dImmediateContext, g_pDSRV, 0.2f, 0.2f, 0.2f, 1.0f);
+
+    RenderGrass(pd3dDevice, pd3dImmediateContext, mView, mProj, fElapsedTime);
+
+    //pd3dImmediateContext->OMSetRenderTargets(1, &g_pRTRV, g_pDSRV);
+
+    //m_ToneMap->Process(pd3dImmediateContext, m_RenderTexture->GetShaderResourceView(), g_pRTRV, m_RenderTexture->GetViewPort());
 
    //// Render snow
    //g_ParticleSystem->Frame(fElapsedTime, pd3dImmediateContext);
@@ -1118,7 +1129,7 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
    SAFE_DELETE(g_ParticleSystem);*/
    SAFE_DELETE(copter);
    SAFE_DELETE(g_skyRenderer);
-
+   
    SAFE_RELEASE(g_pSkyVertexLayout);
    g_MeshSkybox.Destroy();
 
@@ -1126,9 +1137,21 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
       SAFE_DELETE(g_pMeshes[i]);
    }
    g_fNumOfMeshes = 0;
+
+   if (m_RenderTexture) {
+       m_RenderTexture->Shutdown();
+       delete m_RenderTexture;
+       m_RenderTexture = nullptr;
+   }
+   
+   if (m_ToneMap) {
+       m_ToneMap->Shutdown();
+       delete m_ToneMap;
+       m_ToneMap = nullptr;
+   }
+
    //PrintMemoryLeaks(L"mem.txt");
 }
-
 
 //--------------------------------------------------------------------------------------
 // Called right before creating a D3D device, allowing the app to modify the device settings as needed

@@ -18,7 +18,7 @@ TerrainHeightData::~TerrainHeightData(void)
 
 float TerrainHeightData::GetHeight(float a_fX, float a_fY) const
 {
-    a_fY = 1.0 - a_fY;
+    //a_fY = 1.0 - a_fY;
     float fX = a_fX * (float)(uWidth - 1);
     float fY = a_fY * (float)(uHeight - 1);
     UINT uLX = (UINT)floor(fX);
@@ -41,7 +41,7 @@ float TerrainHeightData::GetHeight(float a_fX, float a_fY) const
 
 XMFLOAT3 TerrainHeightData::GetNormal(float a_fX, float a_fY) const
 {
-    a_fY = 1.0 - a_fY;
+    //a_fY = 1.0 - a_fY;
     float fX = a_fX * (float)(uWidth - 1);
     float fY = a_fY * (float)(uHeight - 1);
     UINT uLX = (UINT)floor(fX);
@@ -88,6 +88,11 @@ bool TerrainHeightData::ConvertFrom(const wchar_t* filename)
     fWidth = uWidth;
     fHeight = uHeight;
     pNormals = new XMFLOAT3[uWidth * uHeight];
+
+    // mirror across y-axis
+    for (int y = 0; y < fHeight / 2; y++)
+        for (int x = 0; x < fWidth; x++)
+            std::swap(pData[y * uWidth + x], pData[(uHeight - y - 1) * uWidth + x]);
     return true;
 }
 
