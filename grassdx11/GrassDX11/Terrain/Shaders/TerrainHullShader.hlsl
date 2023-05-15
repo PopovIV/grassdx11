@@ -1,5 +1,5 @@
-#define TERRAIN_CHUNK_WIDTH 32
-#define TERRAIN_CHUNK_HEIGHT 32
+#define TERRAIN_CHUNK_WIDTH 64
+#define TERRAIN_CHUNK_HEIGHT 64
 #define TERRAIN_CHUNK_COUNT_WIDTH 1024 / TERRAIN_CHUNK_WIDTH
 #define TERRAIN_CHUNK_COUNT_HEIGHT 1024 / TERRAIN_CHUNK_HEIGHT
 
@@ -9,7 +9,7 @@ struct GeomBuffer {
 
 cbuffer GeomBufferInst : register (b0)
 {
-    GeomBuffer geomBuffer[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
+    GeomBuffer geomBuffer[(TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1)];
 };
 
 cbuffer SceneMatrixBuffer : register (b1)
@@ -21,7 +21,7 @@ cbuffer SceneMatrixBuffer : register (b1)
 
 cbuffer IndexBuffer : register(b2)
 {
-    uint4 objectIDs[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
+    uint4 objectIDs[(TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1)];
 }
 
 #define NUM_CONTROL_POINTS 3

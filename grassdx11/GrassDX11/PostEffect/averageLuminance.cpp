@@ -218,7 +218,9 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
     m_curFrame++;
     float sigma = 0.04f / (0.04f + luminance);
     float tau = sigma * 0.4f + (1 - sigma) * 0.1f;
-    m_adaptedLuminance += (luminance - m_adaptedLuminance) * (float)(1 - std::exp(-delta * tau));
+    if (!std::isnan(luminance)) {
+        m_adaptedLuminance += (luminance - m_adaptedLuminance) * (float)(1 - std::exp(-delta * tau));
+    }
     return m_adaptedLuminance;
 }
 
