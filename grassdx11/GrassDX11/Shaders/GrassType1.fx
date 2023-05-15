@@ -180,7 +180,7 @@ float3x3 MakeRotateMtx( float3 a_vAxe )
 GSIn CalcWindAnimation( float3 a_vBladePos, float3 a_vRotAxe, float3 a_vYRotAxe )
 {
     GSIn Output;
-    float2 vUV              = float2((a_vBladePos.x / g_fTerrRadius) * 0.5 + 0.5,((a_vBladePos.x / g_fTerrRadius) * 0.5 + 0.5));
+    float2 vUV              = float2((a_vBladePos.x / g_fTerrRadius) * 0.5 + 0.5,((a_vBladePos.z / g_fTerrRadius) * 0.5 + 0.5));
     uint uIndex             = GetTypeIndex(vUV);
     Output.uTypeIndex       = uIndex;
     Output.vPackedData.x    = GetSeatingInfo(vUV); 
@@ -360,7 +360,7 @@ GSIn PhysVSMain ( PhysVSIn Input )
   //  Output.vPos2 = vPos.xyz; vPos += transpose(Input.mR2)[1] * Input.fSegmentHeight;
     Output.vPos3 = vPos.xyz;
     
-    UV = float2(vPos.x / g_fTerrRadius * 0.5 + 0.5, (vPos.z / g_fTerrRadius * 0.5 + 0.5));
+    UV = float2(Output.vPos3.x / g_fTerrRadius * 0.5 + 0.5, (Output.vPos3.z / g_fTerrRadius * 0.5 + 0.5));
     fY = g_txHeightMap.SampleLevel(g_samLinear, UV, 0).r * g_fHeightScale;
     if (Output.vPos3.y <= fY)
       Output.vPos3.y = fY + 0.01;

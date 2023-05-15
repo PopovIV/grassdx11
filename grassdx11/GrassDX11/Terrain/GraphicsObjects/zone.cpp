@@ -187,12 +187,14 @@ bool Zone::Initialize(ID3D11Device* device, ID3D11DeviceContext* context, float 
         return false;
     }
 
+    TexMetadata info;
+    ScratchImage image;
     /* Calculating terrain heights */
-    result = m_HeightData->ConvertFrom(L"Terrain/Engine/Textures/data/HM.r32");
-    if (!result) {
+    HRESULT hr = LoadFromDDSFile(L"resources/HM.dds", DDS_FLAGS_NONE, &info, image);
+    if (hr != S_OK)
         return false;
-    }
-
+    /* Calculating terrain heights */
+    m_HeightData->ConvertFrom(&image, &info);
     m_HeightData->CalcNormals(terrainHeight, 1);
 
     return true;

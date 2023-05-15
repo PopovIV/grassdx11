@@ -467,9 +467,9 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    
    // Create grass field
    g_GrassInitState.InitState[0].fMaxQuality = 0.0f;//0.7f;
-   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 30;
-   g_GrassInitState.InitState[0].dwPatchesPerSide = 50;//40;//43;//45;//32;//50;
-   g_GrassInitState.InitState[0].fMostDetailedDist = 50.0f;//* g_fMeter;
+   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 20;
+   g_GrassInitState.InitState[0].dwPatchesPerSide = 37;//40;//43;//45;//32;//50;
+   g_GrassInitState.InitState[0].fMostDetailedDist = 2.0f;//* g_fMeter;
    g_GrassInitState.InitState[0].fLastDetailedDist = 240.0f;//85;//150.0f;// * g_fMeter;
    g_GrassInitState.InitState[0].fGrassRadius = 240;//85;//150.0f;// * g_fMeter;
    g_GrassInitState.InitState[0].pD3DDevice = pd3dDevice;
@@ -989,10 +989,9 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     ID3D11DepthStencilView* pOrigDS;
     pd3dImmediateContext->OMGetRenderTargets(1, &pOrigRT, &pOrigDS);
     ID3D11RenderTargetView* aRTViews[1] = { g_pRTRV };
-    pd3dImmediateContext->OMSetRenderTargets(1, aRTViews, g_pDSRV);
+    //pd3dImmediateContext->OMSetRenderTargets(1, aRTViews, g_pDSRV);
     // Clear the render target and DSV
-    pd3dImmediateContext->ClearRenderTargetView(g_pRTRV, ClearColor);
-    pd3dImmediateContext->ClearDepthStencilView(g_pDSRV, D3D11_CLEAR_DEPTH, 1.0, 0);
+
     g_fTime += fElapsedTime;
     // Get the projection & view matrix from the camera class
     XMMATRIX mView = g_Camera->GetViewMatrix();
@@ -1000,14 +999,16 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     XMMATRIX mWorld = g_Camera->GetWorldMatrix();
    
     // Render grass
-    //m_RenderTexture->SetRenderTarget(pd3dImmediateContext, g_pDSRV);
-    //m_RenderTexture->ClearRenderTarget(pd3dImmediateContext, g_pDSRV, 0.2f, 0.2f, 0.2f, 1.0f);
+    m_RenderTexture->SetRenderTarget(pd3dImmediateContext, g_pDSRV);
+    m_RenderTexture->ClearRenderTarget(pd3dImmediateContext, g_pDSRV, 0.0f, 0.0f, 0.0f, 1.0f);
 
     RenderGrass(pd3dDevice, pd3dImmediateContext, mView, mProj, fElapsedTime);
 
-    //pd3dImmediateContext->OMSetRenderTargets(1, &g_pRTRV, g_pDSRV);
+    pd3dImmediateContext->OMSetRenderTargets(1, aRTViews, g_pDSRV);
+    pd3dImmediateContext->ClearRenderTargetView(g_pRTRV, ClearColor);
+    pd3dImmediateContext->ClearDepthStencilView(g_pDSRV, D3D11_CLEAR_DEPTH, 1.0, 0);
 
-    //m_ToneMap->Process(pd3dImmediateContext, m_RenderTexture->GetShaderResourceView(), g_pRTRV, m_RenderTexture->GetViewPort());
+    m_ToneMap->Process(pd3dImmediateContext, m_RenderTexture->GetShaderResourceView(), g_pRTRV, m_RenderTexture->GetViewPort());
 
    //// Render snow
    //g_ParticleSystem->Frame(fElapsedTime, pd3dImmediateContext);

@@ -119,6 +119,22 @@ bool AverageLuminance::InitializeShader(ID3D11Device* device, const wchar_t* vsF
         }
     }
 
+    CD3D11_TEXTURE2D_DESC gtd(
+        DXGI_FORMAT_R32G32B32A32_FLOAT,
+        1,
+        1,
+        1,
+        1,
+        0,
+        D3D11_USAGE_DEFAULT,
+        0
+    );
+
+    result = device->CreateTexture2D(&gtd, nullptr, &(m_luminanceTextureGPU));
+    if (FAILED(result)) {
+        return false;
+    }
+
     return true;
 }
 
@@ -175,8 +191,8 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
 
     deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
-    CopyTexture(deviceContext, sourceTexture, *m_renderTextures[0], m_copyPixelShader);
-    CopyTexture(deviceContext, m_renderTextures[0]->GetShaderResourceView(), *m_renderTextures[1], m_pixelShader);
+    CopyTexture(deviceContext, sourceTexture, *m_renderTextures[0], m_pixelShader);
+    CopyTexture(deviceContext, m_renderTextures[0]->GetShaderResourceView(), *m_renderTextures[1], m_copyPixelShader);
     for (int i = 2; i < m_renderTextures.size(); i++) {
         CopyTexture(deviceContext, m_renderTextures[i - 1]->GetShaderResourceView(), *m_renderTextures[i], m_copyPixelShader);
     }
@@ -191,7 +207,10 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
     double delta = (double)(timeDelta) / m_qpcFrequency.QuadPart;
 
     D3D11_MAPPED_SUBRESOURCE luminanceAccessor;
-    deviceContext->CopyResource(m_luminanceTextureArray[(m_curFrame) % ARRAY_SIZE], m_renderTextures.back()->GetRenderTarget());
+    deviceContext->ResolveSubresource(m_luminanceTextureGPU, D3D11CalcSubresource(0, 0, 1), m_renderTextures.back()->GetRenderTarget(), D3D11CalcSubresource(0, 0,
+        1),
+        DXGI_FORMAT_R32G32B32A32_FLOAT);
+    deviceContext->CopyResource(m_luminanceTextureArray[(m_curFrame) % ARRAY_SIZE], m_luminanceTextureGPU);
     deviceContext->Map(m_luminanceTextureArray[m_curFrame % ARRAY_SIZE], 0, D3D11_MAP_READ, 0, &luminanceAccessor);
     float luminance = *(float*)luminanceAccessor.pData;
     deviceContext->Unmap(m_luminanceTextureArray[m_curFrame % ARRAY_SIZE], 0);
@@ -227,6 +246,11 @@ void AverageLuminance::Shutdown() {
     if (m_vertexShader) {
         m_vertexShader->Release();
         m_vertexShader = nullptr;
+    }
+
+    if (m_luminanceTextureGPU) {
+        m_luminanceTextureGPU->Release();
+        m_luminanceTextureGPU = nullptr;
     }
 
     for (auto t : m_renderTextures) {

@@ -40,6 +40,7 @@ class AverageLuminance {
     ID3D11PixelShader* m_pixelShader = nullptr;
     ID3D11SamplerState* m_sampleState = nullptr;
     ID3D11Texture2D* m_luminanceTextureArray[ARRAY_SIZE];
+    ID3D11Texture2D* m_luminanceTextureGPU;
     unsigned int m_curFrame = 0;
 
     float m_adaptedLuminance = 0.0f;

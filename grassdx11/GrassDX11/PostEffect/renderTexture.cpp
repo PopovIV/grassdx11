@@ -16,8 +16,9 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     textureDesc.Height = textureHeight;
     textureDesc.MipLevels = 1;
     textureDesc.ArraySize = 1;
+    textureDesc.SampleDesc.Count = 4;
+    textureDesc.SampleDesc.Quality = 0;
     textureDesc.Format = m_format;
-    textureDesc.SampleDesc.Count = 1;
     textureDesc.Usage = D3D11_USAGE_DEFAULT;
     textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
     textureDesc.CPUAccessFlags = 0;
@@ -32,7 +33,7 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     // Setup the description of the render target view.
     D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
     renderTargetViewDesc.Format = textureDesc.Format;
-    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
     renderTargetViewDesc.Texture2D.MipSlice = 0;
 
     // Create the render target view.
@@ -44,7 +45,7 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     // Setup the description of the shader resource view.
     D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
     shaderResourceViewDesc.Format = textureDesc.Format;
-    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
     shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
@@ -102,5 +103,5 @@ void RenderTexture::ClearRenderTarget(ID3D11DeviceContext* deviceContext, ID3D11
     deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
     // Clear the depth buffer.
-    deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 0.0f, 0);
+    deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }

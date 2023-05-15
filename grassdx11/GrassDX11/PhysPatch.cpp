@@ -632,8 +632,8 @@ void PhysPatch::UpdatePhysics(const float3& viewPos, float physLodDst, bool coll
          bp->brokenFlag = a_pMeshes[0]->IsBottom(bp->position[0], vDist);
 
          //TODO: getNormal -> XMVECTOR
-         //XMFLOAT3 v3 = pHeightData->GetNormal(getx(vTexCoord), gety(vTexCoord));
-         //vNormal = XMLoadFloat3(&v3);
+         XMFLOAT3 v3 = pHeightData->GetNormal(getx(vTexCoord), gety(vTexCoord));
+         vNormal = XMLoadFloat3(&v3);
          if (bp->brokenFlag > 0)
          {
             float3 dir = a_pMeshes[0]->GetMoveDir();
