@@ -5,7 +5,21 @@ float g_fDissolve = 0.15;
 
 inline float4 CalcTerrNormal(float2 a_vTexCoord)
 {
-    return float4(g_txHeightMap.SampleLevel(g_samLinear, a_vTexCoord, 0).rgb * 2.0 - 1.0, 0.0);
+    int H, W, dummy;
+    g_txHeightMap.GetDimensions(0, H, W, dummy);
+    float dX = 1.0f / W;
+    float dZ = 1.0f / H;
+
+    float3 tangent = float3(2 * dX, 0, 0);
+    tangent.y += g_txHeightMap.SampleLevel(g_samLinear, float2(a_vTexCoord.x + dX, a_vTexCoord.y), 0.0f).x - g_txHeightMap.SampleLevel(g_samLinear, float2(a_vTexCoord.x - dX, a_vTexCoord.y), 0.0f).x;
+
+    float3 bitangent = float3(0, 0, 2 * dZ);
+    bitangent.y += g_txHeightMap.SampleLevel(g_samLinear, float2(a_vTexCoord.x, a_vTexCoord.y + dZ), 0.0f).x - g_txHeightMap.SampleLevel(g_samLinear, float2(a_vTexCoord.x, a_vTexCoord.y - dZ), 0.0f).x;
+    tangent = normalize(tangent);
+    bitangent = normalize(bitangent);
+    float3 normal = cross(bitangent, tangent);
+
+    return float4(normal, 0.0);
 }
 
 inline void ScreenClip(float4 a_vWorldPt1, float4 a_vWorldPt2, inout float a_fTransparency)
@@ -49,10 +63,8 @@ inline float LodAlphaOffset(float4 a_vWorldPt)
 	if (fdot<0) fdot*=-0.4;
 	float t = 1.f - fdot;
 	float h = g_mInvCamView[3].y;
-	if (h < 17.0f)  
-        h= 0.0f;
-	else
-		h = (h-17.0f)/50.0f;
+    h = 0.0;
+
 	if ((a_vWorldPt.y > 6.0)&&(t > 0.92)) 
         return (0.2 + h);
 	else 
@@ -65,11 +77,20 @@ inline float LodAlphaOffset(float4 a_vWorldPt)
 inline float4 CalcTransparency( float a_fBaseAlpha, float4 a_vFirstPt, out float a_fDissolve, out uint a_uNumVertices )
 {
     float2 vUV = (a_vFirstPt.xz / g_fTerrRadius) * 0.5 + 0.5;
-	if (GetSeatingInfo(vUV) < 0.5) {
-		a_fDissolve = 0.0;
+    float3 normal =  CalcTerrNormal(vUV);
+    float slope = 1.0f - normal.y;
+
+    if (a_vFirstPt.y > 250 || slope > 0.6) {
+        a_fDissolve = 0.0;
         a_uNumVertices = 0;
         return float4(0, 0, 0, 0);
     }
+
+	//if (GetSeatingInfo(vUV) < 0.5) {
+	//	a_fDissolve = 0.0;
+    //    a_uNumVertices = 0;
+    //    return float4(0, 0, 0, 0);
+    //}
 
     float fDist = length(a_vFirstPt.xyz - g_mInvCamView[3].xyz);
 	a_uNumVertices = 7;
@@ -80,10 +101,10 @@ inline float4 CalcTransparency( float a_fBaseAlpha, float4 a_vFirstPt, out float
 	   a_uNumVertices = 3;
     if (fDist > 100.0)
        a_uNumVertices = 2;
-/*
+
     if (fDist > 0.5)
        a_uNumVertices = 4;
-*/
+
     float fAlphaOffset = LodAlphaOffset(a_vFirstPt);
     float fAlpha = a_fBaseAlpha - fAlphaOffset;
     a_fDissolve = 1.0;

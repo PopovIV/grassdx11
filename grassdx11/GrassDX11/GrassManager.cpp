@@ -361,9 +361,10 @@ void GrassManager::Render(bool a_bShadowPass)
 
 bool GrassManager::IsPatchVisible(ConvexVolume& a_cvFrustum, XMVECTOR& a_vPatchPos)
 {
+   return true;
    static AABB AABbox;
 
-   AABbox.Set(getx(a_vPatchPos) - m_fPatchSize, getx(a_vPatchPos) + m_fPatchSize,
+   AABbox.Set(getx(a_vPatchPos) - m_fPatchSize , getx(a_vPatchPos) + m_fPatchSize,
       gety(a_vPatchPos) - m_fPatchSize * 2.0f, gety(a_vPatchPos) + m_fPatchSize * 2.0f,
       getz(a_vPatchPos) - m_fPatchSize, getz(a_vPatchPos) + m_fPatchSize);
    return a_cvFrustum.IntersectBox(AABbox);
@@ -400,10 +401,7 @@ float GrassManager::LodAlphaOffset(const XMVECTOR& a_vCamPos, const XMVECTOR& a_
    float t = 1.f - fDot;
    float h = gety(a_vCamPos);
 
-   if (h < 17.0f)
-      h = 0.0f;
-   else
-      h = (h - 17.0f) / 50.0f;
+   h = 0.0;
 
    if ((gety(a_vPatchPos) > 6.0f) && (t > 0.92f))
       return (0.2f + h);
