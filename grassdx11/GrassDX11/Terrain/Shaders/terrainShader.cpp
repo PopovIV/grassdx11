@@ -148,7 +148,7 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
     // Set constant buffers
     if (SUCCEEDED(result)) {
         D3D11_BUFFER_DESC desc = {};
-        desc.ByteWidth = sizeof(MatrixBufferType) * (TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1);
+        desc.ByteWidth = sizeof(MatrixBufferType) * TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT;
         desc.Usage = D3D11_USAGE_DEFAULT;
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         desc.CPUAccessFlags = 0;
@@ -156,9 +156,9 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
         desc.StructureByteStride = 0;
 
         int index = 0;
-        MatrixBufferType MatrixBufferInst[(TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1)];
-        for (int j = 0; j <= TERRAIN_CHUNK_COUNT_WIDTH; j++) {
-            for (int i = 0; i <= TERRAIN_CHUNK_COUNT_HEIGHT; i++) {
+        MatrixBufferType MatrixBufferInst[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
+        for (int j = 0; j < TERRAIN_CHUNK_COUNT_WIDTH; j++) {
+            for (int i = 0; i < TERRAIN_CHUNK_COUNT_HEIGHT; i++) {
                 MatrixBufferInst[index++].worldMatrix = XMMatrixTranspose(XMMatrixTranslation(i * (TERRAIN_CHUNK_WIDTH - 1) - 512, 0, j * (TERRAIN_CHUNK_HEIGHT - 1) - 512));
             }
         }
@@ -230,7 +230,7 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
     }
     if (SUCCEEDED(result)) {
         D3D11_BUFFER_DESC desc = {};
-        desc.ByteWidth = sizeof(XMINT4) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1) * (TERRAIN_CHUNK_COUNT_WIDTH + 1);
+        desc.ByteWidth = sizeof(XMINT4) * TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT;
         desc.Usage = D3D11_USAGE_DEFAULT;
         desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
         desc.CPUAccessFlags = 0;
@@ -246,7 +246,7 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
 
     if (SUCCEEDED(result)) {
         D3D11_BUFFER_DESC desc = {};
-        desc.ByteWidth = sizeof(XMINT4) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1) * (TERRAIN_CHUNK_COUNT_WIDTH + 1);
+        desc.ByteWidth = sizeof(XMINT4) * TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT;
         desc.Usage = D3D11_USAGE_DEFAULT;
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         desc.CPUAccessFlags = 0;
@@ -500,7 +500,7 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFL
     args.BaseVertexLocation = 0;
     args.StartIndexLocation = 0;
     deviceContext->UpdateSubresource(m_pInderectArgsSrc, 0, nullptr, &args, 0, 0);
-    UINT groupNumber = (TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1) / 64u + !!((TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1) % 64u);
+    UINT groupNumber = (TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT) / 64u + !!((TERRAIN_CHUNK_COUNT_WIDTH  * TERRAIN_CHUNK_COUNT_HEIGHT) % 64u);
     deviceContext->CSSetConstantBuffers(0, 1, &m_worldMatrixBuffer);
     deviceContext->CSSetConstantBuffers(1, 1, &m_viewProjectionMatrixBuffer);
     deviceContext->CSSetUnorderedAccessViews(0, 1, &m_pInderectArgsUAV, nullptr);
@@ -522,8 +522,8 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFL
     // Get a pointer to the data in the light constant buffer.
     LightBufferType* dataPtr2 = (LightBufferType*)mappedResource.pData;
     // Copy the lighting variables into the constant buffer.
-    dataPtr2->diffuseColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    dataPtr2->ambientColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    dataPtr2->diffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    dataPtr2->ambientColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
     dataPtr2->lightDirection = XMFLOAT4(lightDir.x, lightDir.y, lightDir.z, 0.0f);
 
     // Unlock the light constant buffer.

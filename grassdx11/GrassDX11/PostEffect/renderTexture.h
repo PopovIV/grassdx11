@@ -9,7 +9,7 @@
 class RenderTexture {
   public:
     // Constructors
-    RenderTexture(ID3D11Device* device, int textureWidth, int textureHeight, DXGI_FORMAT format);
+    RenderTexture(ID3D11Device* device, int textureWidth, int textureHeight, DXGI_FORMAT format, D3D11_RTV_DIMENSION dimension);
 
     // Function to realese render texture class
     void Shutdown();
@@ -37,6 +37,7 @@ class RenderTexture {
     ID3D11ShaderResourceView* m_shaderResourceView = nullptr;
     D3D11_VIEWPORT m_viewport;
     DXGI_FORMAT m_format;
+    D3D11_RTV_DIMENSION m_dimension;
 };
 
 #endif

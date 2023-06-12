@@ -119,22 +119,6 @@ bool AverageLuminance::InitializeShader(ID3D11Device* device, const wchar_t* vsF
         }
     }
 
-    CD3D11_TEXTURE2D_DESC gtd(
-        DXGI_FORMAT_R32G32B32A32_FLOAT,
-        1,
-        1,
-        1,
-        1,
-        0,
-        D3D11_USAGE_DEFAULT,
-        0
-    );
-
-    result = device->CreateTexture2D(&gtd, nullptr, &(m_luminanceTextureGPU));
-    if (FAILED(result)) {
-        return false;
-    }
-
     return true;
 }
 
@@ -165,7 +149,7 @@ bool AverageLuminance::CreateTextures(ID3D11Device* device, int width, int heigh
     {
         for (int i = 0; i <= numTextures; i++) {
             int texture_size = 1 << (numTextures - i);
-            m_renderTextures.emplace_back(new RenderTexture(device, texture_size, texture_size, DXGI_FORMAT_R32G32B32A32_FLOAT));
+            m_renderTextures.emplace_back(new RenderTexture(device, texture_size, texture_size, DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_RTV_DIMENSION_TEXTURE2D));
         }
     }
     catch (...)
@@ -176,7 +160,7 @@ bool AverageLuminance::CreateTextures(ID3D11Device* device, int width, int heigh
     return true;
 }
 
-float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* sourceTexture) {
+float AverageLuminance::Process(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11Texture2D* sourceTexture) {
     float backgroundColour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
     for (size_t i = 0; i < m_renderTextures.size(); i++) {
         deviceContext->ClearRenderTargetView(m_renderTextures[i]->GetRenderTargetView(), backgroundColour);
@@ -191,7 +175,44 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
 
     deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
-    CopyTexture(deviceContext, sourceTexture, *m_renderTextures[0], m_pixelShader);
+    D3D11_TEXTURE2D_DESC pDesc;
+    sourceTexture->GetDesc(&pDesc);
+
+    CD3D11_TEXTURE2D_DESC gtd(
+        DXGI_FORMAT_R32G32B32A32_FLOAT,
+        pDesc.Width,
+        pDesc.Height,
+        1,
+        1,
+        D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+        D3D11_USAGE_DEFAULT,
+        0
+    );
+
+    ID3D11Texture2D* luminanceTextureGPU;
+    ID3D11ShaderResourceView* luminanceTextureSRV;
+
+    HRESULT result = device->CreateTexture2D(&gtd, nullptr, &(luminanceTextureGPU));
+    if (FAILED(result)) {
+        return 0.5;
+    }
+
+    deviceContext->ResolveSubresource(luminanceTextureGPU, D3D11CalcSubresource(0, 0, 1), sourceTexture, D3D11CalcSubresource(0, 0,
+        1),
+        DXGI_FORMAT_R32G32B32A32_FLOAT);
+
+    D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+    shaderResourceViewDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+    shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+    result = device->CreateShaderResourceView(luminanceTextureGPU, &shaderResourceViewDesc, &luminanceTextureSRV);
+    if (FAILED(result)) {
+        return 0.5;
+    }
+
+    CopyTexture(deviceContext, luminanceTextureSRV, *m_renderTextures[0], m_pixelShader);
     CopyTexture(deviceContext, m_renderTextures[0]->GetShaderResourceView(), *m_renderTextures[1], m_copyPixelShader);
     for (int i = 2; i < m_renderTextures.size(); i++) {
         CopyTexture(deviceContext, m_renderTextures[i - 1]->GetShaderResourceView(), *m_renderTextures[i], m_copyPixelShader);
@@ -207,10 +228,7 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
     double delta = (double)(timeDelta) / m_qpcFrequency.QuadPart;
 
     D3D11_MAPPED_SUBRESOURCE luminanceAccessor;
-    deviceContext->ResolveSubresource(m_luminanceTextureGPU, D3D11CalcSubresource(0, 0, 1), m_renderTextures.back()->GetRenderTarget(), D3D11CalcSubresource(0, 0,
-        1),
-        DXGI_FORMAT_R32G32B32A32_FLOAT);
-    deviceContext->CopyResource(m_luminanceTextureArray[(m_curFrame) % ARRAY_SIZE], m_luminanceTextureGPU);
+    deviceContext->CopyResource(m_luminanceTextureArray[(m_curFrame) % ARRAY_SIZE], m_renderTextures.back()->GetRenderTarget());
     deviceContext->Map(m_luminanceTextureArray[m_curFrame % ARRAY_SIZE], 0, D3D11_MAP_READ, 0, &luminanceAccessor);
     float luminance = *(float*)luminanceAccessor.pData;
     deviceContext->Unmap(m_luminanceTextureArray[m_curFrame % ARRAY_SIZE], 0);
@@ -221,6 +239,17 @@ float AverageLuminance::Process(ID3D11DeviceContext* deviceContext, ID3D11Shader
     if (!std::isnan(luminance)) {
         m_adaptedLuminance += (luminance - m_adaptedLuminance) * (float)(1 - std::exp(-delta * tau));
     }
+
+    if (luminanceTextureGPU) {
+        luminanceTextureGPU->Release();
+        luminanceTextureGPU = nullptr;
+    }
+
+    if (luminanceTextureSRV) {
+        luminanceTextureSRV->Release();
+        luminanceTextureSRV = nullptr;
+    }
+
     return m_adaptedLuminance;
 }
 
@@ -248,11 +277,6 @@ void AverageLuminance::Shutdown() {
     if (m_vertexShader) {
         m_vertexShader->Release();
         m_vertexShader = nullptr;
-    }
-
-    if (m_luminanceTextureGPU) {
-        m_luminanceTextureGPU->Release();
-        m_luminanceTextureGPU = nullptr;
     }
 
     for (auto t : m_renderTextures) {

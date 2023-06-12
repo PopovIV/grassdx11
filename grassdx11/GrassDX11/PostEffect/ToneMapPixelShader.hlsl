@@ -50,5 +50,5 @@ float3 LinearToSRGB(float3 color)
 
 float4 main(PS_INPUT input) : SV_TARGET {
     float4 color =  sourceTexture.Sample(Sampler, input.tex);
-    return float4(LinearToSRGB(TonemapFilmic(color.xyz)), color.a);
+    return float4(TonemapFilmic(color.xyz), color.a);
 }

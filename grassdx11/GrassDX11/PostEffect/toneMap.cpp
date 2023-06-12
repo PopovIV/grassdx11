@@ -89,8 +89,8 @@ bool ToneMap::InitializeShader(ID3D11Device* device, const wchar_t* vsFilename, 
     return true;
 }
 
-void ToneMap::Process(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* sourceTexture, ID3D11RenderTargetView* renderTarget, D3D11_VIEWPORT viewport) {
-    float averageLuminance = m_averageLuminance->Process(deviceContext, sourceTexture);
+void ToneMap::Process(ID3D11Device* device, ID3D11DeviceContext* deviceContext, RenderTexture* sourceTexture, ID3D11RenderTargetView* renderTarget, D3D11_VIEWPORT viewport) {
+    float averageLuminance = m_averageLuminance->Process(device, deviceContext, sourceTexture->GetRenderTarget());
     LuminanceConstantBuffer luminanceBufferData = { averageLuminance };
     deviceContext->UpdateSubresource(m_luminanceBuffer, 0, nullptr, &luminanceBufferData, 0, 0);
 
@@ -105,7 +105,8 @@ void ToneMap::Process(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceVi
     deviceContext->DSSetShader(nullptr, nullptr, 0);
     deviceContext->PSSetShader(m_pixelShader, nullptr, 0);
     deviceContext->PSSetConstantBuffers(0, 1, &m_luminanceBuffer);
-    deviceContext->PSSetShaderResources(0, 1, &sourceTexture);
+    ID3D11ShaderResourceView* srv = sourceTexture->GetShaderResourceView();
+    deviceContext->PSSetShaderResources(0, 1, &srv);
     deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
     deviceContext->Draw(4, 0);

@@ -657,7 +657,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     AvocadoSky::SettingsController::Init();
 
-    m_RenderTexture = new RenderTexture(pd3dDevice, g_windowWidth, g_windowHeight, DXGI_FORMAT_R32G32B32A32_FLOAT);
+    m_RenderTexture = new RenderTexture(pd3dDevice, g_windowWidth, g_windowHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_RTV_DIMENSION_TEXTURE2DMS);
 
     // Initialize toneMap object.
     m_ToneMap = new ToneMap;
@@ -1008,7 +1008,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     pd3dImmediateContext->ClearRenderTargetView(g_pRTRV, ClearColor);
     pd3dImmediateContext->ClearDepthStencilView(g_pDSRV, D3D11_CLEAR_DEPTH, 1.0, 0);
 
-    m_ToneMap->Process(pd3dImmediateContext, m_RenderTexture->GetShaderResourceView(), g_pRTRV, m_RenderTexture->GetViewPort());
+    m_ToneMap->Process(pd3dDevice, pd3dImmediateContext, m_RenderTexture, g_pRTRV, m_RenderTexture->GetViewPort());
 
    //// Render snow
    //g_ParticleSystem->Frame(fElapsedTime, pd3dImmediateContext);

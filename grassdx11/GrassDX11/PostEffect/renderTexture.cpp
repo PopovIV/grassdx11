@@ -1,7 +1,8 @@
 #include "rendertexture.h"
 
-RenderTexture::RenderTexture(ID3D11Device* device, int textureWidth, int textureHeight, DXGI_FORMAT format) {
+RenderTexture::RenderTexture(ID3D11Device* device, int textureWidth, int textureHeight, DXGI_FORMAT format, D3D11_RTV_DIMENSION dimension) {
     m_format = format;
+    m_dimension = dimension;
     Initialize(device, textureWidth, textureHeight);
 }
 
@@ -16,9 +17,14 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     textureDesc.Height = textureHeight;
     textureDesc.MipLevels = 1;
     textureDesc.ArraySize = 1;
-    textureDesc.SampleDesc.Count = 4;
-    textureDesc.SampleDesc.Quality = 0;
     textureDesc.Format = m_format;
+    if (m_dimension == D3D11_RTV_DIMENSION_TEXTURE2DMS) {
+        textureDesc.SampleDesc.Count = 4;
+        textureDesc.SampleDesc.Quality = 0;
+    }
+    else {
+        textureDesc.SampleDesc.Count = 1;
+    }
     textureDesc.Usage = D3D11_USAGE_DEFAULT;
     textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
     textureDesc.CPUAccessFlags = 0;
@@ -33,7 +39,7 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     // Setup the description of the render target view.
     D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
     renderTargetViewDesc.Format = textureDesc.Format;
-    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
+    renderTargetViewDesc.ViewDimension = m_dimension;
     renderTargetViewDesc.Texture2D.MipSlice = 0;
 
     // Create the render target view.
@@ -45,7 +51,7 @@ bool RenderTexture::Initialize(ID3D11Device* device, int textureWidth, int textu
     // Setup the description of the shader resource view.
     D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
     shaderResourceViewDesc.Format = textureDesc.Format;
-    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
+    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION(m_dimension);
     shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
 

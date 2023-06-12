@@ -9,7 +9,7 @@ struct GeomBuffer {
 
 cbuffer GeomBufferInst : register (b0)
 {
-    GeomBuffer geomBuffer[(TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1)];
+    GeomBuffer geomBuffer[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
 };
 
 cbuffer SceneMatrixBuffer : register (b1)
@@ -21,7 +21,7 @@ cbuffer SceneMatrixBuffer : register (b1)
 
 cbuffer IndexBuffer : register(b2)
 {
-    uint4 objectIDs[(TERRAIN_CHUNK_COUNT_WIDTH + 1) * (TERRAIN_CHUNK_COUNT_HEIGHT + 1)];
+    uint4 objectIDs[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
 }
 
 SamplerState SamplerType : register(s0);
@@ -51,7 +51,7 @@ bool IsBoxInside(in float4 planes[6], in float3 bbMin, in float3 bbMax) {
 [numthreads(64, 1, 1)]
 void main(uint3 globalThreadId : SV_DispatchThreadID)
 {
-    if (globalThreadId.x >= (TERRAIN_CHUNK_COUNT_HEIGHT + 1) * (TERRAIN_CHUNK_COUNT_WIDTH + 1)) {
+    if (globalThreadId.x >= (TERRAIN_CHUNK_COUNT_HEIGHT) * (TERRAIN_CHUNK_COUNT_WIDTH)) {
         return;
     }
     float4 bbMin = float4(0, 0, 0, 1);
@@ -63,12 +63,12 @@ void main(uint3 globalThreadId : SV_DispatchThreadID)
     float v = TERRAIN_CHUNK_COUNT_HEIGHT - (1.0f * globalThreadId.x % TERRAIN_CHUNK_COUNT_HEIGHT) - 1;
     //float2 texCoord = float2(u, v);
 
-    float2 height = HM.Load(int3(u,v, 7));
+    float2 height = HM.Load(int3(u, v, 6));
     bbMin.y += height.r * 500.0f;
     bbMax.y += height.g * 500.0f;
 
-    bbMin -= float4(1000.0f, 1000.0f, 1000.0f, 0.0f);
-    bbMax += float4(1000.0f, 1000.0f, 1000.0f, 0.0f);
+    bbMin -= float4(150.0f, 150.0f, 150.0f, 0.0f);
+    bbMax += float4(150.0f, 150.0f, 150.0f, 0.0f);
 
     if (IsBoxInside(planes, bbMin.xyz, bbMax.xyz)) {
         uint id = 0;
