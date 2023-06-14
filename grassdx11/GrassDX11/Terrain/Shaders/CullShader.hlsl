@@ -30,23 +30,23 @@ Texture2D<float2> HM : register(t0);
 RWStructuredBuffer<uint> indirectArgs : register(u0);
 RWStructuredBuffer<uint4> objectsIds : register(u1);
 
-bool IsBoxInside(in float4 planes[6], in float3 bbMin, in float3 bbMax) {
-    for (int i = 0; i < 6; i++) {
-        float3 norm = planes[i].xyz;
-        float4 p = float4(
-            norm.x < 0 ? bbMin.x : bbMax.x,
-            norm.y < 0 ? bbMin.y : bbMax.y,
-            norm.z < 0 ? bbMin.z : bbMax.z,
-            1.0f
-            );
-        float s = dot(p, planes[i]);
-        if (s < 0.0f) {
-            return false;
+    bool IsBoxInside(in float4 planes[6], in float3 bbMin, in float3 bbMax) {
+        for (int i = 0; i < 6; i++) {
+            float3 norm = planes[i].xyz;
+            float4 p = float4(
+                norm.x < 0 ? bbMin.x : bbMax.x,
+                norm.y < 0 ? bbMin.y : bbMax.y,
+                norm.z < 0 ? bbMin.z : bbMax.z,
+                1.0f
+                );
+            float s = dot(p, planes[i]);
+            if (s < 0.0f) {
+                return false;
+            }
         }
+    
+        return true;
     }
-
-    return true;
-}
 
 [numthreads(64, 1, 1)]
 void main(uint3 globalThreadId : SV_DispatchThreadID)

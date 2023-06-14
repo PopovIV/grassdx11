@@ -923,7 +923,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
     //}
 
     g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
-    g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir);
+    g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir, mView, mProj);
 
     //for (auto* mesh : g_pMeshes) {
     //   if (mesh != nullptr) {

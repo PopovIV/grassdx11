@@ -361,16 +361,16 @@ void GrassManager::Render(bool a_bShadowPass)
 
 bool GrassManager::IsPatchVisible(ConvexVolume& a_cvFrustum, XMVECTOR& a_vPatchPos)
 {
-   return true;
+   //return true;
    static AABB AABbox;
 
-   AABbox.Set(getx(a_vPatchPos) - m_fPatchSize , getx(a_vPatchPos) + m_fPatchSize,
-      gety(a_vPatchPos) - m_fPatchSize * 2.0f, gety(a_vPatchPos) + m_fPatchSize * 2.0f,
-      getz(a_vPatchPos) - m_fPatchSize, getz(a_vPatchPos) + m_fPatchSize);
+   AABbox.Set(getx(a_vPatchPos) + 5.0 * m_fPatchSize, getx(a_vPatchPos) - 5.0 * m_fPatchSize,
+      gety(a_vPatchPos) + 5.0 * m_fPatchSize, gety(a_vPatchPos) - 5.0 * m_fPatchSize,
+      getz(a_vPatchPos) + 5.0 * m_fPatchSize, getz(a_vPatchPos) - 5.0 * m_fPatchSize);
    return a_cvFrustum.IntersectBox(AABbox);
 }
 
-float GrassManager::GetPatchHeight(UINT a_uX, UINT a_uY)
+float GrassManager::GetPatchHeight(UINT a_uX, UINT a_uY) 
 {
    if (m_pHeightData == NULL)
       return 0.0f;
@@ -384,7 +384,7 @@ float GrassManager::LodAlphaOffset(const XMVECTOR& a_vCamPos, const XMVECTOR& a_
    float fLerpCoef1 = (a_fDist + 0.1f) / m_GrassState.fGrassRadius;
    fLerpCoef1 *= fLerpCoef1;
    UINT uX = (UINT)(((getx(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fWidth);
-   UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius * 0.5f + 0.5f)) * m_pHeightData->fHeight);
+   UINT uY = (UINT)(((getz(a_vPatchPos) / m_GrassState.fTerrRadius) * 0.5f + 0.5f) * m_pHeightData->fHeight);
    XMFLOAT3 vNormal = m_pHeightData->pNormals[m_pHeightData->uWidth * uY + uX];
 
    XM_TO_V(vNormal, normal, 3);
@@ -482,7 +482,7 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
             continue;
          }
 
-         if (!IsPatchVisible(cvFrustum, vPatchPos))
+         if (IsPatchVisible(cvFrustum, vPatchPos))
          {
             int ind = m_GrassPool[0]->GetPatchIndex(vPatchPos);
             if (ind != NO_VALUE)

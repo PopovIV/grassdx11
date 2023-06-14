@@ -15,7 +15,7 @@ cloudTexture(renderer, TextureFilter::BILINEAR, TextureFormat::R8G8B8A8_UNORM, T
 
 	this->constantBuffer.setPS();
 
-	cb.brightness = 0.3f;
+	cb.brightness = 0.5f;
 	cb.scale = 0.3f;
 	//cb.padding = 10.0f;
 	cb.translation = 0.0f;

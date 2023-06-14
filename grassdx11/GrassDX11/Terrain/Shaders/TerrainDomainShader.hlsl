@@ -81,8 +81,8 @@ PS_INPUT main(HS_CONSTANT_DATA_OUTPUT input, float3 uvwCoord : SV_DomainLocation
 
     output.normal = patch[0].normal * uvwCoord.x + patch[1].normal * uvwCoord.y + patch[2].normal * uvwCoord.z;
 
-    float h = HM.SampleLevel(SampleTypeNoMips, output.tex, 0.0f).x;
-    vertexPos += output.normal * h;
+    //float h = HM.SampleLevel(SampleTypeNoMips, output.tex, 0.0f).x;
+    //vertexPos += output.normal * h;
 
     output.position = mul(float4(vertexPos, 1.0f), viewProjectionMatrix);
     output.worldPosition = float4(vertexPos, 1.0f);

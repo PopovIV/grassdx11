@@ -157,7 +157,7 @@ public:
 
    FlowManager* const GetFlowManager (void) { return m_pFlowManager; }
 
-   void Render  (Copter* copter, Car* car, XMFLOAT3& g_vLightDir);
+   void Render  (Copter* copter, Car* car, XMFLOAT3& g_vLightDir, XMMATRIX mView, XMMATRIX mProj);
    void Update  (float3 a_vCamDir, float3 a_vCamPos, XMVECTOR vLightDir, Mesh *a_pMeshes[], UINT a_uNumMeshes, float a_fElapsedTime, float a_fTime);
     
    ID3DX11Effect *SceneEffect (void);

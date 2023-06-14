@@ -428,7 +428,7 @@ void TerrainShader::ShutdownShader() {
 // Function to fill shader buffers and params
 bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, ID3D11ShaderResourceView* textures[]) {
     // Transpose the matrices to prepare them for the shader.
-    worldMatrix = XMMatrixTranspose(worldMatrix);
+    //worldMatrix = XMMatrixTranspose(worldMatrix);
     viewMatrix = XMMatrixTranspose(viewMatrix);
     projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
