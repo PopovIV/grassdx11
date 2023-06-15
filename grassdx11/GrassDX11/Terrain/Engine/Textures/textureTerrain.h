@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "DDSTextureLoader.h"
 #include "../Terrain/Engine/Utility/stringConverter.h"
-#include "stb_image.h"
+//#include "stb_image.h"
 
 class TextureTerrain {
   private:

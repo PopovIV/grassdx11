@@ -502,7 +502,7 @@ Zone* const GrassFieldManager::GetTerrain(float* a_fHeightScale, float* a_fGrass
    return m_pTerrain;
 }
 
-void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir, XMMATRIX mView, XMMATRIX mProj)
+void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir, XMFLOAT3 &g_terrRGB, XMMATRIX mView, XMMATRIX mProj)
 {
    bool shadows = true;
 
@@ -590,7 +590,7 @@ void GrassFieldManager::Render(Copter* copter, Car* car, XMFLOAT3 &g_vLightDir, 
 
     XMFLOAT3 tmpCamPos;
     XMStoreFloat3(&tmpCamPos, m_vCamPos);
-    m_pTerrain->Render(mView, mProj, tmpCamPos, g_vLightDir);
+    m_pTerrain->Render(mView, mProj, tmpCamPos, g_vLightDir, g_terrRGB);
 
    if (isGrassRendering) {
       m_pGrassTypes[0]->Render(false);

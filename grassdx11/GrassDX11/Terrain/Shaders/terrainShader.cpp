@@ -12,9 +12,9 @@ bool TerrainShader::Initialize(ID3D11Device* device) {
 }
 
 // Render function
-bool TerrainShader::Render(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, ID3D11ShaderResourceView* textures[], bool normalPass) {
+bool TerrainShader::Render(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor, ID3D11ShaderResourceView* textures[], bool normalPass) {
     // Set the shader parameters that it will use for rendering.
-    bool result = SetShaderParameters(deviceContext, frustumPlanes, worldMatrix, viewMatrix, projectionMatrix, cameraPos, lightDir, textures);
+    bool result = SetShaderParameters(deviceContext, frustumPlanes, worldMatrix, viewMatrix, projectionMatrix, cameraPos, lightDir, lightColor, textures);
     if (!result) {
         return false;
     }
@@ -426,7 +426,7 @@ void TerrainShader::ShutdownShader() {
 }
 
 // Function to fill shader buffers and params
-bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, ID3D11ShaderResourceView* textures[]) {
+bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor, ID3D11ShaderResourceView* textures[]) {
     // Transpose the matrices to prepare them for the shader.
     //worldMatrix = XMMatrixTranspose(worldMatrix);
     viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -522,7 +522,7 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFL
     // Get a pointer to the data in the light constant buffer.
     LightBufferType* dataPtr2 = (LightBufferType*)mappedResource.pData;
     // Copy the lighting variables into the constant buffer.
-    dataPtr2->diffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    dataPtr2->diffuseColor = XMFLOAT4(lightColor.x, lightColor.y, lightColor.z, 1.0f);
     dataPtr2->ambientColor = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
     dataPtr2->lightDirection = XMFLOAT4(lightDir.x, lightDir.y, lightDir.z, 0.0f);
 

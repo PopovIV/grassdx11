@@ -401,7 +401,10 @@ float GrassManager::LodAlphaOffset(const XMVECTOR& a_vCamPos, const XMVECTOR& a_
    float t = 1.f - fDot;
    float h = gety(a_vCamPos);
 
-   h = 0.0;
+   if (h < 250.0f)
+       h = 0.0f;
+   else
+       h = (h - 250.0f) / 400.0f;
 
    if ((gety(a_vPatchPos) > 6.0f) && (t > 0.92f))
       return (0.2f + h);

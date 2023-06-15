@@ -43,7 +43,7 @@ class TerrainShader {
     // Function to realese shader
     void Shutdown() { ShutdownShader(); }
     // Render function
-    bool Render(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, ID3D11ShaderResourceView* textures[], bool normalPass);
+    bool Render(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor, ID3D11ShaderResourceView* textures[], bool normalPass);
 
   private:
     // Function to initialize shader
@@ -51,7 +51,7 @@ class TerrainShader {
     // Function to release shader
     void ShutdownShader();
     // Function to fill shader buffers and params
-    bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, ID3D11ShaderResourceView* textures[]);
+    bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFLOAT4* frustumPlanes, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor, ID3D11ShaderResourceView* textures[]);
     // Render function
     void RenderShader(ID3D11DeviceContext* deviceContext, bool normalPass);
 

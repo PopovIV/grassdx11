@@ -17,7 +17,7 @@ class Zone {
     // Function to initialize user interface, camera, position and grid
     bool Initialize(ID3D11Device* device, ID3D11DeviceContext* context, float screenDepth, float terrainRadius, float terrainHeight);
     // Render function
-    bool Render(XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir);
+    bool Render(XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor);
     // Function to clear all stuff that was created in initialize function
     void Shutdown();
     // Function to return HM

@@ -88,7 +88,7 @@ void ToggleToTerrainCamera (void);
 void ToggleToNormalCamera  (void);
 void InitCarMesh           (void);
 
-bool isDbgUiRendered = true;
+bool isDbgUiRendered = false;
 
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -467,11 +467,11 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    
    // Create grass field
    g_GrassInitState.InitState[0].fMaxQuality = 0.0f;//0.7f;
-   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 20;
-   g_GrassInitState.InitState[0].dwPatchesPerSide = 37;//40;//43;//45;//32;//50;
+   g_GrassInitState.InitState[0].dwBladesPerPatchSide = 40;
+   g_GrassInitState.InitState[0].dwPatchesPerSide = 50;//40;//43;//45;//32;//50;
    g_GrassInitState.InitState[0].fMostDetailedDist = 2.0f;//* g_fMeter;
-   g_GrassInitState.InitState[0].fLastDetailedDist = 240.0f;//85;//150.0f;// * g_fMeter;
-   g_GrassInitState.InitState[0].fGrassRadius = 240;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fLastDetailedDist = 340.0f;//85;//150.0f;// * g_fMeter;
+   g_GrassInitState.InitState[0].fGrassRadius = 340;//85;//150.0f;// * g_fMeter;
    g_GrassInitState.InitState[0].pD3DDevice = pd3dDevice;
    g_GrassInitState.InitState[0].pD3DDeviceCtx = pd3dImmediateContext;
    
@@ -518,7 +518,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
    g_GrassInitState.sGrassSnowedOnTerrainTexturePath = L"resources/gSnowed.dds";
    //g_GrassInitState.sSnowCoverMapPath = L"resources/SnowCover.dds";
    g_GrassInitState.fHeightScale = g_fHeightScale;
-   g_GrassInitState.fTerrRadius = 512;
+   g_GrassInitState.fTerrRadius = 512.0f;
    g_pGrassField = new GrassFieldManager(g_GrassInitState);
    g_pTerrTile = g_pGrassField->SceneEffect()->GetVariableByName("g_fTerrTile")->AsScalar();
    
@@ -923,7 +923,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
     //}
 
     g_pGrassField->Update(vCamDir, g_Camera->GetEyePt(), XMLoadFloat3(&skybox->getSunDir()), g_pMeshes, g_fNumOfMeshes, a_fElapsedTime, g_fTime);
-    g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir, mView, mProj);
+    g_pGrassField->Render(copter, (Car*)g_pMeshes[0], g_vLightDir, g_vTerrRGB, mView, mProj);
 
     //for (auto* mesh : g_pMeshes) {
     //   if (mesh != nullptr) {
@@ -962,7 +962,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 
     TurnOnAlphaBlending();
 
-    clouds->draw(mViewProj);
+    //clouds->draw(mViewProj);
 
     TurnOffAlphaBlending();
 }

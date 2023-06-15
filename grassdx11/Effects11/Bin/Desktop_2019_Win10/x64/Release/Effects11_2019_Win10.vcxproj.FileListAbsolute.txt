@@ -1,2 +1,3 @@
 D:\Voinova_VKR\grassdx11\grassdx11\Effects11\Bin\Desktop_2019_Win10\x64\Release\Effects11.lib
 A:\GitHub\grassdx11\grassdx11\Effects11\Bin\Desktop_2019_Win10\x64\Release\Effects11.lib
+C:\Users\Иван\Documents\GitHub\grassdx11\grassdx11\Effects11\Bin\Desktop_2019_Win10\x64\Release\Effects11.lib

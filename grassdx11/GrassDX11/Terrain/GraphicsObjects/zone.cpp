@@ -228,7 +228,7 @@ void Zone::Shutdown() {
 }
 
 // Render function
-bool Zone::Render(XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir) {
+bool Zone::Render(XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPos, XMFLOAT3 lightDir, XMFLOAT3 lightColor) {
     XMMATRIX worldMatrix = XMMatrixIdentity();
     m_Frustum->ConstructFrustum(viewMatrix, projectionMatrix);
 
@@ -250,7 +250,7 @@ bool Zone::Render(XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 camer
     //}
     //Direct3D->TurnDepthPrePass();
     bool result = m_terrainShader->Render(m_Context, m_Frustum->GetPlanes(), worldMatrix, viewMatrix,
-        projectionMatrix, cameraPos, lightDir, textures, true);
+        projectionMatrix, cameraPos, lightDir, lightColor, textures, true);
     //Direct3D->TurnZBufferOn();
 
     if (!result) {

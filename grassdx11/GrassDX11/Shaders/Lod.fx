@@ -63,7 +63,11 @@ inline float LodAlphaOffset(float4 a_vWorldPt)
 	if (fdot<0) fdot*=-0.4;
 	float t = 1.f - fdot;
 	float h = g_mInvCamView[3].y;
-    h = 0.0;
+
+    if (h < 250.0f)
+        h = 0.0f;
+    else
+        h = (h - 250.0f) / 400.0f;
 
 	if ((a_vWorldPt.y > 6.0)&&(t > 0.92)) 
         return (0.2 + h);
