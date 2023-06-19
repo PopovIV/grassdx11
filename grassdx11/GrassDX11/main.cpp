@@ -88,7 +88,7 @@ void ToggleToTerrainCamera (void);
 void ToggleToNormalCamera  (void);
 void InitCarMesh           (void);
 
-bool isDbgUiRendered = false;
+bool isDbgUiRendered = true;
 
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -962,7 +962,7 @@ void RenderGrass(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dDeviceCtx, X
 
     TurnOnAlphaBlending();
 
-    //clouds->draw(mViewProj);
+    clouds->draw(mViewProj);
 
     TurnOffAlphaBlending();
 }

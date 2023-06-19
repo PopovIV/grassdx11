@@ -276,9 +276,9 @@ void MeshData::createDefault(DefaultMesh defaultMeshType, int resolutionX, int r
 		bool result;
 
 		skyPlaneResolution = 1000;
-		skyPlaneWidth = 1000;
-		skyPlaneTop = 600.0f;
-		skyPlaneBottom = 200.0f;
+		skyPlaneWidth = 3100;
+		skyPlaneTop = 500.0f;
+		skyPlaneBottom = 0.0f;
 		textureRepeat = 2;
 
 		//this->createPlane(skyPlaneResolution, skyPlaneResolution);
