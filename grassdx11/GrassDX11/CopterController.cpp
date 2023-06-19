@@ -55,8 +55,8 @@ void CopterController::UpdatePhysics(void)
    float2 vTexCoord = create(getx(position) / grassRadius * 0.5f + 0.5f, getz(position) / grassRadius * 0.5f + 0.5f);
    float terrain_height = pHD->GetHeight(getx(vTexCoord), gety(vTexCoord)) * heightScale;
 
-   if (gety(position) < terrain_height + copter->scale * 2.5) {
-      sety(position, terrain_height + copter->scale * 2.5);
+   if (gety(position) < terrain_height + copter->scale * 5) {
+      sety(position, terrain_height + copter->scale * 5);
    }
 
    // calc transform

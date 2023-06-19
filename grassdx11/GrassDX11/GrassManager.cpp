@@ -99,7 +99,7 @@ GrassManager::GrassManager(GrassInitState& a_pInitState, GrassTracker* a_pGrassT
    D3DXLoadTextureArray(m_GrassState.pD3DDevice, m_GrassState.pD3DDeviceCtx, m_GrassState.sTopTexPaths, &m_pTopDiffuseTex, &m_pTopDiffuseTexSRV);
 
    hr = CreateDDSTextureFromFile(m_GrassState.pD3DDevice, m_GrassState.sLowGrassTexPath.c_str(), NULL, &m_pLowGrassTexSRV);
-   m_bUseLowGrass = (hr == S_OK);
+   m_bUseLowGrass = false;
 
    LoadIndexData();
 
