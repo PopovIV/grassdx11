@@ -160,7 +160,7 @@ float GetLandscapeDamping (float3 queryPoint, float3 fanCenter)
 
     float3 dir = fanCenter - queryPoint;
     float3 normalizedDir = normalize(dir);
-    float stepLen = 1.0 / 256.0; //HeightMapDimention
+    float stepLen = 1.0 / 1024.0; //HeightMapDimention
     float stepsCount = length(dir) / stepLen;
     float3 step = normalizedDir * stepLen;
     float3 landPoint = float3(0, 0, 0);
@@ -172,7 +172,7 @@ float GetLandscapeDamping (float3 queryPoint, float3 fanCenter)
     for (int i = 0; i < stepsCount; i++) {
         landPoint = queryPoint + i * step;
         vHeightData = g_txHeightMap.Sample(g_samLinear, landPoint.xy * 0.5 + 0.5);
-        fY = vHeightData.a * g_fHeightScale;
+        fY = vHeightData.r * g_fHeightScale;
         landNormal = vHeightData.xyz;
             
         if (fY > landPoint.z) {
@@ -191,7 +191,7 @@ float4 PSRingSourcePotentialFlowModel( AxesFanFlowPSIn In ) : SV_Target
         return Out;
     }
 
-   float fY = g_txHeightMap.SampleLevel(g_samLinear, (In.vsPos) * 0.5 + 0.5, 0).a * g_fHeightScale; 
+   float fY = g_txHeightMap.SampleLevel(g_samLinear, (In.vsPos) * 0.5 + 0.5, 0).r * g_fHeightScale; 
    float3 fNoise = g_txNoise.Sample(g_samLinear, In.vsPos).rgb;
    
    float3 fanNormal = normalize(g_vDir.xzy);

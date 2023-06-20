@@ -611,39 +611,39 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
 
    //// Create the particle system object.
-   //g_ParticleSystem = new SnowParticleSystem(g_GrassInitState.fTerrRadius);
-   //if (!g_ParticleSystem)
-   //{
-   //    return false;
-   //}
+   g_ParticleSystem = new SnowParticleSystem(g_GrassInitState.fTerrRadius);
+   if (!g_ParticleSystem)
+   {
+       return false;
+   }
 
-   //// Initialize the particle system object.
-   //result = g_ParticleSystem->Initialize(pd3dDevice, pd3dImmediateContext, L"resources/snow.png", g_totalParticles);
-   //if (!result)
-   //{
-   //    return false;
-   //}
+   // Initialize the particle system object.
+   result = g_ParticleSystem->Initialize(pd3dDevice, pd3dImmediateContext, L"resources/snow.png", g_totalParticles);
+   if (!result)
+   {
+       return false;
+   }
 
-   ////g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 120);
-   //g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 100); //change when set final y speed
-   ////g_ParticleSystem->SetFlowManager(g_pGrassField->GetFlowManager());
+   //g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 120);
+   g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 100); //change when set final y speed
+   //g_ParticleSystem->SetFlowManager(g_pGrassField->GetFlowManager());
 
-   //// Create the particle shader object.
-   //g_ParticleShader = new ParticleShader();
-   //if (!g_ParticleShader)
-   //{
-   //    return false;
-   //}
-   //g_ParticleShader->SetParticleSystem(g_ParticleSystem);
-   //g_ParticleShader->SetCopterController(&copterController);
-   //g_ParticleSystem->SetParticleShader(g_ParticleShader);
+   // Create the particle shader object.
+   g_ParticleShader = new ParticleShader();
+   if (!g_ParticleShader)
+   {
+       return false;
+   }
+   g_ParticleShader->SetParticleSystem(g_ParticleSystem);
+   g_ParticleShader->SetCopterController(&copterController);
+   g_ParticleSystem->SetParticleShader(g_ParticleShader);
 
-   //// Initialize the particle shader object.
-   //result = g_ParticleShader->Initialize(pd3dDevice, pd3dImmediateContext, g_pGrassField);
-   //if (!result)
-   //{
-   //    return false;
-   //}
+   // Initialize the particle shader object.
+   result = g_ParticleShader->Initialize(pd3dDevice, pd3dImmediateContext, g_pGrassField);
+   if (!result)
+   {
+       return false;
+   }
 
 
     g_skyRenderer = new AvocadoSky::Renderer(g_windowWidth, g_windowHeight, pd3dDevice, pd3dImmediateContext, g_pRenderTarget,
@@ -1126,8 +1126,8 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
    SAFE_DELETE(g_Camera);
    SAFE_DELETE(g_dbgWin);
    SAFE_DELETE(g_pGrassField);
-  /* SAFE_DELETE(g_ParticleShader);
-   SAFE_DELETE(g_ParticleSystem);*/
+   SAFE_DELETE(g_ParticleShader);
+   SAFE_DELETE(g_ParticleSystem);
    SAFE_DELETE(copter);
    SAFE_DELETE(g_skyRenderer);
    
@@ -1277,7 +1277,7 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
          ToggleToNormalCamera();
          copterController.FixCam();
          break;
-    /*  case VK_NUMPAD8:
+      case VK_NUMPAD8:
           g_ParticleSystem->MoveTornadoRight();
           break;
       case VK_NUMPAD5:
@@ -1303,7 +1303,7 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
           break;
       case VK_NUMPAD3:
           g_ParticleSystem->RestoreState();
-          break;*/
+          break;
       case VK_MULTIPLY:
          ToggleToMeshCamera();
          break;

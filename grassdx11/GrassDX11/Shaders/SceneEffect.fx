@@ -367,7 +367,7 @@ float3 CalcNormal (float2 a_vTexCoord)
 TerrPSIn TerrainVSMain( TerrVSIn Input )
 {
     TerrPSIn Output;
-    float fY			 = g_txHeightMap.SampleLevel(g_samLinear, Input.vTexCoord, 0).a * g_fHeightScale;
+    float fY			 = g_txHeightMap.SampleLevel(g_samLinear, Input.vTexCoord, 0).r * g_fHeightScale;
     float4 vWorldPos	 = float4(Input.vPos + float3(0.0, fY, 0.0), 1.0);
     Output.vPos          = mul(vWorldPos, g_mViewProj);
 

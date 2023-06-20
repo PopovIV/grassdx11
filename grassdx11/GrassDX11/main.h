@@ -68,9 +68,9 @@ int                                  g_fNumOfMeshes = 0;
 DebugWindow                         *g_dbgWin;
 
 //// Snow Particle System
-//int g_totalParticles = 250000;
-//ParticleShader* g_ParticleShader = nullptr;
-//SnowParticleSystem* g_ParticleSystem = nullptr;
+int g_totalParticles = 250000;
+ParticleShader* g_ParticleShader = nullptr;
+SnowParticleSystem* g_ParticleSystem = nullptr;
 
 //Sky
 AvocadoSky::Renderer* g_skyRenderer;
