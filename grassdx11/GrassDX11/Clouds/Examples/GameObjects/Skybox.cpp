@@ -40,7 +40,7 @@ void Skybox::draw(XMMATRIX const& worldMatrix) {
 	this->skyCubeMap.setPS();
 
 	// Update shader
-	this->shader.update(renderer, XMMatrixScaling(2000.0f, 2000.0f, 2000.0f) * XMMatrixTranslation(0.0f, 200.0f, 0.0f) * worldMatrix);
+	this->shader.update(renderer, XMMatrixScaling(2000.0f, 2000.0f, 2000.0f) * XMMatrixTranslation(0.0f, 200.0f, 0.0f) * XMMatrixRotationY(250.0f) * worldMatrix);
 
 	// Set shader to render mesh with
 	this->shader.set(); 

@@ -1056,7 +1056,7 @@ HRESULT WINAPI DXUTCreateWindow( const WCHAR* strWindowTitle, HINSTANCE hInstanc
         wndClass.cbWndExtra = 0;
         wndClass.hInstance = hInstance;
         wndClass.hIcon = hIcon;
-        wndClass.hCursor = LoadCursor( nullptr, IDC_ARROW );
+        wndClass.hCursor = NULL;// LoadCursor(nullptr, IDC_ARROW);
         wndClass.hbrBackground = ( HBRUSH )GetStockObject( BLACK_BRUSH );
         wndClass.lpszMenuName = nullptr;
         wndClass.lpszClassName = L"Direct3DWindowClass";
@@ -1404,6 +1404,7 @@ LRESULT CALLBACK DXUTStaticWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
             break;
 
         case WM_SETCURSOR:
+            SetCursor(NULL);
             if( DXUTIsActive() && !DXUTIsWindowed() )
             {
                 if( !GetDXUTState().GetShowCursorWhenFullScreen() )

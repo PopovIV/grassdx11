@@ -84,7 +84,7 @@ private:
 private:
 	ParticleShader* m_pParticleShader;
 	//FlowManager* m_pFlowManager;
-	XMFLOAT3 m_cloudPos{ 0.f, 80.f, 0.f };
+	XMFLOAT3 m_cloudPos{ -241.f, 200.f, -321.f };
 	XMFLOAT3 m_tornadoPos{ 0.f, 0.f, 0.f };
 	XMFLOAT3 m_deltaTorandoPos{ 0.f, 0.f, 0.f };;
 	bool _tornadoActive = false;

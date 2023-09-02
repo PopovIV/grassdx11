@@ -7,7 +7,7 @@
 #define COPTER_HEIGHT 1.0f
 #define WING_HEIGHT 5.0f
 #define WING_OFFSET 1.0f
-#define BLADE_R 1
+#define BLADE_R 2
 
 
 Copter::Copter (ID3D11Device* a_pD3DDevice, ID3D11DeviceContext* a_pD3DDeviceCtx, ID3DX11Effect* a_pEffect, FlowManager* flowManager_)

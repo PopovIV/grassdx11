@@ -99,6 +99,7 @@ GrassManager::GrassManager(GrassInitState& a_pInitState, GrassTracker* a_pGrassT
    D3DXLoadTextureArray(m_GrassState.pD3DDevice, m_GrassState.pD3DDeviceCtx, m_GrassState.sTopTexPaths, &m_pTopDiffuseTex, &m_pTopDiffuseTexSRV);
 
    hr = CreateDDSTextureFromFile(m_GrassState.pD3DDevice, m_GrassState.sLowGrassTexPath.c_str(), NULL, &m_pLowGrassTexSRV);
+   //m_bUseLowGrass = (hr == S_OK);
    m_bUseLowGrass = false;
 
    LoadIndexData();
@@ -515,10 +516,10 @@ void GrassManager::Update(float4x4& a_mViewProj, float3 a_vCamPos, Mesh* a_pMesh
          dwLodIndex = 0;
          fDist -= fHalfSize;//farthest patch point
          float fAlphaOffs = LodAlphaOffset(a_vCamPos, vPatchPos, fDist, bOnEdge);
-         if (fAlphaOffs > 0.34f)
-            dwLodIndex++;
-         if (fAlphaOffs > 0.66f)
-            dwLodIndex++;
+         //if (fAlphaOffs > 0.34f)
+         //    dwLodIndex++;
+         //if (fAlphaOffs > 0.66f)
+         //    dwLodIndex++;
 
          /* Determining collision */
          sety(vPatchPos, 0.0f); //All collisions ON A PLANE, NOT ON A TERRAIN

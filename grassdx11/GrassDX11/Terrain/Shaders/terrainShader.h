@@ -34,7 +34,7 @@ class TerrainShader {
 
     struct ScaleBufferType {
         XMINT4 scales; // x - grass, y - rock, z - slope, w - snow
-        XMINT4 detailScale; // x - detail texture scale
+        XMFLOAT4 detailScale; // x - detail texture scale
     };
 
   public:

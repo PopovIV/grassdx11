@@ -1,3 +1,4 @@
+#define TERRAIN_CHUNK_OFFSET 16
 #define TERRAIN_CHUNK_WIDTH 64
 #define TERRAIN_CHUNK_HEIGHT 64
 #define TERRAIN_CHUNK_COUNT_WIDTH 1024 / TERRAIN_CHUNK_WIDTH
@@ -23,6 +24,12 @@ cbuffer IndexBuffer : register(b2)
 {
     uint4 objectIDs[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
 }
+
+cbuffer scaleBuffer : register(b3)
+{
+    int4 scales; // x - grass, y - rock, z - slope, w - snow
+    float4 detailScale; // x - detail normal scale, y - height scale, z - max tess 
+};
 
 #define NUM_CONTROL_POINTS 3
 
@@ -56,7 +63,7 @@ float calculateEdgeFactor(float4 p0, float4 p1, matrix worldMatrix) {
     float edgeLength = distance(p0, p1);
     float4 edgeCenter = (p0 + p1) * 0.5;
     float viewDistance = distance(edgeCenter, cameraPos);
-    return (edgeLength * 1080) / (10.0 * viewDistance);
+    return (edgeLength * 200) / (viewDistance);
 }
 
 HS_CONSTANT_DATA_OUTPUT constantsHullShader(InputPatch<HS_INPUT, NUM_CONTROL_POINTS> patch, uint patchID : SV_PrimitiveID)

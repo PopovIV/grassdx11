@@ -159,7 +159,7 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
         MatrixBufferType MatrixBufferInst[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
         for (int j = 0; j < TERRAIN_CHUNK_COUNT_WIDTH; j++) {
             for (int i = 0; i < TERRAIN_CHUNK_COUNT_HEIGHT; i++) {
-                MatrixBufferInst[index++].worldMatrix = XMMatrixTranspose(XMMatrixTranslation(i * (TERRAIN_CHUNK_WIDTH - 1) - 512, 0, j * (TERRAIN_CHUNK_HEIGHT - 1) - 512));
+                MatrixBufferInst[index++].worldMatrix = XMMatrixTranspose(XMMatrixTranslation(j * (TERRAIN_CHUNK_WIDTH) - 512, 0, i * (TERRAIN_CHUNK_HEIGHT) - 512));
             }
         }
 
@@ -219,7 +219,7 @@ bool TerrainShader::InitializeShader(ID3D11Device* device, const wchar_t* vsFile
         desc.MiscFlags = 0;
         desc.StructureByteStride = 0;
 
-        ScaleBufferType scales = { {40, 32, 64, 32}, {4, 0, 0, 0} };
+        ScaleBufferType scales = { {40, 32, 64, 32}, {4.0f, 500.0f, 63.0f, 0} };
         D3D11_SUBRESOURCE_DATA data;
         data.pSysMem = &scales;
         data.SysMemPitch = sizeof(scales);
@@ -494,7 +494,7 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFL
 
     // GPU CULLING
     D3D11_DRAW_INDEXED_INSTANCED_INDIRECT_ARGS args;
-    args.IndexCountPerInstance = (TERRAIN_CHUNK_WIDTH - 1) * (TERRAIN_CHUNK_HEIGHT - 1) * 6;;
+    args.IndexCountPerInstance = (TERRAIN_CHUNK_WIDTH / TERRAIN_CHUNK_OFFSET) * (TERRAIN_CHUNK_HEIGHT / TERRAIN_CHUNK_OFFSET) * 6;
     args.InstanceCount = 0;
     args.StartInstanceLocation = 0;
     args.BaseVertexLocation = 0;
@@ -532,6 +532,11 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMFL
     // Finally set the light constant buffer in the pixel shader with the updated values.
     deviceContext->PSSetConstantBuffers(0, 1, &m_lightBuffer);
     deviceContext->PSSetConstantBuffers(1, 1, &m_scaleBuffer);
+
+    deviceContext->VSSetConstantBuffers(3, 1, &m_scaleBuffer);
+    deviceContext->DSSetConstantBuffers(3, 1, &m_scaleBuffer);
+    deviceContext->HSSetConstantBuffers(3, 1, &m_scaleBuffer);
+    deviceContext->CSSetConstantBuffers(3, 1, &m_scaleBuffer);
 
     return true;
 }

@@ -1,3 +1,4 @@
+#define TERRAIN_CHUNK_OFFSET 16
 #define TERRAIN_CHUNK_WIDTH 64
 #define TERRAIN_CHUNK_HEIGHT 64
 #define TERRAIN_CHUNK_COUNT_WIDTH 1024 / TERRAIN_CHUNK_WIDTH
@@ -23,6 +24,12 @@ cbuffer IndexBuffer : register(b2)
 {
     uint4 objectIDs[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
 }
+
+cbuffer scaleBuffer : register(b3)
+{
+    int4 scales; // x - grass, y - rock, z - slope, w - snow
+    float4 detailScale; // x - detail normal scale, y - height scale, z - max tess 
+};
 
 SamplerState SampleTypeNoMips : register(s0);
 
@@ -52,7 +59,7 @@ HS_INPUT main(VS_INPUT input)
 
     output.position = mul(float4(input.position.xyz, 1.0), geomBuffer[idx].worldMatrix);
     output.tex = float2(1.0f * (output.position.x + 512) / (TERRAIN_CHUNK_WIDTH * TERRAIN_CHUNK_COUNT_WIDTH), (output.position.z + 512) / (TERRAIN_CHUNK_HEIGHT * TERRAIN_CHUNK_COUNT_HEIGHT));
-    output.position.y += HM.SampleLevel(SampleTypeNoMips, output.tex, 0.0f).x * 500.0;
+    output.position.y += HM.SampleLevel(SampleTypeNoMips, output.tex, 0.0f).x * detailScale.y;
     int H, W, dummy;
     HM.GetDimensions(0, H, W, dummy);
     float dX = 1.0f / W;

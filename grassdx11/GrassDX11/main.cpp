@@ -88,7 +88,7 @@ void ToggleToTerrainCamera (void);
 void ToggleToNormalCamera  (void);
 void InitCarMesh           (void);
 
-bool isDbgUiRendered = true;
+bool isDbgUiRendered = false;
 
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -624,8 +624,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
        return false;
    }
 
-   //g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 120);
-   g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 100); //change when set final y speed
+   g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 120);
+   //g_ParticleSystem->SetParticlesPerSecond(g_totalParticles / 100); //change when set final y speed
    //g_ParticleSystem->SetFlowManager(g_pGrassField->GetFlowManager());
 
    // Create the particle shader object.
@@ -1010,12 +1010,12 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
     m_ToneMap->Process(pd3dDevice, pd3dImmediateContext, m_RenderTexture, g_pRTRV, m_RenderTexture->GetViewPort());
 
-   //// Render snow
-   //g_ParticleSystem->Frame(fElapsedTime, pd3dImmediateContext);
-   //TurnOnAlphaBlending();
-   //g_ParticleSystem->Render(pd3dImmediateContext);
-   //g_ParticleShader->Render(pd3dImmediateContext, g_ParticleSystem, g_Camera, fElapsedTime);
-   //TurnOffAlphaBlending();
+    // Render snow
+    g_ParticleSystem->Frame(fElapsedTime, pd3dImmediateContext);
+    TurnOnAlphaBlending();
+    g_ParticleSystem->Render(pd3dImmediateContext);
+    g_ParticleShader->Render(pd3dImmediateContext, g_ParticleSystem, g_Camera, fElapsedTime);
+    TurnOffAlphaBlending();
 
    TurnZBufferOff(pd3dImmediateContext);
 

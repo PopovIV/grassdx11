@@ -1,3 +1,4 @@
+#define TERRAIN_CHUNK_OFFSET 16
 #define TERRAIN_CHUNK_WIDTH 64
 #define TERRAIN_CHUNK_HEIGHT 64
 #define TERRAIN_CHUNK_COUNT_WIDTH 1024 / TERRAIN_CHUNK_WIDTH
@@ -24,29 +25,35 @@ cbuffer IndexBuffer : register(b2)
     uint4 objectIDs[TERRAIN_CHUNK_COUNT_WIDTH * TERRAIN_CHUNK_COUNT_HEIGHT];
 }
 
+cbuffer scaleBuffer : register(b3)
+{
+    int4 scales; // x - grass, y - rock, z - slope, w - snow
+    float4 detailScale; // x - detail normal scale, y - height scale, z - max tess 
+};
+
 SamplerState SamplerType : register(s0);
 Texture2D<float2> HM : register(t0);
 
 RWStructuredBuffer<uint> indirectArgs : register(u0);
 RWStructuredBuffer<uint4> objectsIds : register(u1);
 
-    bool IsBoxInside(in float4 planes[6], in float3 bbMin, in float3 bbMax) {
-        for (int i = 0; i < 6; i++) {
-            float3 norm = planes[i].xyz;
-            float4 p = float4(
-                norm.x < 0 ? bbMin.x : bbMax.x,
-                norm.y < 0 ? bbMin.y : bbMax.y,
-                norm.z < 0 ? bbMin.z : bbMax.z,
-                1.0f
-                );
-            float s = dot(p, planes[i]);
-            if (s < 0.0f) {
-                return false;
-            }
+bool IsBoxInside(in float4 planes[6], in float3 bbMin, in float3 bbMax) {
+    for (int i = 0; i < 6; i++) {
+        float3 norm = planes[i].xyz;
+        float4 p = float4(
+            norm.x < 0 ? bbMin.x : bbMax.x,
+            norm.y < 0 ? bbMin.y : bbMax.y,
+            norm.z < 0 ? bbMin.z : bbMax.z,
+            1.0f
+            );
+        float s = dot(p, planes[i]);
+        if (s < 0.0f) {
+            return false;
         }
-    
-        return true;
     }
+
+    return true;
+}
 
 [numthreads(64, 1, 1)]
 void main(uint3 globalThreadId : SV_DispatchThreadID)
@@ -55,7 +62,7 @@ void main(uint3 globalThreadId : SV_DispatchThreadID)
         return;
     }
     float4 bbMin = float4(0, 0, 0, 1);
-    float4 bbMax = float4(TERRAIN_CHUNK_WIDTH - 1, 0, TERRAIN_CHUNK_HEIGHT - 1, 1);
+    float4 bbMax = float4(TERRAIN_CHUNK_WIDTH, 0, TERRAIN_CHUNK_HEIGHT, 1);
     bbMin = mul(bbMin, geomBuffer[globalThreadId.x].worldMatrix);
     bbMax = mul(bbMax, geomBuffer[globalThreadId.x].worldMatrix);
 
@@ -64,8 +71,8 @@ void main(uint3 globalThreadId : SV_DispatchThreadID)
     //float2 texCoord = float2(u, v);
 
     float2 height = HM.Load(int3(u, v, 6));
-    bbMin.y += height.r * 500.0f;
-    bbMax.y += height.g * 500.0f;
+    bbMin.y += height.r * detailScale.y;
+    bbMax.y += height.g * detailScale.y;
 
     bbMin -= float4(150.0f, 150.0f, 150.0f, 0.0f);
     bbMax += float4(150.0f, 150.0f, 150.0f, 0.0f);
