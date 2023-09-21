@@ -66,21 +66,56 @@ float calculateEdgeFactor(float4 p0, float4 p1, matrix worldMatrix) {
     return (edgeLength * 200) / (viewDistance);
 }
 
+bool isInsideFrustum(float4 points[3]) {
+    for (int i = 0; i < 3;  i++) {
+        points[i] = mul(points[i], viewProjectionMatrix);
+        points[i] /= points[i].w;
+    }
+
+    bool LeftPlaneResult = true;
+    bool RightPlaneResult = true;
+    bool TopPlaneResult = true;
+    bool BottomPlaneResult = true;
+    bool FarPlaneResult = true;
+    bool NearPlaneResult = true;
+    for (int i = 0; i < 3; i++) {
+        LeftPlaneResult = LeftPlaneResult && (points[i].x <= -1);
+        RightPlaneResult = RightPlaneResult && (points[i].x >= 1);
+        BottomPlaneResult = BottomPlaneResult && (points[i].y <= -1);
+        TopPlaneResult = TopPlaneResult && (points[i].y >= 1);
+        FarPlaneResult = FarPlaneResult && (points[i].z >= 1);
+        NearPlaneResult = NearPlaneResult && (points[i].z <= 0);
+    }
+
+    bool inside = !(LeftPlaneResult || RightPlaneResult || TopPlaneResult || BottomPlaneResult || FarPlaneResult || NearPlaneResult);
+    return inside;
+}
+
 HS_CONSTANT_DATA_OUTPUT constantsHullShader(InputPatch<HS_INPUT, NUM_CONTROL_POINTS> patch, uint patchID : SV_PrimitiveID)
 {
     HS_CONSTANT_DATA_OUTPUT output;
 
-    // Calculate tessFactor
-    float p0factor = calculateEdgeFactor(patch[1].position, patch[2].position, geomBuffer[patch[0].instanceId].worldMatrix);
-    float p1factor = calculateEdgeFactor(patch[2].position, patch[0].position, geomBuffer[patch[0].instanceId].worldMatrix);
-    float p2factor = calculateEdgeFactor(patch[0].position, patch[1].position, geomBuffer[patch[0].instanceId].worldMatrix);
+    float4 points[3] = { patch[0].position, patch[1].position, patch[2].position };
 
-    // Assign tessellation levels (constant for now)
-    output.EdgeFactors[0] = p0factor;
-    output.EdgeFactors[1] = p1factor;
-    output.EdgeFactors[2] = p2factor;
+    if (isInsideFrustum(points)) {
+        // Calculate tessFactor
+        float p0factor = calculateEdgeFactor(patch[1].position, patch[2].position, geomBuffer[patch[0].instanceId].worldMatrix);
+        float p1factor = calculateEdgeFactor(patch[2].position, patch[0].position, geomBuffer[patch[0].instanceId].worldMatrix);
+        float p2factor = calculateEdgeFactor(patch[0].position, patch[1].position, geomBuffer[patch[0].instanceId].worldMatrix);
+
+        // Assign tessellation levels (constant for now)
+        output.EdgeFactors[0] = p0factor;
+        output.EdgeFactors[1] = p1factor;
+        output.EdgeFactors[2] = p2factor;
+    }
+    else {
+        output.EdgeFactors[0] = 0;
+        output.EdgeFactors[1] = 0;
+        output.EdgeFactors[2] = 0;
+    }
+
     output.InsideFactor = (output.EdgeFactors[0] + output.EdgeFactors[1] + output.EdgeFactors[2]) / 3.0f;
- 
+
     return output;
 }
 

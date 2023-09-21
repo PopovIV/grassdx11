@@ -61,25 +61,27 @@ void main(uint3 globalThreadId : SV_DispatchThreadID)
     if (globalThreadId.x >= (TERRAIN_CHUNK_COUNT_HEIGHT) * (TERRAIN_CHUNK_COUNT_WIDTH)) {
         return;
     }
-    float4 bbMin = float4(0, 0, 0, 1);
-    float4 bbMax = float4(TERRAIN_CHUNK_WIDTH, 0, TERRAIN_CHUNK_HEIGHT, 1);
-    bbMin = mul(bbMin, geomBuffer[globalThreadId.x].worldMatrix);
-    bbMax = mul(bbMax, geomBuffer[globalThreadId.x].worldMatrix);
+    //float4 bbMin = float4(0, 0, 0, 1);
+    //float4 bbMax = float4(TERRAIN_CHUNK_WIDTH, 0, TERRAIN_CHUNK_HEIGHT, 1);
+    //bbMin = mul(bbMin, geomBuffer[globalThreadId.x].worldMatrix);
+    //bbMax = mul(bbMax, geomBuffer[globalThreadId.x].worldMatrix);
 
-    float u = (1.0f * globalThreadId.x % TERRAIN_CHUNK_COUNT_WIDTH);
-    float v = TERRAIN_CHUNK_COUNT_HEIGHT - (1.0f * globalThreadId.x % TERRAIN_CHUNK_COUNT_HEIGHT) - 1;
-    //float2 texCoord = float2(u, v);
+    //float u = (1.0f * globalThreadId.x % TERRAIN_CHUNK_COUNT_WIDTH);
+    //float v = TERRAIN_CHUNK_COUNT_HEIGHT - (1.0f * globalThreadId.x % TERRAIN_CHUNK_COUNT_HEIGHT) - 1;
+    ////float2 texCoord = float2(u, v);
 
-    float2 height = HM.Load(int3(u, v, 6));
-    bbMin.y += height.r * detailScale.y;
-    bbMax.y += height.g * detailScale.y;
+    //float2 height = HM.Load(int3(u, v, 6));
+    //bbMin.y += height.r * detailScale.y;
+    //bbMax.y += height.g * detailScale.y;
 
-    bbMin -= float4(150.0f, 150.0f, 150.0f, 0.0f);
-    bbMax += float4(150.0f, 150.0f, 150.0f, 0.0f);
+    //bbMin -= float4(150.0f, 150.0f, 150.0f, 0.0f);
+    //bbMax += float4(150.0f, 150.0f, 150.0f, 0.0f);
 
-    if (IsBoxInside(planes, bbMin.xyz, bbMax.xyz)) {
+    // TO DO: Remove this cull shader and return to DrawIndexed rendering
+    // Because now renering is happening in Hull shader
+    //if (IsBoxInside(planes, bbMin.xyz, bbMax.xyz)) {
         uint id = 0;
         InterlockedAdd(indirectArgs[1], 1, id);
         objectsIds[id] = uint4(globalThreadId.x, 0, 0, 0);
-    }
+    //}
 }
